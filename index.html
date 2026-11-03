@@ -580,18 +580,40 @@
     </div>
 
     <!-- MODAL: TOP-UP VOUCHER -->
+        <!-- MODAL: TOP-UP WALLET / BUY VOUCHER VIA WHATSAPP -->
     <div id="voucherModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4">
-        <div class="cyber-glass w-full max-w-sm rounded-[32px] p-6 space-y-4">
+        <div class="cyber-glass w-full max-w-sm rounded-[32px] p-6 space-y-4 border border-amber-500/40">
             <div class="flex justify-between items-center pb-2 border-b border-white/10">
                 <h3 class="text-xs font-gaming font-bold text-amber-400 uppercase flex items-center gap-2">
-                    <i class="fa-solid fa-ticket"></i> REDEEM VOUCHER
+                    <i class="fa-solid fa-wallet"></i> TOP-UP WALLET
                 </h3>
                 <button class="close-voucher-btn text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <input id="voucherKeyInput" type="text" placeholder="GX-TOPUP-XXXX" class="w-full bg-black/50 border border-white/20 rounded-2xl px-4 py-3 text-sm uppercase text-amber-400 font-mono text-center tracking-widest outline-none focus:border-amber-400 allow-select">
-            <button id="submitVoucherBtn" class="touch-action w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
-                CONFIRM REDEEM
-            </button>
+
+            <!-- BUY VOUCHER / WHATSAPP ORDER SECTION -->
+            <div class="bg-black/40 p-3 rounded-2xl border border-amber-400/30 space-y-2 text-center">
+                <span class="text-[10px] font-gaming font-bold text-amber-400 uppercase block">1. BUY TOP-UP VIA WHATSAPP</span>
+                <p class="text-[11px] text-gray-300">டாப்-அப் செய்ய வேண்டிய தொகையை (LKR) உள்ளிட்டு வாட்ஸ்அப்பில் ஆர்டர் செய்யவும்.</p>
+                <input id="buyTopupAmountInput" type="number" placeholder="தொகை (எ.கா: 500)" class="w-full bg-black/50 border border-white/20 rounded-xl px-3 py-2.5 text-sm text-amber-400 font-mono text-center outline-none focus:border-amber-400 allow-select">
+                <button id="sendTopupOrderBtn" class="touch-action w-full py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-gaming font-bold text-xs uppercase rounded-xl shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> ORDER ON WHATSAPP
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2 text-gray-500 text-[10px] justify-center">
+                <div class="h-[1px] bg-white/10 flex-1"></div>
+                <span>அல்லது (குறியீடு இருந்தால்)</span>
+                <div class="h-[1px] bg-white/10 flex-1"></div>
+            </div>
+
+            <!-- REDEEM VOUCHER SECTION -->
+            <div class="space-y-2">
+                <span class="text-[10px] font-gaming font-bold text-gray-400 uppercase block text-center">2. REDEEM PURCHASED KEY</span>
+                <input id="voucherKeyInput" type="text" placeholder="GX-TOPUP-XXXX" class="w-full bg-black/50 border border-white/20 rounded-2xl px-4 py-2.5 text-sm uppercase text-cyan-300 font-mono text-center tracking-widest outline-none focus:border-cyan-400 allow-select">
+                <button id="submitVoucherBtn" class="touch-action w-full py-2.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
+                    CONFIRM REDEEM
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1437,6 +1459,28 @@
             document.getElementById("dashTopupBtn").onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.remove("hidden"); };
             document.getElementById("submitVoucherBtn").onclick = redeemVoucher;
             document.getElementById("dashConvertStarsBtn").onclick = convertStars;
+                        
+            // WhatsApp Top-Up Direct Order Action
+            document.getElementById("sendTopupOrderBtn").onclick = () => {
+                playSound('click');
+                const amt = parseInt(document.getElementById("buyTopupAmountInput").value);
+                if (!amt || amt <= 0) return showCustomAlert("சரியான தொகையை (LKR) உள்ளிடவும்!", "INVALID AMOUNT");
+
+                const userEmail = currentUser ? currentUser.email : "Guest Player";
+                const msg = encodeURIComponent(
+                    `*GX STORE - WALLET TOP-UP ORDER*\n` +
+                    `--------------------------------------\n` +
+                    `💰 *Requested Amount:* LKR ${amt}\n` +
+                    `📧 *Account Email:* ${userEmail}\n` +
+                    `--------------------------------------\n` +
+                    `_ஹலோ அட்மின், எனது வாலட்டில் LKR ${amt} டாப்-அப் செய்ய விரும்புகிறேன். கட்டணம் செலுத்துவதற்கான வங்கி விபரங்களை அனுப்பவும்._`
+                );
+
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+                document.getElementById("buyTopupAmountInput").value = "";
+                document.getElementById("voucherModal").classList.add("hidden");
+            };
+
 
             // Copy referral link
             document.getElementById("dashCopyRefBtn").onclick = () => {
