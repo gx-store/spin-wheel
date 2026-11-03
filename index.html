@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GX STORE | PRO GAMING WHEEL</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Pro Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Confetti Effects -->
+    <!-- Confetti FX -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -21,7 +21,6 @@
             -webkit-user-select: none;
         }
 
-        /* Allow selection only for keys */
         .allow-select {
             user-select: text !important;
             -webkit-user-select: text !important;
@@ -76,12 +75,12 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
-    <!-- App Top Navigation Bar -->
+    <!-- Top App Navigation -->
     <header class="glass-panel sticky top-0 z-40 px-4 py-2.5 flex justify-between items-center border-b border-amber-500/20 shadow-2xl">
         <div class="flex items-center gap-2.5">
-            <!-- Custom Dynamic Store Logo -->
-            <div class="w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-500 via-purple-500 to-cyan-400 shadow-lg">
-                <img id="appStoreLogo" src="logo.png" alt="GX" class="w-full h-full object-cover rounded-[14px]">
+            <!-- Custom Logo with Relative Path fallback -->
+            <div class="w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-500 via-purple-500 to-cyan-400 shadow-lg flex items-center justify-center overflow-hidden">
+                <img id="appStoreLogo" src="./logo.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/808/808665.png';" alt="GX" class="w-full h-full object-cover rounded-[14px]">
             </div>
             <div>
                 <h1 class="text-lg font-gaming font-black tracking-wider uppercase leading-none bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 bg-clip-text text-transparent">GX STORE</h1>
@@ -90,14 +89,13 @@
         </div>
 
         <div id="authHeader" class="flex items-center gap-2">
-            <!-- Dynamic: Populated via JavaScript -->
             <button id="googleSignInBtn" class="bg-gradient-to-r from-white to-gray-200 text-gray-900 text-xs px-3.5 py-1.5 rounded-xl font-bold flex items-center gap-2 shadow-lg active:scale-95 transition">
                 <i class="fa-brands fa-google text-red-500 text-sm"></i> SIGN IN
             </button>
         </div>
     </header>
 
-    <!-- App Main Screen Area -->
+    <!-- Main Game Arena -->
     <main class="max-w-md w-full mx-auto px-4 py-3 space-y-4">
 
         <!-- Realtime Wallet & Stars Bar -->
@@ -124,7 +122,7 @@
                 </div>
             </div>
 
-            <button id="quickTopupBtn" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-gray-950 font-bold text-xs flex items-center gap-1 active:scale-95 transition shadow" title="Redeem Top-up Voucher">
+            <button id="quickTopupBtn" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-gray-950 font-bold text-xs flex items-center gap-1 active:scale-95 transition shadow">
                 <i class="fa-solid fa-plus-circle"></i> TOP-UP
             </button>
         </div>
@@ -139,7 +137,6 @@
                     <circle cx="18" cy="16" r="6" fill="#090a16"/>
                 </svg>
 
-                <!-- Canvas Component -->
                 <canvas id="wheelCanvas" width="380" height="380" class="w-full h-full rounded-full transition-transform duration-100"></canvas>
 
                 <!-- Center Center Shield -->
@@ -171,7 +168,7 @@
                 </button>
             </div>
 
-            <!-- Only Tamil Note as requested -->
+            <!-- Tamil Notice Note -->
             <div class="mt-3.5 bg-black/60 border border-gray-800 rounded-2xl p-3 text-center">
                 <p class="text-[11px] text-gray-300 leading-relaxed font-sans">
                     💡 <span class="text-amber-400 font-bold">முக்கிய குறிப்பு:</span> தொடர்ச்சியாக அதிகமுறை ஸ்பின் விளையாடும் போது மற்றும் Tier 3 (LKR 500) ஸ்பின் செய்யும் போது மட்டுமே Monthly Pass, Weekly Pass விழும் வாய்ப்புகள் பெருமளவு அதிகரிக்கும்.
@@ -197,10 +194,9 @@
         </button>
     </nav>
 
-    <!-- DEDICATED PROFILE DASHBOARD MODAL -->
+    <!-- DEDICATED PROFILE DASHBOARD -->
     <div id="profileModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden flex flex-col justify-between p-4 max-w-md mx-auto overflow-y-auto">
         <div class="space-y-4">
-            <!-- Header -->
             <div class="flex justify-between items-center pb-3 border-b border-gray-800">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-user-astronaut text-amber-400 text-lg"></i>
@@ -211,7 +207,6 @@
                 </button>
             </div>
 
-            <!-- Profile Info Banner -->
             <div class="glass-panel rounded-2xl p-4 flex items-center gap-4 border border-cyan-500/30">
                 <img id="dashAvatar" src="" class="w-14 h-14 rounded-2xl border-2 border-amber-400 object-cover shadow-lg">
                 <div class="overflow-hidden">
@@ -221,7 +216,6 @@
                 </div>
             </div>
 
-            <!-- Balances Detail Grid -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="glass-panel rounded-2xl p-3 text-center border border-cyan-500/20">
                     <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">CASH BALANCE</span>
@@ -239,7 +233,7 @@
                 </div>
             </div>
 
-            <!-- Referral System -->
+            <!-- Referral Card -->
             <div class="glass-panel rounded-2xl p-4 space-y-3 border border-purple-500/30">
                 <div class="flex justify-between items-center">
                     <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
@@ -273,7 +267,7 @@
                 </div>
             </div>
 
-            <!-- Prize Winnings History -->
+            <!-- Prize Winnings Vault -->
             <div class="glass-panel rounded-2xl p-4 space-y-3 border border-yellow-500/20">
                 <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
                     <i class="fa-solid fa-trophy"></i> WINNINGS & REWARD VAULT
@@ -283,7 +277,6 @@
                 </div>
             </div>
 
-            <!-- Logout Button -->
             <button id="dashLogoutBtn" class="w-full py-3 bg-red-600/10 hover:bg-red-600/20 text-red-400 border border-red-500/20 rounded-2xl text-xs font-bold uppercase transition flex items-center justify-center gap-2">
                 <i class="fa-solid fa-right-from-bracket"></i> LOGOUT ACCOUNT
             </button>
@@ -380,66 +373,73 @@
                 </div>
             </div>
 
-            <!-- Prize Management & Image Upload -->
+            <!-- Live Prize Config List -->
             <div class="flex-1 overflow-y-auto space-y-3 pr-1">
-                <span class="text-xs font-gaming font-bold text-gray-300 block">PRIZE SLICES & PNG CONFIG</span>
+                <span class="text-xs font-gaming font-bold text-gray-300 block">LIVE PRIZES MANAGEMENT</span>
                 <div id="adminPrizesList" class="space-y-2"></div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDKs (v9 Compat) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
     <script>
         /**
-         * 1. SYNTHESIZED WEB AUDIO FX (Lightning Fast, No File Loading)
+         * 1. SYNTHESIZED WEB AUDIO ENGINE
          */
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let audioCtx;
+        function getAudioContext() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
 
         function playSound(type) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            const now = audioCtx.currentTime;
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                const now = ctx.currentTime;
 
-            if (type === 'click') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, now);
-                osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
-                osc.start(now);
-                osc.stop(now + 0.05);
-            } else if (type === 'tick') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(650, now);
-                gain.gain.setValueAtTime(0.12, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.03);
-                osc.start(now);
-                osc.stop(now + 0.03);
-            } else if (type === 'win') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(440, now);
-                osc.frequency.setValueAtTime(554.37, now + 0.1);
-                osc.frequency.setValueAtTime(659.25, now + 0.2);
-                osc.frequency.setValueAtTime(880, now + 0.3);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.6);
-                osc.start(now);
-                osc.stop(now + 0.6);
-            }
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, now);
+                    osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'tick') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(650, now);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.03);
+                    osc.start(now);
+                    osc.stop(now + 0.03);
+                } else if (type === 'win') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.setValueAtTime(554.37, now + 0.1);
+                    osc.frequency.setValueAtTime(659.25, now + 0.2);
+                    osc.frequency.setValueAtTime(880, now + 0.3);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.6);
+                    osc.start(now);
+                    osc.stop(now + 0.6);
+                }
+            } catch(e) {}
         }
 
         /**
-         * 2. FIREBASE CONFIGURATION & CONSTANTS
+         * 2. FIREBASE AUTH & FIRESTORE CONFIG
          */
         const firebaseConfig = {
-            apiKey: "AIzaSyBw-YOUR_API_KEY",
+            apiKey: "AIzaSyBw-YOUR_API_KEY", // Replace with your exact Web API Key from Firebase Project Settings
             authDomain: "spin-free-9d0e3.firebaseapp.com",
             projectId: "spin-free-9d0e3",
             storageBucket: "spin-free-9d0e3.firebasestorage.app",
@@ -455,7 +455,7 @@
         const WHATSAPP_NUMBER = "94742870409";
 
         /**
-         * 3. STATE & DEFAULT SLICES
+         * 3. GAME STATE
          */
         let currentUser = null;
         let userData = { balance: 0, stars: 0, totalDeposited: 0, referredBy: null, referralsCount: 0, referralEarnings: 0 };
@@ -477,7 +477,7 @@
         ];
 
         /**
-         * 4. CANVAS WHEEL ENGINE
+         * 4. CANVAS WHEEL ENGINE & REALTIME RENDERING
          */
         const canvas = document.getElementById("wheelCanvas");
         const ctx = canvas.getContext("2d");
@@ -500,6 +500,7 @@
 
         function drawWheel() {
             const numSlices = slices.length;
+            if (numSlices === 0) return;
             const sliceAngle = (2 * Math.PI) / numSlices;
             const radius = canvas.width / 2;
 
@@ -536,7 +537,7 @@
         }
 
         /**
-         * 5. INITIALIZATION & OBSERVERS
+         * 5. APPLICATION INITIALIZATION & REALTIME LISTENERS
          */
         window.addEventListener("DOMContentLoaded", () => {
             initApplication();
@@ -548,7 +549,7 @@
             const refCode = params.get("ref");
             if (refCode) sessionStorage.setItem("gx_ref_code", refCode);
 
-            // Sync Game Slices & Pool from Firestore
+            // REALTIME SYNC WITHOUT REFRESH
             db.collection("settings").doc("gameConfig").onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
@@ -560,10 +561,11 @@
                     db.collection("settings").doc("gameConfig").set({ slices, globalPool });
                 }
                 document.getElementById("adminPoolVal").innerText = globalPool;
+                renderAdminPrizesList();
                 preloadSliceImages();
             });
 
-            // Auth State Listener
+            // AUTH OBSERVER
             auth.onAuthStateChanged(user => {
                 currentUser = user;
                 renderAuthSection();
@@ -599,10 +601,15 @@
 
         async function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
             try {
                 await auth.signInWithPopup(provider);
             } catch (err) {
-                alert("Sign-in error: " + err.message);
+                if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request') {
+                    await auth.signInWithRedirect(provider);
+                } else {
+                    alert("Google Sign-In Error: " + err.message);
+                }
             }
         }
 
@@ -631,11 +638,11 @@
                         });
                     }
                 }
-                // Update Live Screen
+                // Live Screen Updates
                 document.getElementById("topWalletBalance").innerText = userData.balance;
                 document.getElementById("topStarsBalance").innerText = userData.stars;
 
-                // Update Profile Dashboard
+                // Dashboard Updates
                 document.getElementById("dashWalletVal").innerText = userData.balance;
                 document.getElementById("dashStarsVal").innerText = userData.stars;
                 document.getElementById("dashRefTotalCount").innerText = userData.referralsCount || 0;
@@ -645,7 +652,7 @@
         }
 
         /**
-         * 6. STRICT SPIN ENGINE: ZERO LOSS DUAL-LOCK MATHEMATICS
+         * 6. STRICT ZERO-LOSS SPIN LOGIC
          */
         async function executeSpinLogic() {
             playSound('click');
@@ -660,23 +667,22 @@
             isSpinning = true;
             document.getElementById("spinBtn").disabled = true;
 
-            // Deduct Bet & Update Global Pool in single atomic transaction
+            // Atomic Balance Deduct & Global Pool Add
             await db.runTransaction(async (t) => {
                 t.update(db.collection("users").doc(currentUser.uid), { balance: firebase.firestore.FieldValue.increment(-betCost) });
                 t.update(db.collection("settings").doc("gameConfig"), { globalPool: firebase.firestore.FieldValue.increment(betCost) });
             });
 
-            // Mathematical Probability Calculation
+            // Mathematical Filter
             let validSlices = slices.map(s => {
                 let chance = s.prob;
 
-                // Tier-Lock: Lower tier bets CANNOT win high tier prizes
+                // Tier-Lock
                 if (currentTier < s.minTier) chance = 0;
 
-                // Dual-Lock: High-end grand prizes are strictly 0% if pool < threshold
+                // Dual-Lock: High-end threshold check
                 if (s.threshold > 0 && globalPool < s.threshold) chance = 0;
 
-                // Moderate multiplier for valid non-empty items on higher tiers
                 if (currentTier === 2 && s.minTier <= 2 && s.type !== "none") chance *= 1.5;
                 if (currentTier === 3 && s.minTier <= 3 && s.type !== "none") chance *= 2.0;
 
@@ -719,7 +725,7 @@
         }
 
         async function completePrizeCycle(prize) {
-            // Auto deduct prize value from global pool if high value
+            // Auto deduct prize value from global pool
             if (prize.value > 0 && prize.type === "item") {
                 db.collection("settings").doc("gameConfig").update({
                     globalPool: firebase.firestore.FieldValue.increment(-prize.value)
@@ -802,7 +808,6 @@
                 t.update(db.collection("users").doc(currentUser.uid), { balance: firebase.firestore.FieldValue.increment(amt) });
             });
 
-            // Referral LKR 500 Condition Check
             const newTotalDep = (userData.totalDeposited || 0) + amt;
             await db.collection("users").doc(currentUser.uid).update({ totalDeposited: newTotalDep });
 
@@ -852,7 +857,44 @@
         }
 
         /**
-         * 10. MODAL TOGGLES & EVENT LISTENERS
+         * 10. REALTIME ADMIN PRIZE MANAGER
+         */
+        function renderAdminPrizesList() {
+            const container = document.getElementById("adminPrizesList");
+            if (!container) return;
+            container.innerHTML = slices.map((s, idx) => `
+                <div class="bg-gray-900/80 p-2.5 rounded-xl border border-gray-800 flex items-center justify-between gap-2 text-xs">
+                    <img src="${s.imgUrl}" class="w-7 h-7 object-contain">
+                    <div class="flex-1 truncate">
+                        <span class="font-bold text-white block truncate">${s.name}</span>
+                        <span class="text-[10px] text-gray-400 block">Prob: ${s.prob}% | Tier: ${s.minTier} | Pool Lock: LKR ${s.threshold}</span>
+                    </div>
+                    <button onclick="editSlicePrompt(${idx})" class="px-2 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg font-gaming text-[10px]">EDIT</button>
+                </div>
+            `).join("");
+        }
+
+        async function editSlicePrompt(idx) {
+            playSound('click');
+            const target = slices[idx];
+            const newName = prompt("Prize Name:", target.name);
+            if (!newName) return;
+            const newProb = parseFloat(prompt("Percentage Probability %:", target.prob));
+            const newThreshold = parseInt(prompt("Global Pool Threshold Lock (LKR):", target.threshold));
+            const newImg = prompt("PNG Image URL:", target.imgUrl);
+
+            slices[idx].name = newName;
+            slices[idx].prob = isNaN(newProb) ? target.prob : newProb;
+            slices[idx].threshold = isNaN(newThreshold) ? target.threshold : newThreshold;
+            slices[idx].imgUrl = newImg || target.imgUrl;
+
+            // Live update to Firestore (syncs instantly for all active players)
+            await db.collection("settings").doc("gameConfig").update({ slices: slices });
+            alert("Prize updated and synced to all live users!");
+        }
+
+        /**
+         * 11. MODAL TOGGLES & EVENT LISTENERS
          */
         function openProfileModal() {
             if (!currentUser) return alert("Please SIGN IN first!");
@@ -863,7 +905,6 @@
         }
 
         function attachListeners() {
-            // Tier Selector Buttons
             document.querySelectorAll(".tier-btn").forEach(btn => {
                 btn.addEventListener("click", () => {
                     playSound('click');
@@ -874,25 +915,21 @@
                 });
             });
 
-            // Spin & Actions
             document.getElementById("spinBtn").onclick = executeSpinLogic;
             document.getElementById("quickTopupBtn").onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.remove("hidden"); };
             document.getElementById("dashTopupBtn").onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.remove("hidden"); };
             document.getElementById("submitVoucherBtn").onclick = redeemVoucher;
             document.getElementById("dashConvertStarsBtn").onclick = convertStars;
 
-            // Nav Tabs
             document.getElementById("navSpinTab").onclick = () => { playSound('click'); document.getElementById("profileModal").classList.add("hidden"); };
             document.getElementById("navProfileTab").onclick = () => { playSound('click'); openProfileModal(); };
             document.getElementById("navAdminTab").onclick = () => { playSound('click'); document.getElementById("adminModal").classList.remove("hidden"); };
 
-            // Modal Closes
             document.querySelectorAll(".close-profile-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("profileModal").classList.add("hidden"); });
             document.querySelectorAll(".close-voucher-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.add("hidden"); });
             document.querySelectorAll(".close-win-modal").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("winModal").classList.add("hidden"); });
             document.querySelectorAll(".close-admin-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("adminModal").classList.add("hidden"); });
 
-            // Copy Action Handlers
             document.getElementById("dashCopyRefBtn").onclick = () => {
                 playSound('click');
                 navigator.clipboard.writeText(document.getElementById("dashRefUrl").value);
@@ -904,7 +941,6 @@
                 alert("Winning key copied!");
             };
 
-            // Admin Generator Handlers
             document.getElementById("adminGenVoucherBtn").onclick = async () => {
                 playSound('click');
                 const amt = parseInt(document.getElementById("adminVoucherAmt").value);
