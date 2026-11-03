@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GX VIP SPIN & REWARDS</title>
+  
+  <!-- FontAwesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Rajdhani:wght@600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Firebase Modular SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { 
+      getFirestore, collection, doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, deleteDoc, serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBp2p-bNEx8ZLHxxIx35euzloGjsNYOR20",
+      authDomain: "spin-free-9d0e3.firebaseapp.com",
+      projectId: "spin-free-9d0e3",
+      storageBucket: "spin-free-9d0e3.firebasestorage.app",
+      messagingSenderId: "597774236062",
+      appId: "1:597774236062:web:4ed18c42f1ac7a3385be81",
+      measurementId: "G-TX33DKSLLG"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Export to window
+    window.db = db;
+    window.fsCollection = collection;
+    window.fsDoc = doc;
+    window.fsGetDoc = getDoc;
+    window.fsSetDoc = setDoc;
+    window.fsUpdateDoc = updateDoc;
+    window.fsOnSnapshot = onSnapshot;
+    window.fsGetDocs = getDocs;
+    window.fsDeleteDoc = deleteDoc;
+    window.fsServerTimestamp = serverTimestamp;
+    window.dispatchEvent(new Event('firebase-ready'));
+  </script>
+
+  <style>
+    /* Prevent Chrome touch tap highlight, text selection & long press context menu */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent !important;
+      -webkit-touch-callout: none !important;
+      user-select: none !important;
+      outline: none !important;
+    }
+
+    input, textarea {
+      user-select: text !important;
+      -webkit-touch-callout: default !important;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 20%, #150f28 0%, #08070d 100%);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Ambient background grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(rgba(255,215,0,0.03) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,215,0,0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header Bar */
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .brand-title {
+      font-family: 'Teko', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      line-height: 1;
+      text-shadow: 0 0 20px rgba(255,170,0,0.4);
+    }
+
+    .wallet-badge {
+      background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.25));
+      border: 1px solid rgba(255,215,0,0.5);
+      border-radius: 50px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 15px rgba(255,170,0,0.2);
+    }
+
+    .wallet-badge i {
+      color: #ffd700;
+      font-size: 15px;
+    }
+
+    .wallet-val {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    /* Live Marquee */
+    .marquee-wrapper {
+      width: 100%;
+      background: rgba(18, 12, 38, 0.7);
+      border: 1px solid rgba(138, 43, 226, 0.4);
+      border-radius: 8px;
+      padding: 6px 10px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #bfa8e6;
+      overflow: hidden;
+    }
+
+    .marquee-wrapper i {
+      color: #00f2fe;
+    }
+
+    .marquee-content {
+      white-space: nowrap;
+      animation: ticker 25s linear infinite;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Spin Wheel Container */
+    .wheel-card {
+      position: relative;
+      width: 340px;
+      height: 340px;
+      margin: 10px 0 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .wheel-outer-glow {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #ffd700, #ff0055, #9b51e0, #00f2fe, #ffd700);
+      filter: blur(8px);
+      opacity: 0.75;
+      animation: rotateGlow 12s linear infinite;
+    }
+
+    @keyframes rotateGlow {
+      100% { transform: rotate(360deg); }
+    }
+
+    .wheel-frame {
+      position: relative;
+      width: 330px;
+      height: 330px;
+      border-radius: 50%;
+      background: #110e24;
+      border: 6px solid #231b47;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8);
+      overflow: hidden;
+    }
+
+    #spinCanvas {
+      width: 318px;
+      height: 318px;
+      border-radius: 50%;
+      transition: transform 5s cubic-bezier(0.15, 0.9, 0.2, 1);
+    }
+
+    /* Center Spinner Stopper Pin */
+    .wheel-pointer {
+      position: absolute;
+      top: -6px;
+      width: 28px;
+      height: 38px;
+      z-index: 10;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+    }
+
+    .wheel-pointer::before {
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 32px solid #ff0055;
+    }
+
+    .wheel-center-cap {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffe066 0%, #d48806 70%, #593800 100%);
+      border: 4px solid #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      color: #000;
+      font-weight: 800;
+      z-index: 5;
+      box-shadow: 0 0 15px rgba(255,215,0,0.8), inset 0 2px 4px rgba(255,255,255,0.8);
+    }
+
+    /* Controls Panel */
+    .controls-panel {
+      width: 100%;
+      background: rgba(22, 17, 44, 0.85);
+      border: 1px solid rgba(138, 43, 226, 0.4);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .bet-selector-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffd700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bet-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .bet-btn {
+      background: rgba(35, 27, 71, 0.9);
+      border: 1.5px solid rgba(255,215,0,0.25);
+      border-radius: 8px;
+      padding: 10px 4px;
+      color: #ffffff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .bet-btn span.tag {
+      font-size: 9px;
+      text-transform: uppercase;
+      color: #9d8ec2;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+    }
+
+    .bet-btn.active {
+      background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,136,0,0.35));
+      border-color: #ffd700;
+      box-shadow: 0 0 15px rgba(255,215,0,0.3);
+      color: #ffd700;
+    }
+
+    .bet-btn.active span.tag {
+      color: #ffffff;
+    }
+
+    .spin-trigger-btn {
+      width: 100%;
+      height: 52px;
+      background: linear-gradient(135deg, #ff0055 0%, #ff5e3a 100%);
+      border: none;
+      border-radius: 10px;
+      color: #ffffff;
+      font-family: 'Teko', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(255, 0, 85, 0.45);
+      transition: all 0.2s;
+    }
+
+    .spin-trigger-btn:active {
+      transform: scale(0.98);
+      filter: brightness(1.1);
+    }
+
+    .spin-trigger-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.8);
+    }
+
+    /* Redeem & Top-up Card */
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+      width: 100%;
+    }
+
+    .action-box {
+      background: rgba(26, 20, 52, 0.9);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .action-box:hover {
+      border-color: rgba(255,215,0,0.4);
+      background: rgba(35, 27, 71, 0.9);
+    }
+
+    .action-box i {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .action-box.redeem i { color: #ffd700; }
+    .action-box.whatsapp i { color: #25d366; }
+
+    .action-box-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .action-box-desc {
+      font-size: 10px;
+      color: #a79bcf;
+      margin-top: 2px;
+    }
+
+    /* Important Bilingual Instructions (Notes) */
+    .bilingual-notice {
+      width: 100%;
+      background: rgba(15, 11, 30, 0.9);
+      border-left: 3px solid #ffd700;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 18px;
+      font-size: 11px;
+      line-height: 1.6;
+      color: #cbc3e8;
+    }
+
+    .bilingual-notice h4 {
+      color: #ffd700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .notice-item {
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed rgba(255,255,255,0.07);
+    }
+
+    .notice-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .notice-ta {
+      color: #ffda79;
+      font-size: 11.5px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Modal / Popups (Custom Dark Themed - Strictly NO WHITE POPUP) */
+    .custom-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 3, 12, 0.88);
+      backdrop-filter: blur(6px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .custom-modal-overlay.active {
+      display: flex;
+    }
+
+    .custom-modal-box {
+      width: 100%;
+      max-width: 400px;
+      background: #17112c;
+      border: 1.5px solid #ffaa00;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 30px rgba(255,170,0,0.25);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      color: #ffffff;
+      animation: modalPop 0.25s ease-out;
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close-icon {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #a79bcf;
+      cursor: pointer;
+    }
+
+    .modal-header {
+      text-align: center;
+    }
+
+    .modal-header h3 {
+      font-family: 'Teko', sans-serif;
+      font-size: 28px;
+      color: #ffd700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .modal-header p {
+      font-size: 11px;
+      color: #aba1cc;
+      margin-top: 4px;
+    }
+
+    .custom-input {
+      width: 100%;
+      background: #0d091b;
+      border: 1.5px solid rgba(255,215,0,0.3);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: #ffd700;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .custom-input:focus {
+      border-color: #ffd700;
+      box-shadow: 0 0 12px rgba(255,215,0,0.3);
+    }
+
+    .custom-modal-btn {
+      width: 100%;
+      height: 46px;
+      background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
+      border: none;
+      border-radius: 8px;
+      color: #000000;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+
+    /* Prize Win Celebration Display */
+    .prize-reveal {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .prize-icon {
+      font-size: 46px;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 0 15px rgba(255,215,0,0.5));
+    }
+
+    .prize-name {
+      font-family: 'Teko', sans-serif;
+      font-size: 34px;
+      font-weight: 700;
+      color: #00f2fe;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      line-height: 1.1;
+    }
+
+    /* ADMIN DASHBOARD STYLES */
+    #adminView {
+      display: none;
+      width: 100%;
+      max-width: 600px;
+      padding: 16px;
+    }
+
+    .admin-card {
+      background: rgba(21, 15, 41, 0.95);
+      border: 1.5px solid rgba(255,215,0,0.4);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    }
+
+    .admin-title {
+      font-family: 'Teko', sans-serif;
+      font-size: 26px;
+      color: #ffd700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 6px;
+    }
+
+    .admin-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .table-container {
+      width: 100%;
+      max-height: 220px;
+      overflow-y: auto;
+      margin-top: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    th {
+      background: #0f0b1f;
+      color: #ffd700;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+    }
+
+    .badge-status {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-status.active { background: #00b894; color: #000; }
+    .badge-status.used { background: #d63031; color: #fff; }
+
+    /* Custom Notification Toast */
+    #customToast {
+      position: fixed;
+      bottom: 20px;
+      background: #1f173b;
+      border: 1px solid #ffd700;
+      border-radius: 50px;
+      padding: 10px 20px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+      z-index: 2000;
+      animation: toastIn 0.3s ease;
+    }
+
+    @keyframes toastIn {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+
+  <!-- Main User Spin View -->
+  <div class="container" id="userView">
+    
+    <!-- Header -->
+    <div class="top-bar">
+      <div class="brand-title">GX VIP SPIN</div>
+      <div class="wallet-badge">
+        <i class="fa-solid fa-coins"></i>
+        <span class="wallet-val" id="userBalanceDisplay">0 LKR</span>
+      </div>
+    </div>
+
+    <!-- Live Winners Ticker -->
+    <div class="marquee-wrapper">
+      <i class="fa-solid fa-bolt"></i>
+      <div class="marquee-content" id="liveTicker">
+        Player 74***89 won Weekly Pass • Player 91***22 won 100 Diamonds • Player 34***10 won 500 Diamonds • Player 82***19 won Monthly Pass
+      </div>
+    </div>
+
+    <!-- Spin Wheel Canvas Area -->
+    <div class="wheel-card">
+      <div class="wheel-outer-glow"></div>
+      <div class="wheel-pointer"></div>
+      <div class="wheel-frame">
+        <canvas id="spinCanvas" width="600" height="600"></canvas>
+      </div>
+      <div class="wheel-center-cap">SPIN</div>
+    </div>
+
+    <!-- Spin Controls -->
+    <div class="controls-panel">
+      <div class="bet-selector-title">
+        <span>Select Spin Tier</span>
+        <span style="font-size: 10px; color: #00f2fe;"><i class="fa-solid fa-shield-halved"></i> Verified Fair</span>
+      </div>
+
+      <div class="bet-options" id="betOptionsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <button class="spin-trigger-btn" id="spinBtn" onclick="initiateSpin()">
+        <i class="fa-solid fa-gamepad"></i> SPIN NOW
+      </button>
+    </div>
+
+    <!-- Action Shortcuts -->
+    <div class="action-row">
+      <div class="action-box redeem" onclick="openRedeemModal()">
+        <i class="fa-solid fa-ticket"></i>
+        <div class="action-box-title">REDEEM CODE</div>
+        <div class="action-box-desc">Enter WhatsApp Key</div>
+      </div>
+      <div class="action-box whatsapp" onclick="contactWhatsApp()">
+        <i class="fa-brands fa-whatsapp"></i>
+        <div class="action-box-title">BUY SPIN KEYS</div>
+        <div class="action-box-desc">+94 74 287 0409</div>
+      </div>
+    </div>
+
+    <!-- Important Bilingual Instructions / Notes -->
+    <div class="bilingual-notice">
+      <h4><i class="fa-solid fa-circle-info"></i> Rules & Guidelines / விதிமுறைகள்</h4>
+      
+      <div class="notice-item">
+        <strong>1. Buying Spin Balance:</strong> Pay via WhatsApp to receive your unique Redeem Key. Enter it above to add balance.
+        <span class="notice-ta">வாட்ஸ்அப் வழியாக பணம் செலுத்தி ரிடீம் கீ (Redeem Key) பெற்று உங்கள் பேலன்ஸை ஏற்றி கொள்ளலாம்.</span>
+      </div>
+
+      <div class="notice-item">
+        <strong>2. High Tier Lucky Boost:</strong> Higher spin bets (Tier 2 & 3) significantly increase the odds of winning Weekly/Monthly passes & Mega Diamonds.
+        <span class="notice-ta">அதிக தொகை (Tier 2 & 3) ஸ்பின் செய்யும்போது கிராண்ட் பரிசுகள் கிடைப்பதற்கான வாய்ப்பு அதிகரிக்கும்.</span>
+      </div>
+
+      <div class="notice-item">
+        <strong>3. Instant Prize Delivery:</strong> When you win, enter your Free Fire UID. Prizes will be credited directly to your game account.
+        <span class="notice-ta">பரிசு விழுந்தவுடன் உங்கள் Free Fire UID-ஐ உள்ளிடவும்; உங்கள் கேம் அக்கவுண்டிற்கு டைமண்ட்கள் அனுப்பி வைக்கப்படும்.</span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ADMIN VIEW (Visible via #admin) -->
+  <div class="container" id="adminView">
+    <div class="top-bar">
+      <div class="brand-title" style="font-size: 24px;">ADMIN PORTAL</div>
+      <button class="bet-btn" onclick="exitAdmin()" style="padding: 4px 10px; font-size: 12px;">EXIT ADMIN</button>
+    </div>
+
+    <!-- 1. Generate Redeem Code -->
+    <div class="admin-card">
+      <div class="admin-title">GENERATE REDEEM KEY</div>
+      <div style="display:flex; gap: 8px;">
+        <input type="number" id="newCodeAmount" class="custom-input" placeholder="Amount (e.g. 500 LKR)" style="font-size: 15px;">
+        <button class="custom-modal-btn" onclick="generateRedeemKey()" style="width: 140px; font-size: 14px;">GENERATE</button>
+      </div>
+      <div id="latestGeneratedKey" style="margin-top: 10px; font-family: monospace; font-size: 13px; color: #00f2fe;"></div>
+    </div>
+
+    <!-- 2. Manage Wheel Rewards -->
+    <div class="admin-card">
+      <div class="admin-title">WHEEL PRIZES MANAGEMENT</div>
+      <div class="admin-grid-2">
+        <input type="text" id="prizeName" class="custom-input" placeholder="Prize Name" style="font-size: 13px;">
+        <input type="text" id="prizeIcon" class="custom-input" placeholder="Emoji / Icon" style="font-size: 13px;">
+      </div>
+      <div class="admin-grid-2" style="margin-top: 8px;">
+        <input type="number" id="prizeWeight" class="custom-input" placeholder="Win Rate (1-100)" style="font-size: 13px;">
+        <input type="color" id="prizeColor" value="#9b51e0" style="width: 100%; height: 42px; background: none; border: 1px solid #444; border-radius: 8px;">
+      </div>
+      <button class="custom-modal-btn" onclick="addNewPrize()" style="margin-top: 10px; height: 38px; font-size: 14px;">ADD TO WHEEL</button>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Prize</th>
+              <th>Rate</th>
+              <th>Color</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="prizesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. Redeem Codes History -->
+    <div class="admin-card">
+      <div class="admin-title">ACTIVE / USED REDEEM KEYS</div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Value</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="keysTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL: REDEEM CODE POPUP -->
+  <div class="custom-modal-overlay" id="redeemModal">
+    <div class="custom-modal-box">
+      <div class="modal-close-icon" onclick="closeModal('redeemModal')"><i class="fa-solid fa-xmark"></i></div>
+      <div class="modal-header">
+        <h3>REDEEM KEY</h3>
+        <p>Enter the secret key received from WhatsApp</p>
+      </div>
+      <input type="text" id="redeemCodeInput" class="custom-input" placeholder="SPIN-XXXX-XXXX" style="text-align: center; text-transform: uppercase;">
+      <button class="custom-modal-btn" onclick="submitRedeemCode()">
+        <i class="fa-solid fa-check-double"></i> CLAIM BALANCE
+      </button>
+    </div>
+  </div>
+
+
+  <!-- MODAL: PRIZE WON POPUP -->
+  <div class="custom-modal-overlay" id="prizeModal">
+    <div class="custom-modal-box">
+      <div class="modal-header">
+        <h3 style="color: #00f2fe;">CONGRATULATIONS!</h3>
+        <p>You have unlocked an exclusive reward</p>
+      </div>
+      <div class="prize-reveal">
+        <div class="prize-icon" id="wonPrizeIcon">💎</div>
+        <div class="prize-name" id="wonPrizeName">500 DIAMONDS</div>
+      </div>
+      <input type="text" id="claimPlayerUid" class="custom-input" placeholder="ENTER FREE FIRE UID" style="text-align: center;">
+      <button class="custom-modal-btn" onclick="claimPrizeViaWhatsApp()">
+        <i class="fa-brands fa-whatsapp"></i> CLAIM ON WHATSAPP
+      </button>
+    </div>
+  </div>
+
+
+  <!-- MODAL: ADMIN LOGIN PIN -->
+  <div class="custom-modal-overlay" id="adminAuthModal">
+    <div class="custom-modal-box">
+      <div class="modal-close-icon" onclick="closeModal('adminAuthModal')"><i class="fa-solid fa-xmark"></i></div>
+      <div class="modal-header">
+        <h3>ADMIN ACCESS</h3>
+        <p>Enter 4-digit security PIN</p>
+      </div>
+      <input type="password" id="adminPinInput" maxlength="6" class="custom-input" placeholder="PIN" style="text-align: center; font-size: 24px; letter-spacing: 6px;">
+      <button class="custom-modal-btn" onclick="verifyAdminPin()">LOGIN</button>
+    </div>
+  </div>
+
+
+  <!-- Dark Toast Notification -->
+  <div id="customToast">
+    <i class="fa-solid fa-circle-check" style="color: #00f2fe;"></i>
+    <span id="toastMsg">Success</span>
+  </div>
+
+  <!-- Audio Effects using Web Audio API -->
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playClickSound() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.04);
+    }
+
+    function playWinFanfare() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const notes = [261.6, 329.6, 392.0, 523.3];
+      notes.forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime + i * 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.1 + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + i * 0.1);
+        osc.stop(audioCtx.currentTime + i * 0.1 + 0.4);
+      });
+    }
+  </script>
+
+  <!-- Application Logic -->
+  <script>
+    const WHATSAPP_NUMBER = "+94742870409";
+    const ADMIN_PIN = "2005";
+
+    // Application State
+    let userBalance = parseInt(localStorage.getItem('user_balance')) || 0;
+    let selectedTierIndex = 0;
+    let isSpinning = false;
+    let currentWheelAngle = 0;
+    let currentWonPrize = null;
+
+    let betTiers = [
+      { amount: 50, label: "50 LKR", tag: "Standard Tier", weightMultiplier: 1.0 },
+      { amount: 100, label: "100 LKR", tag: "2X Lucky Boost", weightMultiplier: 1.8 },
+      { amount: 200, label: "200 LKR", tag: "VIP Grand Odds", weightMultiplier: 3.5 }
+    ];
+
+    let prizes = [
+      { id: 1, name: "100 Diamonds", icon: "💎", color: "#3a2b72", weight: 35, isGrand: false },
+      { id: 2, name: "Better Luck", icon: "💔", color: "#231847", weight: 35, isGrand: false },
+      { id: 3, name: "310 Diamonds", icon: "🔥", color: "#6a1b9a", weight: 15, isGrand: false },
+      { id: 4, name: "Weekly Pass", icon: "🎫", color: "#00838f", weight: 8, isGrand: true },
+      { id: 5, name: "520 Diamonds", icon: "💎", color: "#ad1457", weight: 5, isGrand: true },
+      { id: 6, name: "Monthly Pass", icon: "👑", color: "#d84315", weight: 2, isGrand: true }
+    ];
+
+    // Initialize UI
+    window.addEventListener('DOMContentLoaded', () => {
+      updateBalanceDisplay();
+      renderBetTiers();
+      drawWheel();
+      checkAdminHash();
+
+      // Check Firebase Ready
+      window.addEventListener('firebase-ready', () => {
+        initFirebaseListeners();
+      });
+    });
+
+    window.addEventListener('hashchange', checkAdminHash);
+
+    function checkAdminHash() {
+      if (window.location.hash === '#admin') {
+        openModal('adminAuthModal');
+      } else {
+        document.getElementById('adminView').style.display = 'none';
+        document.getElementById('userView').style.display = 'flex';
+      }
+    }
+
+    function verifyAdminPin() {
+      const pin = document.getElementById('adminPinInput').value;
+      if (pin === ADMIN_PIN) {
+        closeModal('adminAuthModal');
+        document.getElementById('userView').style.display = 'none';
+        document.getElementById('adminView').style.display = 'flex';
+        renderAdminTables();
+        showToast("Welcome Admin");
+      } else {
+        showToast("Invalid Admin PIN");
+      }
+    }
+
+    function exitAdmin() {
+      window.location.hash = '';
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('customToast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.style.display = 'flex';
+      setTimeout(() => { toast.style.display = 'none'; }, 2800);
+    }
+
+    function updateBalanceDisplay() {
+      document.getElementById('userBalanceDisplay').innerText = `${userBalance} LKR`;
+      localStorage.setItem('user_balance', userBalance);
+    }
+
+    function renderBetTiers() {
+      const container = document.getElementById('betOptionsContainer');
+      container.innerHTML = '';
+      betTiers.forEach((tier, index) => {
+        const btn = document.createElement('div');
+        btn.className = `bet-btn ${index === selectedTierIndex ? 'active' : ''}`;
+        btn.onclick = () => selectTier(index);
+        btn.innerHTML = `
+          <span>${tier.label}</span>
+          <span class="tag">${tier.tag}</span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function selectTier(index) {
+      if (isSpinning) return;
+      selectedTierIndex = index;
+      renderBetTiers();
+      playClickSound();
+    }
+
+    // DRAW WHEEL ON CANVAS
+    function drawWheel() {
+      const canvas = document.getElementById('spinCanvas');
+      const ctx = canvas.getContext('2d');
+      const totalSlices = prizes.length;
+      const arc = (2 * Math.PI) / totalSlices;
+      const radius = canvas.width / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      prizes.forEach((prize, i) => {
+        const angle = i * arc;
+        
+        ctx.beginPath();
+        ctx.fillStyle = prize.color;
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius - 8, angle, angle + arc);
+        ctx.lineTo(radius, radius);
+        ctx.fill();
+
+        ctx.strokeStyle = "rgba(255, 215, 0, 0.4)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Slice Text & Icon
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate(angle + arc / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 24px 'Rajdhani', sans-serif";
+        ctx.fillText(`${prize.icon} ${prize.name}`, radius - 30, 8);
+        ctx.restore();
+      });
+    }
+
+    // SPIN ENGINE
+    function initiateSpin() {
+      if (isSpinning) return;
+      const activeTier = betTiers[selectedTierIndex];
+
+      if (userBalance < activeTier.amount) {
+        showToast("Insufficient Balance! Redeem a code.");
+        openRedeemModal();
+        return;
+      }
+
+      // Deduct balance
+      userBalance -= activeTier.amount;
+      updateBalanceDisplay();
+
+      isSpinning = true;
+      document.getElementById('spinBtn').disabled = true;
+
+      // Calculate Weighted Outcome with Tier Boost
+      const selectedIndex = getWeightedRandomIndex(activeTier.weightMultiplier);
+      const totalSlices = prizes.length;
+      const sliceAngleDeg = 360 / totalSlices;
+      
+      // Calculate target stopping angle (Pointer sits at 270 deg / Top)
+      const targetSliceOffset = sliceAngleDeg * selectedIndex + (sliceAngleDeg / 2);
+      const spins = 5 * 360; // 5 full revolutions
+      const finalAngle = spins + (270 - targetSliceOffset) + (Math.random() * 8 - 4);
+
+      currentWheelAngle += finalAngle;
+      const canvas = document.getElementById('spinCanvas');
+      canvas.style.transform = `rotate(${currentWheelAngle}deg)`;
+
+      // Spin Audio ticks
+      let tickCount = 0;
+      const tickInterval = setInterval(() => {
+        playClickSound();
+        tickCount++;
+        if (tickCount > 24) clearInterval(tickInterval);
+      }, 180);
+
+      // Spin Done
+      setTimeout(() => {
+        isSpinning = false;
+        document.getElementById('spinBtn').disabled = false;
+        currentWonPrize = prizes[selectedIndex];
+        showWinResults(currentWonPrize);
+      }, 5100);
+    }
+
+    function getWeightedRandomIndex(boost) {
+      let weightedPool = [];
+      prizes.forEach((prize, idx) => {
+        let weight = prize.weight;
+        if (prize.isGrand) {
+          weight = Math.round(weight * boost);
+        }
+        for (let i = 0; i < weight; i++) {
+          weightedPool.push(idx);
+        }
+      });
+      return weightedPool[Math.floor(Math.random() * weightedPool.length)];
+    }
+
+    function showWinResults(prize) {
+      playWinFanfare();
+
+      if (!prize.name.toLowerCase().includes("better luck")) {
+        confetti({ particleCount: 90, spread: 60, origin: { y: 0.6 } });
+      }
+
+      document.getElementById('wonPrizeIcon').innerText = prize.icon;
+      document.getElementById('wonPrizeName').innerText = prize.name;
+      openModal('prizeModal');
+    }
+
+    function claimPrizeViaWhatsApp() {
+      const uid = document.getElementById('claimPlayerUid').value.trim();
+      if (!uid) {
+        showToast("Please enter your Player UID");
+        return;
+      }
+
+      const msg = `*GX STORE - SPIN REWARD CLAIM*%0A` +
+                  `---------------------------%0A` +
+                  `*Prize Won:* ${currentWonPrize.name} ${currentWonPrize.icon}%0A` +
+                  `*Player UID:* ${uid}%0A` +
+                  `*Timestamp:* ${new Date().toLocaleString()}%0A` +
+                  `---------------------------%0A` +
+                  `Kindly verify and send diamonds/reward to my account.`;
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${msg}`;
+      window.open(url, '_blank');
+      closeModal('prizeModal');
+    }
+
+    function contactWhatsApp() {
+      const msg = `Hello GX Store! I want to deposit and buy Spin Keys. Please provide payment details.`;
+      const url = `https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+
+    // REDEEM MODAL
+    function openRedeemModal() { openModal('redeemModal'); }
+
+    async function submitRedeemCode() {
+      const code = document.getElementById('redeemCodeInput').value.trim().toUpperCase();
+      if (!code) {
+        showToast("Please enter a code");
+        return;
+      }
+
+      // Check in Firestore if available, otherwise check local store fallback
+      if (window.db) {
+        try {
+          const docRef = window.fsDoc(window.db, "redeem_keys", code);
+          const snap = await window.fsGetDoc(docRef);
+          if (snap.exists()) {
+            const data = snap.data();
+            if (data.status === 'used') {
+              showToast("Key already used!");
+              return;
+            }
+            await window.fsUpdateDoc(docRef, { status: 'used', redeemedAt: window.fsServerTimestamp() });
+            userBalance += data.amount;
+            updateBalanceDisplay();
+            closeModal('redeemModal');
+            showToast(`Success! +${data.amount} LKR Added`);
+            playWinFanfare();
+            return;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      // Local fallback check
+      let localKeys = JSON.parse(localStorage.getItem('local_keys') || '[]');
+      let keyObj = localKeys.find(k => k.code === code);
+      if (keyObj) {
+        if (keyObj.status === 'used') {
+          showToast("Key already used!");
+          return;
+        }
+        keyObj.status = 'used';
+        localStorage.setItem('local_keys', JSON.stringify(localKeys));
+        userBalance += keyObj.amount;
+        updateBalanceDisplay();
+        closeModal('redeemModal');
+        showToast(`Success! +${keyObj.amount} LKR Added`);
+        playWinFanfare();
+      } else {
+        showToast("Invalid Redeem Key");
+      }
+    }
+
+    // ADMIN OPERATIONS
+    async function generateRedeemKey() {
+      const amount = parseInt(document.getElementById('newCodeAmount').value);
+      if (!amount || amount < 10) {
+        showToast("Enter valid amount");
+        return;
+      }
+
+      const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
+      const code = `SPIN-${amount}-${randomPart}`;
+
+      if (window.db) {
+        try {
+          await window.fsSetDoc(window.fsDoc(window.db, "redeem_keys", code), {
+            code: code,
+            amount: amount,
+            status: "active",
+            createdAt: new Date().toISOString()
+          });
+        } catch(e) { console.error(e); }
+      }
+
+      // Store local copy
+      let localKeys = JSON.parse(localStorage.getItem('local_keys') || '[]');
+      localKeys.unshift({ code, amount, status: 'active', createdAt: new Date().toLocaleTimeString() });
+      localStorage.setItem('local_keys', JSON.stringify(localKeys));
+
+      document.getElementById('latestGeneratedKey').innerText = `Created: ${code}`;
+      document.getElementById('newCodeAmount').value = '';
+      renderAdminTables();
+      showToast("Key Generated!");
+    }
+
+    function addNewPrize() {
+      const name = document.getElementById('prizeName').value.trim();
+      const icon = document.getElementById('prizeIcon').value.trim() || '🎁';
+      const weight = parseInt(document.getElementById('prizeWeight').value) || 10;
+      const color = document.getElementById('prizeColor').value;
+
+      if (!name) {
+        showToast("Enter prize name");
+        return;
+      }
+
+      prizes.push({
+        id: Date.now(),
+        name: name,
+        icon: icon,
+        weight: weight,
+        color: color,
+        isGrand: weight <= 10
+      });
+
+      drawWheel();
+      renderAdminTables();
+      document.getElementById('prizeName').value = '';
+      document.getElementById('prizeIcon').value = '';
+      showToast("Prize added to wheel!");
+    }
+
+    function deletePrize(id) {
+      if (prizes.length <= 2) {
+        showToast("Minimum 2 prizes required");
+        return;
+      }
+      prizes = prizes.filter(p => p.id !== id);
+      drawWheel();
+      renderAdminTables();
+      showToast("Prize removed");
+    }
+
+    function renderAdminTables() {
+      // Render Prizes Table
+      const pBody = document.getElementById('prizesTableBody');
+      pBody.innerHTML = '';
+      prizes.forEach(p => {
+        pBody.innerHTML += `
+          <tr>
+            <td>${p.icon} ${p.name}</td>
+            <td>${p.weight}%</td>
+            <td><span style="display:inline-block;width:12px;height:12px;background:${p.color};border-radius:2px;"></span></td>
+            <td><i class="fa-solid fa-trash" style="color:#ff4757;cursor:pointer;" onclick="deletePrize(${p.id})"></i></td>
+          </tr>
+        `;
+      });
+
+      // Render Keys Table
+      const kBody = document.getElementById('keysTableBody');
+      kBody.innerHTML = '';
+      let localKeys = JSON.parse(localStorage.getItem('local_keys') || '[]');
+      localKeys.forEach(k => {
+        kBody.innerHTML += `
+          <tr>
+            <td style="font-family:monospace;color:#00f2fe;">${k.code}</td>
+            <td>${k.amount} LKR</td>
+            <td><span class="badge-status ${k.status}">${k.status}</span></td>
+            <td>-</td>
+          </tr>
+        `;
+      });
+    }
+
+    function initFirebaseListeners() {
+      if (!window.db) return;
+      try {
+        const q = window.fsCollection(window.db, "redeem_keys");
+        window.fsOnSnapshot(q, (snapshot) => {
+          let cloudKeys = [];
+          snapshot.forEach(doc => cloudKeys.push(doc.data()));
+          if (cloudKeys.length > 0) {
+            localStorage.setItem('local_keys', JSON.stringify(cloudKeys));
+            if (window.location.hash === '#admin') renderAdminTables();
+          }
+        });
+      } catch (e) {
+        console.warn("Firestore realtime sync listening offline:", e);
+      }
+    }
+
+    // Modal Helpers
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+  </script>
+</body>
+</html>
