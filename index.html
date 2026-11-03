@@ -1,1345 +1,881 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>GX VIP SPIN & REWARDS</title>
-  
-  <!-- FontAwesome & Google Fonts -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Rajdhani:wght@600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-  <!-- Firebase Modular SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { 
-      getFirestore, collection, doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, deleteDoc, serverTimestamp 
-    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBp2p-bNEx8ZLHxxIx35euzloGjsNYOR20",
-      authDomain: "spin-free-9d0e3.firebaseapp.com",
-      projectId: "spin-free-9d0e3",
-      storageBucket: "spin-free-9d0e3.firebasestorage.app",
-      messagingSenderId: "597774236062",
-      appId: "1:597774236062:web:4ed18c42f1ac7a3385be81",
-      measurementId: "G-TX33DKSLLG"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Export to window
-    window.db = db;
-    window.fsCollection = collection;
-    window.fsDoc = doc;
-    window.fsGetDoc = getDoc;
-    window.fsSetDoc = setDoc;
-    window.fsUpdateDoc = updateDoc;
-    window.fsOnSnapshot = onSnapshot;
-    window.fsGetDocs = getDocs;
-    window.fsDeleteDoc = deleteDoc;
-    window.fsServerTimestamp = serverTimestamp;
-    window.dispatchEvent(new Event('firebase-ready'));
-  </script>
-
-  <style>
-    /* Prevent Chrome touch tap highlight, text selection & long press context menu */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent !important;
-      -webkit-touch-callout: none !important;
-      user-select: none !important;
-      outline: none !important;
-    }
-
-    input, textarea {
-      user-select: text !important;
-      -webkit-touch-callout: default !important;
-    }
-
-    body {
-      background: radial-gradient(circle at 50% 20%, #150f28 0%, #08070d 100%);
-      color: #ffffff;
-      font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    /* Ambient background grid */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(rgba(255,215,0,0.03) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(255,215,0,0.03) 1px, transparent 1px);
-      background-size: 30px 30px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 480px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Header Bar */
-    .top-bar {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .brand-title {
-      font-family: 'Teko', sans-serif;
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-      line-height: 1;
-      text-shadow: 0 0 20px rgba(255,170,0,0.4);
-    }
-
-    .wallet-badge {
-      background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.25));
-      border: 1px solid rgba(255,215,0,0.5);
-      border-radius: 50px;
-      padding: 6px 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 0 15px rgba(255,170,0,0.2);
-    }
-
-    .wallet-badge i {
-      color: #ffd700;
-      font-size: 15px;
-    }
-
-    .wallet-val {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 18px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: 0.5px;
-    }
-
-    /* Live Marquee */
-    .marquee-wrapper {
-      width: 100%;
-      background: rgba(18, 12, 38, 0.7);
-      border: 1px solid rgba(138, 43, 226, 0.4);
-      border-radius: 8px;
-      padding: 6px 10px;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: #bfa8e6;
-      overflow: hidden;
-    }
-
-    .marquee-wrapper i {
-      color: #00f2fe;
-    }
-
-    .marquee-content {
-      white-space: nowrap;
-      animation: ticker 25s linear infinite;
-    }
-
-    @keyframes ticker {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    /* Spin Wheel Container */
-    .wheel-card {
-      position: relative;
-      width: 340px;
-      height: 340px;
-      margin: 10px 0 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .wheel-outer-glow {
-      position: absolute;
-      width: 340px;
-      height: 340px;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #ffd700, #ff0055, #9b51e0, #00f2fe, #ffd700);
-      filter: blur(8px);
-      opacity: 0.75;
-      animation: rotateGlow 12s linear infinite;
-    }
-
-    @keyframes rotateGlow {
-      100% { transform: rotate(360deg); }
-    }
-
-    .wheel-frame {
-      position: relative;
-      width: 330px;
-      height: 330px;
-      border-radius: 50%;
-      background: #110e24;
-      border: 6px solid #231b47;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: inset 0 0 25px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8);
-      overflow: hidden;
-    }
-
-    #spinCanvas {
-      width: 318px;
-      height: 318px;
-      border-radius: 50%;
-      transition: transform 5s cubic-bezier(0.15, 0.9, 0.2, 1);
-    }
-
-    /* Center Spinner Stopper Pin */
-    .wheel-pointer {
-      position: absolute;
-      top: -6px;
-      width: 28px;
-      height: 38px;
-      z-index: 10;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
-    }
-
-    .wheel-pointer::before {
-      content: "";
-      display: block;
-      width: 0;
-      height: 0;
-      border-left: 14px solid transparent;
-      border-right: 14px solid transparent;
-      border-top: 32px solid #ff0055;
-    }
-
-    .wheel-center-cap {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #ffe066 0%, #d48806 70%, #593800 100%);
-      border: 4px solid #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-      color: #000;
-      font-weight: 800;
-      z-index: 5;
-      box-shadow: 0 0 15px rgba(255,215,0,0.8), inset 0 2px 4px rgba(255,255,255,0.8);
-    }
-
-    /* Controls Panel */
-    .controls-panel {
-      width: 100%;
-      background: rgba(22, 17, 44, 0.85);
-      border: 1px solid rgba(138, 43, 226, 0.4);
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .bet-selector-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #ffd700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .bet-options {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .bet-btn {
-      background: rgba(35, 27, 71, 0.9);
-      border: 1.5px solid rgba(255,215,0,0.25);
-      border-radius: 8px;
-      padding: 10px 4px;
-      color: #ffffff;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      transition: all 0.2s ease;
-    }
-
-    .bet-btn span.tag {
-      font-size: 9px;
-      text-transform: uppercase;
-      color: #9d8ec2;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-    }
-
-    .bet-btn.active {
-      background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,136,0,0.35));
-      border-color: #ffd700;
-      box-shadow: 0 0 15px rgba(255,215,0,0.3);
-      color: #ffd700;
-    }
-
-    .bet-btn.active span.tag {
-      color: #ffffff;
-    }
-
-    .spin-trigger-btn {
-      width: 100%;
-      height: 52px;
-      background: linear-gradient(135deg, #ff0055 0%, #ff5e3a 100%);
-      border: none;
-      border-radius: 10px;
-      color: #ffffff;
-      font-family: 'Teko', sans-serif;
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 6px 20px rgba(255, 0, 85, 0.45);
-      transition: all 0.2s;
-    }
-
-    .spin-trigger-btn:active {
-      transform: scale(0.98);
-      filter: brightness(1.1);
-    }
-
-    .spin-trigger-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      filter: grayscale(0.8);
-    }
-
-    /* Redeem & Top-up Card */
-    .action-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 14px;
-      width: 100%;
-    }
-
-    .action-box {
-      background: rgba(26, 20, 52, 0.9);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .action-box:hover {
-      border-color: rgba(255,215,0,0.4);
-      background: rgba(35, 27, 71, 0.9);
-    }
-
-    .action-box i {
-      font-size: 22px;
-      margin-bottom: 6px;
-    }
-
-    .action-box.redeem i { color: #ffd700; }
-    .action-box.whatsapp i { color: #25d366; }
-
-    .action-box-title {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: #ffffff;
-      text-transform: uppercase;
-    }
-
-    .action-box-desc {
-      font-size: 10px;
-      color: #a79bcf;
-      margin-top: 2px;
-    }
-
-    /* Important Bilingual Instructions (Notes) */
-    .bilingual-notice {
-      width: 100%;
-      background: rgba(15, 11, 30, 0.9);
-      border-left: 3px solid #ffd700;
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin-top: 18px;
-      font-size: 11px;
-      line-height: 1.6;
-      color: #cbc3e8;
-    }
-
-    .bilingual-notice h4 {
-      color: #ffd700;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .notice-item {
-      margin-bottom: 8px;
-      padding-bottom: 8px;
-      border-bottom: 1px dashed rgba(255,255,255,0.07);
-    }
-
-    .notice-item:last-child {
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: none;
-    }
-
-    .notice-ta {
-      color: #ffda79;
-      font-size: 11.5px;
-      display: block;
-      margin-top: 2px;
-    }
-
-    /* Modal / Popups (Custom Dark Themed - Strictly NO WHITE POPUP) */
-    .custom-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(5, 3, 12, 0.88);
-      backdrop-filter: blur(6px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      padding: 16px;
-    }
-
-    .custom-modal-overlay.active {
-      display: flex;
-    }
-
-    .custom-modal-box {
-      width: 100%;
-      max-width: 400px;
-      background: #17112c;
-      border: 1.5px solid #ffaa00;
-      border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 30px rgba(255,170,0,0.25);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      color: #ffffff;
-      animation: modalPop 0.25s ease-out;
-    }
-
-    @keyframes modalPop {
-      0% { transform: scale(0.9); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .modal-close-icon {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 30px;
-      height: 30px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #a79bcf;
-      cursor: pointer;
-    }
-
-    .modal-header {
-      text-align: center;
-    }
-
-    .modal-header h3 {
-      font-family: 'Teko', sans-serif;
-      font-size: 28px;
-      color: #ffd700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      line-height: 1.1;
-    }
-
-    .modal-header p {
-      font-size: 11px;
-      color: #aba1cc;
-      margin-top: 4px;
-    }
-
-    .custom-input {
-      width: 100%;
-      background: #0d091b;
-      border: 1.5px solid rgba(255,215,0,0.3);
-      border-radius: 8px;
-      padding: 12px 14px;
-      color: #ffd700;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .custom-input:focus {
-      border-color: #ffd700;
-      box-shadow: 0 0 12px rgba(255,215,0,0.3);
-    }
-
-    .custom-modal-btn {
-      width: 100%;
-      height: 46px;
-      background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
-      border: none;
-      border-radius: 8px;
-      color: #000000;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 17px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      transition: 0.2s;
-    }
-
-    /* Prize Win Celebration Display */
-    .prize-reveal {
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    .prize-icon {
-      font-size: 46px;
-      margin-bottom: 8px;
-      filter: drop-shadow(0 0 15px rgba(255,215,0,0.5));
-    }
-
-    .prize-name {
-      font-family: 'Teko', sans-serif;
-      font-size: 34px;
-      font-weight: 700;
-      color: #00f2fe;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      line-height: 1.1;
-    }
-
-    /* ADMIN DASHBOARD STYLES */
-    #adminView {
-      display: none;
-      width: 100%;
-      max-width: 600px;
-      padding: 16px;
-    }
-
-    .admin-card {
-      background: rgba(21, 15, 41, 0.95);
-      border: 1.5px solid rgba(255,215,0,0.4);
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-    }
-
-    .admin-title {
-      font-family: 'Teko', sans-serif;
-      font-size: 26px;
-      color: #ffd700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding-bottom: 6px;
-    }
-
-    .admin-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .table-container {
-      width: 100%;
-      max-height: 220px;
-      overflow-y: auto;
-      margin-top: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 8px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11px;
-      text-align: left;
-    }
-
-    th, td {
-      padding: 8px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    th {
-      background: #0f0b1f;
-      color: #ffd700;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 12px;
-      text-transform: uppercase;
-      position: sticky;
-      top: 0;
-    }
-
-    .badge-status {
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .badge-status.active { background: #00b894; color: #000; }
-    .badge-status.used { background: #d63031; color: #fff; }
-
-    /* Custom Notification Toast */
-    #customToast {
-      position: fixed;
-      bottom: 20px;
-      background: #1f173b;
-      border: 1px solid #ffd700;
-      border-radius: 50px;
-      padding: 10px 20px;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 600;
-      display: none;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.8);
-      z-index: 2000;
-      animation: toastIn 0.3s ease;
-    }
-
-    @keyframes toastIn {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GX STORE | Spin & Win</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Poppins:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #111827, #030712);
+            color: #f3f4f6;
+            touch-action: manipulation;
+        }
+        .heading-font { font-family: 'Teko', sans-serif; }
+        .wheel-container {
+            position: relative;
+            width: 330px;
+            height: 330px;
+            margin: auto;
+        }
+        @media(min-width: 640px) {
+            .wheel-container { width: 380px; height: 380px; }
+        }
+        .wheel-pointer {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 42px;
+            z-index: 30;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.7));
+        }
+        .custom-glow {
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.35);
+        }
+        .glass-box {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
-<body oncontextmenu="return false;">
+<body class="min-h-screen pb-16">
 
-  <!-- Main User Spin View -->
-  <div class="container" id="userView">
-    
-    <!-- Header -->
-    <div class="top-bar">
-      <div class="brand-title">GX VIP SPIN</div>
-      <div class="wallet-badge">
-        <i class="fa-solid fa-coins"></i>
-        <span class="wallet-val" id="userBalanceDisplay">0 LKR</span>
-      </div>
+    <!-- Top Navigation -->
+    <header class="glass-box sticky top-0 z-40 px-4 py-3 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-bold text-black text-xl shadow">
+                GX
+            </div>
+            <div>
+                <h1 class="text-lg font-bold tracking-wide uppercase leading-none text-yellow-400">GX STORE</h1>
+                <span class="text-[10px] text-gray-400 font-semibold tracking-wider">OFFICIAL REWARDS</span>
+            </div>
+        </div>
+
+        <div id="authSection" class="flex items-center gap-2">
+            <!-- Dynamic: Populated by JS based on login state -->
+            <button id="googleLoginBtn" class="bg-white text-gray-800 text-xs px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 shadow active:scale-95 transition">
+                <i class="fa-brands fa-google text-red-500"></i> Google Sign In
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
+
+        <!-- User Stats Bar (Visible after login) -->
+        <div id="userStatsBar" class="hidden glass-box rounded-2xl p-3 flex justify-around items-center border border-yellow-500/20">
+            <div class="text-center">
+                <span class="text-[11px] text-gray-400 block font-medium">வாலட் பேலன்ஸ்</span>
+                <span class="text-lg font-bold text-emerald-400 flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-wallet text-xs"></i> LKR <span id="userBalanceText">0</span>
+                </span>
+            </div>
+            <div class="h-8 w-[1px] bg-gray-700"></div>
+            <div class="text-center">
+                <span class="text-[11px] text-gray-400 block font-medium">ஸ்டார் பாயிண்ட்ஸ்</span>
+                <span class="text-lg font-bold text-amber-400 flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-star text-xs"></i> <span id="userStarsText">0</span>
+                </span>
+            </div>
+            <div class="h-8 w-[1px] bg-gray-700"></div>
+            <button id="openProfileBtn" class="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-2 rounded-xl flex items-center gap-1.5 text-gray-200">
+                <i class="fa-solid fa-user-circle text-yellow-400 text-base"></i> Profile
+            </button>
+        </div>
+
+        <!-- Wheel Section -->
+        <div class="glass-box rounded-3xl p-4 text-center custom-glow border border-yellow-500/30">
+            
+            <div class="wheel-container">
+                <!-- Pointer -->
+                <svg class="wheel-pointer" viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 42L0 12C0 5.37258 7.16344 0 16 0C24.8366 0 32 5.37258 32 12L16 42Z" fill="#FACC15"/>
+                    <circle cx="16" cy="14" r="5" fill="#111827"/>
+                </svg>
+
+                <!-- Canvas -->
+                <canvas id="wheelCanvas" width="380" height="380" class="w-full h-full rounded-full transition-transform duration-100"></canvas>
+
+                <!-- Center Knob -->
+                <div class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-gradient-to-b from-yellow-300 to-amber-600 shadow-2xl flex items-center justify-center border-4 border-gray-900 pointer-events-none">
+                    <i class="fa-solid fa-bolt text-gray-950 text-xl animate-pulse"></i>
+                </div>
+            </div>
+
+            <!-- Tier Selector (Bet Levels) -->
+            <div class="mt-5 grid grid-cols-3 gap-2">
+                <button class="tier-btn py-2 px-1 rounded-xl text-xs font-bold border border-gray-700 bg-gray-800/80 transition" data-tier="1" data-cost="50">
+                    <span class="block text-gray-400 text-[10px]">Tier 1</span>
+                    <span class="text-white">LKR 50</span>
+                </button>
+                <button class="tier-btn py-2 px-1 rounded-xl text-xs font-bold border border-yellow-500/40 bg-gray-800/80 transition" data-tier="2" data-cost="200">
+                    <span class="block text-yellow-400 text-[10px]">Tier 2 (2x Odds)</span>
+                    <span class="text-white">LKR 200</span>
+                </button>
+                <button class="tier-btn active-tier py-2 px-1 rounded-xl text-xs font-bold border-2 border-yellow-400 bg-amber-500/20 text-yellow-300 shadow-lg transition" data-tier="3" data-cost="500">
+                    <span class="block text-amber-300 text-[10px]">Tier 3 (Grand)</span>
+                    <span class="text-white">LKR 500</span>
+                </button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 flex gap-2">
+                <button id="spinBtn" class="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-500 text-gray-950 font-extrabold text-base tracking-wider uppercase shadow-xl hover:brightness-110 active:scale-95 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i> SPINT NOW
+                </button>
+                <button id="redeemWalletBtn" class="px-4 py-3.5 bg-gray-800 hover:bg-gray-700 rounded-2xl border border-gray-700 text-yellow-400 font-bold text-xs flex flex-col items-center justify-center active:scale-95 transition" title="Redeem Code">
+                    <i class="fa-solid fa-ticket text-sm mb-0.5"></i>
+                    <span>ரீடீம்</span>
+                </button>
+            </div>
+            
+            <p id="poolNotice" class="text-[11px] text-gray-400 mt-2 font-medium">
+                🔒 Grand Prizes (Monthly/Weekly) Tier 3-ல் மட்டுமே அன்லாக் ஆகும்!
+            </p>
+        </div>
+
+        <!-- Quick Tabs Navigation -->
+        <div class="flex gap-2">
+            <button id="tabReferralBtn" class="flex-1 py-2.5 glass-box rounded-xl text-xs font-semibold text-gray-300 flex items-center justify-center gap-1.5 hover:text-yellow-400 transition">
+                <i class="fa-solid fa-users text-amber-400"></i> ரெஃபரல் (LKR 50)
+            </button>
+            <button id="tabWinningsBtn" class="flex-1 py-2.5 glass-box rounded-xl text-xs font-semibold text-gray-300 flex items-center justify-center gap-1.5 hover:text-yellow-400 transition">
+                <i class="fa-solid fa-trophy text-yellow-400"></i> பரிசு வரலாறு
+            </button>
+            <button id="adminPortalBtn" class="hidden py-2.5 px-3 glass-box rounded-xl text-xs font-semibold text-red-400 flex items-center justify-center gap-1 hover:text-red-300 transition">
+                <i class="fa-solid fa-shield-halved"></i> அட்மின்
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Modal: Profile & Star Exchange -->
+    <div id="profileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-box bg-gray-900 border border-gray-700 w-full max-w-sm rounded-3xl p-5 space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-800">
+                <h3 class="text-base font-bold text-yellow-400 flex items-center gap-2">
+                    <i class="fa-solid fa-id-card"></i> என் ப்ரொஃபைல்
+                </h3>
+                <button class="close-modal text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="text-center py-2">
+                <img id="profileUserImg" src="" alt="avatar" class="w-16 h-16 rounded-full mx-auto border-2 border-yellow-400 mb-2">
+                <h4 id="profileUserName" class="font-bold text-sm text-gray-200">User</h4>
+                <p id="profileUserEmail" class="text-xs text-gray-400">user@gmail.com</p>
+            </div>
+
+            <!-- Star Exchange Box -->
+            <div class="bg-gray-800/80 rounded-2xl p-3 border border-yellow-500/20 text-center">
+                <span class="text-xs text-gray-300 block mb-1">உங்களிடம் உள்ள ஸ்டார்கள்</span>
+                <div class="text-2xl font-black text-amber-400 flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-star text-base"></i> <span id="modalStarsCount">0</span>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-1">விதி: 100 Stars = LKR 10 Main Wallet Cash</p>
+                <button id="exchangeStarsBtn" class="mt-3 w-full py-2 bg-gradient-to-r from-amber-500 to-yellow-400 text-gray-950 font-bold text-xs rounded-xl shadow active:scale-95 transition">
+                    Convert 100 Stars to Cash
+                </button>
+            </div>
+
+            <button id="logoutBtn" class="w-full py-2 bg-red-600/20 text-red-400 border border-red-500/30 rounded-xl text-xs font-bold hover:bg-red-600/30 transition">
+                Logout
+            </button>
+        </div>
     </div>
 
-    <!-- Live Winners Ticker -->
-    <div class="marquee-wrapper">
-      <i class="fa-solid fa-bolt"></i>
-      <div class="marquee-content" id="liveTicker">
-        Player 74***89 won Weekly Pass • Player 91***22 won 100 Diamonds • Player 34***10 won 500 Diamonds • Player 82***19 won Monthly Pass
-      </div>
+    <!-- Modal: Referral System -->
+    <div id="referralModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-box bg-gray-900 border border-gray-700 w-full max-w-sm rounded-3xl p-5 space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-800">
+                <h3 class="text-base font-bold text-yellow-400 flex items-center gap-2">
+                    <i class="fa-solid fa-users"></i> ரெஃபரல் & ஏர்னிங்
+                </h3>
+                <button class="close-modal text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl text-xs text-gray-300 space-y-1">
+                <p class="font-bold text-yellow-400">💡 விதிமுறை:</p>
+                <p>உங்கள் லிங்க் மூலம் இணையும் நண்பர் குறைந்தபட்சம் LKR 250 முதல் மொத்தம் <b class="text-white">LKR 500 டெபாசிட் செய்து விளையாடும் போது</b>, உங்களுக்கு <b class="text-emerald-400">LKR 50 கமிஷன்</b> வாலட்டில் வரவாகும்.</p>
+            </div>
+
+            <div>
+                <label class="text-[11px] text-gray-400 font-semibold block mb-1">உங்கள் ரெஃபரல் லிங்க்:</label>
+                <div class="flex items-center gap-2 bg-gray-800 p-2 rounded-xl border border-gray-700">
+                    <input id="refLinkInput" readonly type="text" class="bg-transparent text-xs text-gray-200 flex-1 outline-none">
+                    <button id="copyRefBtn" class="bg-yellow-400 text-black px-3 py-1 rounded-lg text-xs font-bold active:scale-90 transition">Copy</button>
+                </div>
+            </div>
+
+            <div class="flex justify-around text-center py-2 border-t border-gray-800">
+                <div>
+                    <span class="text-[11px] text-gray-400">மொத்த ரெஃபரல்</span>
+                    <span id="refCountText" class="block font-bold text-base text-yellow-400">0</span>
+                </div>
+                <div>
+                    <span class="text-[11px] text-gray-400">பெற்ற கமிஷன்</span>
+                    <span id="refEarnedText" class="block font-bold text-base text-emerald-400">LKR 0</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Spin Wheel Canvas Area -->
-    <div class="wheel-card">
-      <div class="wheel-outer-glow"></div>
-      <div class="wheel-pointer"></div>
-      <div class="wheel-frame">
-        <canvas id="spinCanvas" width="600" height="600"></canvas>
-      </div>
-      <div class="wheel-center-cap">SPIN</div>
+    <!-- Modal: Winnings Inventory & Claim -->
+    <div id="winningsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-box bg-gray-900 border border-gray-700 w-full max-w-sm rounded-3xl p-5 space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-800">
+                <h3 class="text-base font-bold text-yellow-400 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy"></i> வென்ற பரிசுகள்
+                </h3>
+                <button class="close-modal text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div id="winningsList" class="flex-1 overflow-y-auto space-y-2.5 pr-1">
+                <!-- Dynamically populated winnings -->
+                <p class="text-xs text-center text-gray-500 py-6">பரிசுகள் ஏதுமில்லை.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Spin Controls -->
-    <div class="controls-panel">
-      <div class="bet-selector-title">
-        <span>Select Spin Tier</span>
-        <span style="font-size: 10px; color: #00f2fe;"><i class="fa-solid fa-shield-halved"></i> Verified Fair</span>
-      </div>
+    <!-- Modal: Wallet Redeem Code Input -->
+    <div id="redeemModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-box bg-gray-900 border border-gray-700 w-full max-w-sm rounded-3xl p-5 space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-800">
+                <h3 class="text-base font-bold text-yellow-400 flex items-center gap-2">
+                    <i class="fa-solid fa-ticket"></i> ரீடீம் வவுச்சர்
+                </h3>
+                <button class="close-modal text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
 
-      <div class="bet-options" id="betOptionsContainer">
-        <!-- Rendered dynamically -->
-      </div>
+            <p class="text-xs text-gray-400">WhatsApp-ல் நீங்கள் வாங்கிய டாப்-அப் ரீடீம் குறியீட்டை இங்கே உள்ளிடவும்:</p>
 
-      <button class="spin-trigger-btn" id="spinBtn" onclick="initiateSpin()">
-        <i class="fa-solid fa-gamepad"></i> SPIN NOW
-      </button>
+            <input id="inputVoucherCode" type="text" placeholder="GX-TOPUP-XXXX" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2.5 text-sm uppercase text-yellow-400 font-mono outline-none text-center">
+
+            <button id="applyVoucherBtn" class="w-full py-2.5 bg-yellow-400 text-black font-bold text-xs rounded-xl shadow active:scale-95 transition">
+                ரீடீம் செய்
+            </button>
+        </div>
     </div>
 
-    <!-- Action Shortcuts -->
-    <div class="action-row">
-      <div class="action-box redeem" onclick="openRedeemModal()">
-        <i class="fa-solid fa-ticket"></i>
-        <div class="action-box-title">REDEEM CODE</div>
-        <div class="action-box-desc">Enter WhatsApp Key</div>
-      </div>
-      <div class="action-box whatsapp" onclick="contactWhatsApp()">
-        <i class="fa-brands fa-whatsapp"></i>
-        <div class="action-box-title">BUY SPIN KEYS</div>
-        <div class="action-box-desc">+94 74 287 0409</div>
-      </div>
+    <!-- Modal: Winner Announcement Pop-up -->
+    <div id="winnerModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-box bg-gray-900 border-2 border-yellow-400 w-full max-w-sm rounded-3xl p-6 text-center space-y-4 shadow-2xl relative">
+            <div class="w-20 h-20 mx-auto rounded-full bg-yellow-400/20 border-2 border-yellow-400 flex items-center justify-center">
+                <img id="winModalImg" src="" alt="win" class="w-12 h-12 object-contain">
+            </div>
+
+            <div>
+                <span class="text-xs font-bold text-amber-400 tracking-widest uppercase block">வாழ்த்துகள்!</span>
+                <h2 id="winModalPrizeTitle" class="text-xl font-black text-white mt-1 leading-tight">Weekly Pass</h2>
+            </div>
+
+            <div class="bg-gray-800 p-3 rounded-2xl border border-gray-700">
+                <span class="text-[10px] text-gray-400 block mb-1">உங்களின் தனித்துவமான ரீடீம் குறியீடு:</span>
+                <div class="flex items-center justify-center gap-2">
+                    <span id="winModalRedeemCode" class="font-mono text-xs font-bold text-emerald-400 select-all">WIN-XXXX</span>
+                    <button id="copyWinCodeBtn" class="text-xs text-yellow-400 hover:text-white"><i class="fa-solid fa-copy"></i></button>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button id="claimNowBtn" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs rounded-xl shadow transition">
+                    வாட்ஸ்அப்பில் கிளைம் செய்
+                </button>
+                <button class="close-modal px-4 py-2.5 bg-gray-800 text-gray-300 font-semibold text-xs rounded-xl transition">
+                    முடி
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- Important Bilingual Instructions / Notes -->
-    <div class="bilingual-notice">
-      <h4><i class="fa-solid fa-circle-info"></i> Rules & Guidelines / விதிமுறைகள்</h4>
-      
-      <div class="notice-item">
-        <strong>1. Buying Spin Balance:</strong> Pay via WhatsApp to receive your unique Redeem Key. Enter it above to add balance.
-        <span class="notice-ta">வாட்ஸ்அப் வழியாக பணம் செலுத்தி ரிடீம் கீ (Redeem Key) பெற்று உங்கள் பேலன்ஸை ஏற்றி கொள்ளலாம்.</span>
-      </div>
+    <!-- Modal: Admin Dashboard -->
+    <div id="adminModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="glass-box bg-gray-950 border border-red-500/40 w-full max-w-md rounded-3xl p-5 space-y-4 max-h-[92vh] flex flex-col">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-800">
+                <h3 class="text-sm font-bold text-red-400 flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield"></i> GX அட்மின் கன்சோல்
+                </h3>
+                <button class="close-modal text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
 
-      <div class="notice-item">
-        <strong>2. High Tier Lucky Boost:</strong> Higher spin bets (Tier 2 & 3) significantly increase the odds of winning Weekly/Monthly passes & Mega Diamonds.
-        <span class="notice-ta">அதிக தொகை (Tier 2 & 3) ஸ்பின் செய்யும்போது கிராண்ட் பரிசுகள் கிடைப்பதற்கான வாய்ப்பு அதிகரிக்கும்.</span>
-      </div>
+            <!-- Global Pool Stats -->
+            <div class="bg-gray-900 p-3 rounded-2xl border border-gray-800 flex justify-between items-center">
+                <div>
+                    <span class="text-[11px] text-gray-400 block">தற்போதைய Global Pool</span>
+                    <span class="text-base font-bold text-yellow-400 font-mono">LKR <span id="adminPoolText">0</span></span>
+                </div>
+                <div class="flex gap-1">
+                    <input id="adminPoolAddInput" type="number" placeholder="LKR" class="w-20 bg-gray-800 border border-gray-700 px-2 py-1 rounded-lg text-xs text-white">
+                    <button id="adminAddPoolBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded-lg text-xs font-bold">கூட்டு</button>
+                </div>
+            </div>
 
-      <div class="notice-item">
-        <strong>3. Instant Prize Delivery:</strong> When you win, enter your Free Fire UID. Prizes will be credited directly to your game account.
-        <span class="notice-ta">பரிசு விழுந்தவுடன் உங்கள் Free Fire UID-ஐ உள்ளிடவும்; உங்கள் கேம் அக்கவுண்டிற்கு டைமண்ட்கள் அனுப்பி வைக்கப்படும்.</span>
-      </div>
+            <!-- Create Topup Voucher -->
+            <div class="bg-gray-900 p-3 rounded-2xl border border-gray-800 space-y-2">
+                <span class="text-xs font-bold text-gray-300 block">வாலட் ரீடீம் வவுச்சர் உருவாக்கு (Top-up Key)</span>
+                <div class="flex gap-2">
+                    <input id="adminVoucherAmount" type="number" placeholder="தொகை (LKR)" class="w-1/2 bg-gray-800 border border-gray-700 px-2.5 py-1.5 rounded-xl text-xs text-white">
+                    <button id="adminGenVoucherBtn" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-gray-950 font-bold rounded-xl text-xs">கீ உருவாக்கு</button>
+                </div>
+                <div id="adminGeneratedKeyBox" class="hidden flex items-center justify-between bg-black/50 p-2 rounded-xl text-xs">
+                    <span id="adminGeneratedKeyText" class="font-mono text-emerald-400">KEY</span>
+                    <button id="copyGeneratedKeyBtn" class="text-yellow-400 hover:text-white font-bold text-xs"><i class="fa-solid fa-copy"></i> Copy</button>
+                </div>
+            </div>
+
+            <!-- Prize Management Tab -->
+            <div class="flex-1 overflow-y-auto space-y-3 pr-1">
+                <span class="text-xs font-bold text-gray-300 block">பரிசுகள் கட்டமைப்பு & PNG அப்லோட்</span>
+                <div id="adminPrizesList" class="space-y-2">
+                    <!-- Dynamic List of slices -->
+                </div>
+            </div>
+        </div>
     </div>
 
-  </div>
-
-
-  <!-- ADMIN VIEW (Visible via #admin) -->
-  <div class="container" id="adminView">
-    <div class="top-bar">
-      <div class="brand-title" style="font-size: 24px;">ADMIN PORTAL</div>
-      <button class="bet-btn" onclick="exitAdmin()" style="padding: 4px 10px; font-size: 12px;">EXIT ADMIN</button>
-    </div>
-
-    <!-- 1. Generate Redeem Code -->
-    <div class="admin-card">
-      <div class="admin-title">GENERATE REDEEM KEY</div>
-      <div style="display:flex; gap: 8px;">
-        <input type="number" id="newCodeAmount" class="custom-input" placeholder="Amount (e.g. 500 LKR)" style="font-size: 15px;">
-        <button class="custom-modal-btn" onclick="generateRedeemKey()" style="width: 140px; font-size: 14px;">GENERATE</button>
-      </div>
-      <div id="latestGeneratedKey" style="margin-top: 10px; font-family: monospace; font-size: 13px; color: #00f2fe;"></div>
-    </div>
-
-    <!-- 2. Manage Wheel Rewards -->
-    <div class="admin-card">
-      <div class="admin-title">WHEEL PRIZES MANAGEMENT</div>
-      <div class="admin-grid-2">
-        <input type="text" id="prizeName" class="custom-input" placeholder="Prize Name" style="font-size: 13px;">
-        <input type="text" id="prizeIcon" class="custom-input" placeholder="Emoji / Icon" style="font-size: 13px;">
-      </div>
-      <div class="admin-grid-2" style="margin-top: 8px;">
-        <input type="number" id="prizeWeight" class="custom-input" placeholder="Win Rate (1-100)" style="font-size: 13px;">
-        <input type="color" id="prizeColor" value="#9b51e0" style="width: 100%; height: 42px; background: none; border: 1px solid #444; border-radius: 8px;">
-      </div>
-      <button class="custom-modal-btn" onclick="addNewPrize()" style="margin-top: 10px; height: 38px; font-size: 14px;">ADD TO WHEEL</button>
-      
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Prize</th>
-              <th>Rate</th>
-              <th>Color</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="prizesTableBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 3. Redeem Codes History -->
-    <div class="admin-card">
-      <div class="admin-title">ACTIVE / USED REDEEM KEYS</div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Code</th>
-              <th>Value</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="keysTableBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- MODAL: REDEEM CODE POPUP -->
-  <div class="custom-modal-overlay" id="redeemModal">
-    <div class="custom-modal-box">
-      <div class="modal-close-icon" onclick="closeModal('redeemModal')"><i class="fa-solid fa-xmark"></i></div>
-      <div class="modal-header">
-        <h3>REDEEM KEY</h3>
-        <p>Enter the secret key received from WhatsApp</p>
-      </div>
-      <input type="text" id="redeemCodeInput" class="custom-input" placeholder="SPIN-XXXX-XXXX" style="text-align: center; text-transform: uppercase;">
-      <button class="custom-modal-btn" onclick="submitRedeemCode()">
-        <i class="fa-solid fa-check-double"></i> CLAIM BALANCE
-      </button>
-    </div>
-  </div>
-
-
-  <!-- MODAL: PRIZE WON POPUP -->
-  <div class="custom-modal-overlay" id="prizeModal">
-    <div class="custom-modal-box">
-      <div class="modal-header">
-        <h3 style="color: #00f2fe;">CONGRATULATIONS!</h3>
-        <p>You have unlocked an exclusive reward</p>
-      </div>
-      <div class="prize-reveal">
-        <div class="prize-icon" id="wonPrizeIcon">💎</div>
-        <div class="prize-name" id="wonPrizeName">500 DIAMONDS</div>
-      </div>
-      <input type="text" id="claimPlayerUid" class="custom-input" placeholder="ENTER FREE FIRE UID" style="text-align: center;">
-      <button class="custom-modal-btn" onclick="claimPrizeViaWhatsApp()">
-        <i class="fa-brands fa-whatsapp"></i> CLAIM ON WHATSAPP
-      </button>
-    </div>
-  </div>
-
-
-  <!-- MODAL: ADMIN LOGIN PIN -->
-  <div class="custom-modal-overlay" id="adminAuthModal">
-    <div class="custom-modal-box">
-      <div class="modal-close-icon" onclick="closeModal('adminAuthModal')"><i class="fa-solid fa-xmark"></i></div>
-      <div class="modal-header">
-        <h3>ADMIN ACCESS</h3>
-        <p>Enter 4-digit security PIN</p>
-      </div>
-      <input type="password" id="adminPinInput" maxlength="6" class="custom-input" placeholder="PIN" style="text-align: center; font-size: 24px; letter-spacing: 6px;">
-      <button class="custom-modal-btn" onclick="verifyAdminPin()">LOGIN</button>
-    </div>
-  </div>
-
-
-  <!-- Dark Toast Notification -->
-  <div id="customToast">
-    <i class="fa-solid fa-circle-check" style="color: #00f2fe;"></i>
-    <span id="toastMsg">Success</span>
-  </div>
-
-  <!-- Audio Effects using Web Audio API -->
-  <script>
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    function playClickSound() {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(450, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.04);
-      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.04);
-    }
-
-    function playWinFanfare() {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const notes = [261.6, 329.6, 392.0, 523.3];
-      notes.forEach((freq, i) => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime + i * 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.1 + 0.35);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(audioCtx.currentTime + i * 0.1);
-        osc.stop(audioCtx.currentTime + i * 0.1 + 0.4);
-      });
-    }
-  </script>
-
-  <!-- Application Logic -->
-  <script>
-    const WHATSAPP_NUMBER = "+94742870409";
-    const ADMIN_PIN = "2005";
-
-    // Application State
-    let userBalance = parseInt(localStorage.getItem('user_balance')) || 0;
-    let selectedTierIndex = 0;
-    let isSpinning = false;
-    let currentWheelAngle = 0;
-    let currentWonPrize = null;
-
-    let betTiers = [
-      { amount: 50, label: "50 LKR", tag: "Standard Tier", weightMultiplier: 1.0 },
-      { amount: 100, label: "100 LKR", tag: "2X Lucky Boost", weightMultiplier: 1.8 },
-      { amount: 200, label: "200 LKR", tag: "VIP Grand Odds", weightMultiplier: 3.5 }
-    ];
-
-    let prizes = [
-      { id: 1, name: "100 Diamonds", icon: "💎", color: "#3a2b72", weight: 35, isGrand: false },
-      { id: 2, name: "Better Luck", icon: "💔", color: "#231847", weight: 35, isGrand: false },
-      { id: 3, name: "310 Diamonds", icon: "🔥", color: "#6a1b9a", weight: 15, isGrand: false },
-      { id: 4, name: "Weekly Pass", icon: "🎫", color: "#00838f", weight: 8, isGrand: true },
-      { id: 5, name: "520 Diamonds", icon: "💎", color: "#ad1457", weight: 5, isGrand: true },
-      { id: 6, name: "Monthly Pass", icon: "👑", color: "#d84315", weight: 2, isGrand: true }
-    ];
-
-    // Initialize UI
-    window.addEventListener('DOMContentLoaded', () => {
-      updateBalanceDisplay();
-      renderBetTiers();
-      drawWheel();
-      checkAdminHash();
-
-      // Check Firebase Ready
-      window.addEventListener('firebase-ready', () => {
-        initFirebaseListeners();
-      });
-    });
-
-    window.addEventListener('hashchange', checkAdminHash);
-
-    function checkAdminHash() {
-      if (window.location.hash === '#admin') {
-        openModal('adminAuthModal');
-      } else {
-        document.getElementById('adminView').style.display = 'none';
-        document.getElementById('userView').style.display = 'flex';
-      }
-    }
-
-    function verifyAdminPin() {
-      const pin = document.getElementById('adminPinInput').value;
-      if (pin === ADMIN_PIN) {
-        closeModal('adminAuthModal');
-        document.getElementById('userView').style.display = 'none';
-        document.getElementById('adminView').style.display = 'flex';
-        renderAdminTables();
-        showToast("Welcome Admin");
-      } else {
-        showToast("Invalid Admin PIN");
-      }
-    }
-
-    function exitAdmin() {
-      window.location.hash = '';
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById('customToast');
-      document.getElementById('toastMsg').innerText = msg;
-      toast.style.display = 'flex';
-      setTimeout(() => { toast.style.display = 'none'; }, 2800);
-    }
-
-    function updateBalanceDisplay() {
-      document.getElementById('userBalanceDisplay').innerText = `${userBalance} LKR`;
-      localStorage.setItem('user_balance', userBalance);
-    }
-
-    function renderBetTiers() {
-      const container = document.getElementById('betOptionsContainer');
-      container.innerHTML = '';
-      betTiers.forEach((tier, index) => {
-        const btn = document.createElement('div');
-        btn.className = `bet-btn ${index === selectedTierIndex ? 'active' : ''}`;
-        btn.onclick = () => selectTier(index);
-        btn.innerHTML = `
-          <span>${tier.label}</span>
-          <span class="tag">${tier.tag}</span>
-        `;
-        container.appendChild(btn);
-      });
-    }
-
-    function selectTier(index) {
-      if (isSpinning) return;
-      selectedTierIndex = index;
-      renderBetTiers();
-      playClickSound();
-    }
-
-    // DRAW WHEEL ON CANVAS
-    function drawWheel() {
-      const canvas = document.getElementById('spinCanvas');
-      const ctx = canvas.getContext('2d');
-      const totalSlices = prizes.length;
-      const arc = (2 * Math.PI) / totalSlices;
-      const radius = canvas.width / 2;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      prizes.forEach((prize, i) => {
-        const angle = i * arc;
-        
-        ctx.beginPath();
-        ctx.fillStyle = prize.color;
-        ctx.moveTo(radius, radius);
-        ctx.arc(radius, radius, radius - 8, angle, angle + arc);
-        ctx.lineTo(radius, radius);
-        ctx.fill();
-
-        ctx.strokeStyle = "rgba(255, 215, 0, 0.4)";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Slice Text & Icon
-        ctx.save();
-        ctx.translate(radius, radius);
-        ctx.rotate(angle + arc / 2);
-        ctx.textAlign = "right";
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 24px 'Rajdhani', sans-serif";
-        ctx.fillText(`${prize.icon} ${prize.name}`, radius - 30, 8);
-        ctx.restore();
-      });
-    }
-
-    // SPIN ENGINE
-    function initiateSpin() {
-      if (isSpinning) return;
-      const activeTier = betTiers[selectedTierIndex];
-
-      if (userBalance < activeTier.amount) {
-        showToast("Insufficient Balance! Redeem a code.");
-        openRedeemModal();
-        return;
-      }
-
-      // Deduct balance
-      userBalance -= activeTier.amount;
-      updateBalanceDisplay();
-
-      isSpinning = true;
-      document.getElementById('spinBtn').disabled = true;
-
-      // Calculate Weighted Outcome with Tier Boost
-      const selectedIndex = getWeightedRandomIndex(activeTier.weightMultiplier);
-      const totalSlices = prizes.length;
-      const sliceAngleDeg = 360 / totalSlices;
-      
-      // Calculate target stopping angle (Pointer sits at 270 deg / Top)
-      const targetSliceOffset = sliceAngleDeg * selectedIndex + (sliceAngleDeg / 2);
-      const spins = 5 * 360; // 5 full revolutions
-      const finalAngle = spins + (270 - targetSliceOffset) + (Math.random() * 8 - 4);
-
-      currentWheelAngle += finalAngle;
-      const canvas = document.getElementById('spinCanvas');
-      canvas.style.transform = `rotate(${currentWheelAngle}deg)`;
-
-      // Spin Audio ticks
-      let tickCount = 0;
-      const tickInterval = setInterval(() => {
-        playClickSound();
-        tickCount++;
-        if (tickCount > 24) clearInterval(tickInterval);
-      }, 180);
-
-      // Spin Done
-      setTimeout(() => {
-        isSpinning = false;
-        document.getElementById('spinBtn').disabled = false;
-        currentWonPrize = prizes[selectedIndex];
-        showWinResults(currentWonPrize);
-      }, 5100);
-    }
-
-    function getWeightedRandomIndex(boost) {
-      let weightedPool = [];
-      prizes.forEach((prize, idx) => {
-        let weight = prize.weight;
-        if (prize.isGrand) {
-          weight = Math.round(weight * boost);
-        }
-        for (let i = 0; i < weight; i++) {
-          weightedPool.push(idx);
-        }
-      });
-      return weightedPool[Math.floor(Math.random() * weightedPool.length)];
-    }
-
-    function showWinResults(prize) {
-      playWinFanfare();
-
-      if (!prize.name.toLowerCase().includes("better luck")) {
-        confetti({ particleCount: 90, spread: 60, origin: { y: 0.6 } });
-      }
-
-      document.getElementById('wonPrizeIcon').innerText = prize.icon;
-      document.getElementById('wonPrizeName').innerText = prize.name;
-      openModal('prizeModal');
-    }
-
-    function claimPrizeViaWhatsApp() {
-      const uid = document.getElementById('claimPlayerUid').value.trim();
-      if (!uid) {
-        showToast("Please enter your Player UID");
-        return;
-      }
-
-      const msg = `*GX STORE - SPIN REWARD CLAIM*%0A` +
-                  `---------------------------%0A` +
-                  `*Prize Won:* ${currentWonPrize.name} ${currentWonPrize.icon}%0A` +
-                  `*Player UID:* ${uid}%0A` +
-                  `*Timestamp:* ${new Date().toLocaleString()}%0A` +
-                  `---------------------------%0A` +
-                  `Kindly verify and send diamonds/reward to my account.`;
-
-      const url = `https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${msg}`;
-      window.open(url, '_blank');
-      closeModal('prizeModal');
-    }
-
-    function contactWhatsApp() {
-      const msg = `Hello GX Store! I want to deposit and buy Spin Keys. Please provide payment details.`;
-      const url = `https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
-    }
-
-    // REDEEM MODAL
-    function openRedeemModal() { openModal('redeemModal'); }
-
-    async function submitRedeemCode() {
-      const code = document.getElementById('redeemCodeInput').value.trim().toUpperCase();
-      if (!code) {
-        showToast("Please enter a code");
-        return;
-      }
-
-      // Check in Firestore if available, otherwise check local store fallback
-      if (window.db) {
-        try {
-          const docRef = window.fsDoc(window.db, "redeem_keys", code);
-          const snap = await window.fsGetDoc(docRef);
-          if (snap.exists()) {
-            const data = snap.data();
-            if (data.status === 'used') {
-              showToast("Key already used!");
-              return;
-            }
-            await window.fsUpdateDoc(docRef, { status: 'used', redeemedAt: window.fsServerTimestamp() });
-            userBalance += data.amount;
-            updateBalanceDisplay();
-            closeModal('redeemModal');
-            showToast(`Success! +${data.amount} LKR Added`);
-            playWinFanfare();
-            return;
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      }
-
-      // Local fallback check
-      let localKeys = JSON.parse(localStorage.getItem('local_keys') || '[]');
-      let keyObj = localKeys.find(k => k.code === code);
-      if (keyObj) {
-        if (keyObj.status === 'used') {
-          showToast("Key already used!");
-          return;
-        }
-        keyObj.status = 'used';
-        localStorage.setItem('local_keys', JSON.stringify(localKeys));
-        userBalance += keyObj.amount;
-        updateBalanceDisplay();
-        closeModal('redeemModal');
-        showToast(`Success! +${keyObj.amount} LKR Added`);
-        playWinFanfare();
-      } else {
-        showToast("Invalid Redeem Key");
-      }
-    }
-
-    // ADMIN OPERATIONS
-    async function generateRedeemKey() {
-      const amount = parseInt(document.getElementById('newCodeAmount').value);
-      if (!amount || amount < 10) {
-        showToast("Enter valid amount");
-        return;
-      }
-
-      const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
-      const code = `SPIN-${amount}-${randomPart}`;
-
-      if (window.db) {
-        try {
-          await window.fsSetDoc(window.fsDoc(window.db, "redeem_keys", code), {
-            code: code,
-            amount: amount,
-            status: "active",
-            createdAt: new Date().toISOString()
-          });
-        } catch(e) { console.error(e); }
-      }
-
-      // Store local copy
-      let localKeys = JSON.parse(localStorage.getItem('local_keys') || '[]');
-      localKeys.unshift({ code, amount, status: 'active', createdAt: new Date().toLocaleTimeString() });
-      localStorage.setItem('local_keys', JSON.stringify(localKeys));
-
-      document.getElementById('latestGeneratedKey').innerText = `Created: ${code}`;
-      document.getElementById('newCodeAmount').value = '';
-      renderAdminTables();
-      showToast("Key Generated!");
-    }
-
-    function addNewPrize() {
-      const name = document.getElementById('prizeName').value.trim();
-      const icon = document.getElementById('prizeIcon').value.trim() || '🎁';
-      const weight = parseInt(document.getElementById('prizeWeight').value) || 10;
-      const color = document.getElementById('prizeColor').value;
-
-      if (!name) {
-        showToast("Enter prize name");
-        return;
-      }
-
-      prizes.push({
-        id: Date.now(),
-        name: name,
-        icon: icon,
-        weight: weight,
-        color: color,
-        isGrand: weight <= 10
-      });
-
-      drawWheel();
-      renderAdminTables();
-      document.getElementById('prizeName').value = '';
-      document.getElementById('prizeIcon').value = '';
-      showToast("Prize added to wheel!");
-    }
-
-    function deletePrize(id) {
-      if (prizes.length <= 2) {
-        showToast("Minimum 2 prizes required");
-        return;
-      }
-      prizes = prizes.filter(p => p.id !== id);
-      drawWheel();
-      renderAdminTables();
-      showToast("Prize removed");
-    }
-
-    function renderAdminTables() {
-      // Render Prizes Table
-      const pBody = document.getElementById('prizesTableBody');
-      pBody.innerHTML = '';
-      prizes.forEach(p => {
-        pBody.innerHTML += `
-          <tr>
-            <td>${p.icon} ${p.name}</td>
-            <td>${p.weight}%</td>
-            <td><span style="display:inline-block;width:12px;height:12px;background:${p.color};border-radius:2px;"></span></td>
-            <td><i class="fa-solid fa-trash" style="color:#ff4757;cursor:pointer;" onclick="deletePrize(${p.id})"></i></td>
-          </tr>
-        `;
-      });
-
-      // Render Keys Table
-      const kBody = document.getElementById('keysTableBody');
-      kBody.innerHTML = '';
-      let localKeys = JSON.parse(localStorage.getItem('local_keys') || '[]');
-      localKeys.forEach(k => {
-        kBody.innerHTML += `
-          <tr>
-            <td style="font-family:monospace;color:#00f2fe;">${k.code}</td>
-            <td>${k.amount} LKR</td>
-            <td><span class="badge-status ${k.status}">${k.status}</span></td>
-            <td>-</td>
-          </tr>
-        `;
-      });
-    }
-
-    function initFirebaseListeners() {
-      if (!window.db) return;
-      try {
-        const q = window.fsCollection(window.db, "redeem_keys");
-        window.fsOnSnapshot(q, (snapshot) => {
-          let cloudKeys = [];
-          snapshot.forEach(doc => cloudKeys.push(doc.data()));
-          if (cloudKeys.length > 0) {
-            localStorage.setItem('local_keys', JSON.stringify(cloudKeys));
-            if (window.location.hash === '#admin') renderAdminTables();
-          }
+    <!-- Firebase SDKs (Modular v9 Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        /**
+         * 1. FIREBASE CONFIGURATION
+         */
+        const firebaseConfig = {
+            apiKey: "AIzaSyBw-YOUR_API_KEY",
+            authDomain: "spin-free-9d0e3.firebaseapp.com",
+            projectId: "spin-free-9d0e3",
+            storageBucket: "spin-free-9d0e3.firebasestorage.app",
+            messagingSenderId: "588482487315",
+            appId: "1:588482487315:web:65e1ebffea399bb487b3fc"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Admin Gmail Configuration
+        const ADMIN_EMAILS = ["feros@gmail.com", "your-admin-email@gmail.com"];
+        const WHATSAPP_NUMBER = "94742870409";
+
+        /**
+         * 2. STATE AND SLICE CONFIGURATION
+         */
+        let currentUser = null;
+        let userData = { balance: 0, stars: 0, totalDeposited: 0, referrerId: null, referralsCount: 0, referralEarnings: 0 };
+        let currentTier = 3;
+        let betCost = 500;
+        let globalPool = 0;
+        let isSpinning = false;
+        let slices = [];
+
+        // Default Wheel Slices (8 Slices)
+        const DEFAULT_SLICES = [
+            { id: "p1", name: "Monthly Pass", type: "item", value: 2500, minTier: 3, threshold: 15000, prob: 0.5, color: "#1e1b4b", imgUrl: "https://cdn-icons-png.flaticon.com/512/616/616490.png" },
+            { id: "p2", name: "20 Stars", type: "star", value: 20, minTier: 1, threshold: 0, prob: 25.0, color: "#312e81", imgUrl: "https://cdn-icons-png.flaticon.com/512/1828/1828884.png" },
+            { id: "p3", name: "Weekly Pass", type: "item", value: 850, minTier: 2, threshold: 3000, prob: 2.0, color: "#064e3b", imgUrl: "https://cdn-icons-png.flaticon.com/512/825/825590.png" },
+            { id: "p4", name: "Better Luck", type: "none", value: 0, minTier: 1, threshold: 0, prob: 28.5, color: "#1f2937", imgUrl: "https://cdn-icons-png.flaticon.com/512/179/179386.png" },
+            { id: "p5", name: "100 Diamonds", type: "item", value: 160, minTier: 1, threshold: 0, prob: 10.0, color: "#701a75", imgUrl: "https://cdn-icons-png.flaticon.com/512/265/265682.png" },
+            { id: "p6", name: "50 Stars", type: "star", value: 50, minTier: 1, threshold: 0, prob: 15.0, color: "#4c1d95", imgUrl: "https://cdn-icons-png.flaticon.com/512/1828/1828884.png" },
+            { id: "p7", name: "Try Again", type: "none", value: 0, minTier: 1, threshold: 0, prob: 14.0, color: "#111827", imgUrl: "https://cdn-icons-png.flaticon.com/512/564/564619.png" },
+            { id: "p8", name: "520 Diamonds", type: "item", value: 750, minTier: 2, threshold: 2500, prob: 5.0, color: "#831843", imgUrl: "https://cdn-icons-png.flaticon.com/512/265/265682.png" }
+        ];
+
+        /**
+         * 3. INITIALIZATION & REALTIME LISTENERS
+         */
+        const canvas = document.getElementById("wheelCanvas");
+        const ctx = canvas.getContext("2d");
+        let loadedSliceImages = {};
+
+        window.addEventListener("DOMContentLoaded", () => {
+            initApp();
+            setupEventListeners();
         });
-      } catch (e) {
-        console.warn("Firestore realtime sync listening offline:", e);
-      }
-    }
 
-    // Modal Helpers
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-  </script>
+        async function initApp() {
+            // Check Referral parameter in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get("ref");
+            if (refCode) {
+                sessionStorage.setItem("gx_ref_code", refCode);
+            }
+
+            // Sync Slices and Pool from Firestore
+            db.collection("settings").doc("gameConfig").onSnapshot(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    slices = data.slices || DEFAULT_SLICES;
+                    globalPool = data.globalPool || 0;
+                } else {
+                    slices = DEFAULT_SLICES;
+                    globalPool = 0;
+                    db.collection("settings").doc("gameConfig").set({ slices, globalPool });
+                }
+                document.getElementById("adminPoolText").innerText = globalPool;
+                preloadImages();
+            });
+
+            // Auth State Observer
+            auth.onAuthStateChanged(user => {
+                currentUser = user;
+                updateAuthUI();
+                if (user) {
+                    syncUserData(user.uid);
+                    listenToUserWinnings(user.uid);
+                }
+            });
+        }
+
+        function preloadImages() {
+            let loadedCount = 0;
+            slices.forEach(slice => {
+                if (!loadedSliceImages[slice.id]) {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.src = slice.imgUrl;
+                    img.onload = () => {
+                        loadedSliceImages[slice.id] = img;
+                        loadedCount++;
+                        drawWheel();
+                    };
+                }
+            });
+            drawWheel();
+        }
+
+        /**
+         * 4. AUTHENTICATION & CLOUD WALLET SYNC
+         */
+        function updateAuthUI() {
+            const authSection = document.getElementById("authSection");
+            const statsBar = document.getElementById("userStatsBar");
+            const adminPortalBtn = document.getElementById("adminPortalBtn");
+
+            if (currentUser) {
+                authSection.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <img src="${currentUser.photoURL || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" class="w-7 h-7 rounded-full border border-yellow-400">
+                        <span class="text-xs font-bold text-gray-200 hidden sm:inline">${currentUser.displayName?.split(" ")[0] || 'User'}</span>
+                    </div>
+                `;
+                statsBar.classList.remove("hidden");
+                if (ADMIN_EMAILS.includes(currentUser.email)) {
+                    adminPortalBtn.classList.remove("hidden");
+                }
+            } else {
+                authSection.innerHTML = `
+                    <button id="googleLoginBtn" class="bg-white text-gray-800 text-xs px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 shadow active:scale-95 transition">
+                        <i class="fa-brands fa-google text-red-500"></i> Google Sign In
+                    </button>
+                `;
+                document.getElementById("googleLoginBtn").onclick = loginWithGoogle;
+                statsBar.classList.add("hidden");
+                adminPortalBtn.classList.add("hidden");
+            }
+        }
+
+        async function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (err) {
+                alert("Login Error: " + err.message);
+            }
+        }
+
+        function syncUserData(uid) {
+            const userRef = db.collection("users").doc(uid);
+            userRef.onSnapshot(async doc => {
+                if (doc.exists) {
+                    userData = doc.data();
+                } else {
+                    const refBy = sessionStorage.getItem("gx_ref_code") || null;
+                    userData = {
+                        balance: 0,
+                        stars: 0,
+                        totalDeposited: 0,
+                        referredBy: refBy,
+                        referralsCount: 0,
+                        referralEarnings: 0,
+                        email: currentUser.email,
+                        name: currentUser.displayName,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    await userRef.set(userData);
+                    if (refBy) {
+                        db.collection("users").doc(refBy).update({
+                            referralsCount: firebase.firestore.FieldValue.increment(1)
+                        });
+                    }
+                }
+                document.getElementById("userBalanceText").innerText = userData.balance;
+                document.getElementById("userStarsText").innerText = userData.stars;
+                document.getElementById("modalStarsCount").innerText = userData.stars;
+                document.getElementById("refCountText").innerText = userData.referralsCount || 0;
+                document.getElementById("refEarnedText").innerText = `LKR ${userData.referralEarnings || 0}`;
+                document.getElementById("refLinkInput").value = `${window.location.origin}${window.location.pathname}?ref=${uid}`;
+            });
+        }
+
+        /**
+         * 5. WHEEL DRAWING ENGINE
+         */
+        let currentRotation = 0;
+
+        function drawWheel() {
+            const numSlices = slices.length;
+            const sliceAngle = (2 * Math.PI) / numSlices;
+            const radius = canvas.width / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            slices.forEach((slice, i) => {
+                const angle = i * sliceAngle;
+
+                // Sector Arc
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 8, angle, angle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = slice.color;
+                ctx.fill();
+                ctx.strokeStyle = "rgba(255,255,255,0.15)";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Content (Image + Text)
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + sliceAngle / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 13px Poppins";
+
+                // Text
+                ctx.fillText(slice.name, radius - 45, 5);
+
+                // PNG Image Icon
+                if (loadedSliceImages[slice.id]) {
+                    ctx.drawImage(loadedSliceImages[slice.id], radius - 40, -12, 24, 24);
+                }
+
+                ctx.restore();
+            });
+        }
+
+        /**
+         * 6. STRICT ENGINE: GLOBAL POOL, TIER-LOCK & DUAL-VERIFICATION LUCK
+         */
+        async function executeSpinLogic() {
+            if (!currentUser) {
+                alert("ஸ்பின் செய்ய முதலில் Google மூலம் உள்நுழையவும்!");
+                return;
+            }
+            if (isSpinning) return;
+            if (userData.balance < betCost) {
+                alert(`போதிய பேலன்ஸ் இல்லை! இந்த ஸ்பின்னிற்கு LKR ${betCost} தேவை.`);
+                document.getElementById("redeemModal").classList.remove("hidden");
+                return;
+            }
+
+            isSpinning = true;
+            document.getElementById("spinBtn").disabled = true;
+
+            // 1. Deduct Bet from User & Add to Global Pool
+            const userRef = db.collection("users").doc(currentUser.uid);
+            const configRef = db.collection("settings").doc("gameConfig");
+
+            await db.runTransaction(async (t) => {
+                t.update(userRef, { balance: firebase.firestore.FieldValue.increment(-betCost) });
+                t.update(configRef, { globalPool: firebase.firestore.FieldValue.increment(betCost) });
+            });
+
+            // 2. Select Eligible Slices (Tier Check + Global Pool Threshold Check)
+            let eligibleSlices = slices.map(s => {
+                let chance = s.prob;
+
+                // Tier-Gated: High-tier items unlock only if user bet meets minTier
+                if (currentTier < s.minTier) {
+                    chance = 0;
+                }
+
+                // Reserve Threshold Check: Grand prize locks if pool < threshold
+                if (s.threshold > 0 && globalPool < s.threshold) {
+                    chance = 0;
+                }
+
+                // Odds boost for Tier 2 and Tier 3 on valid items
+                if (currentTier === 2 && s.minTier <= 2 && s.type !== "none") chance *= 1.5;
+                if (currentTier === 3 && s.minTier <= 3 && s.type !== "none") chance *= 2.0;
+
+                return { ...s, activeChance: chance };
+            });
+
+            // Fallback for Better Luck if all odds clamped
+            const totalWeight = eligibleSlices.reduce((acc, s) => acc + s.activeChance, 0);
+            let randomRoll = Math.random() * totalWeight;
+            let winningIndex = 0;
+
+            for (let i = 0; i < eligibleSlices.length; i++) {
+                if (randomRoll <= eligibleSlices[i].activeChance) {
+                    winningIndex = i;
+                    break;
+                }
+                randomRoll -= eligibleSlices[i].activeChance;
+            }
+
+            const chosenPrize = slices[winningIndex];
+
+            // 3. Wheel Spin Animation
+            const numSlices = slices.length;
+            const sliceDeg = 360 / numSlices;
+            const targetDeg = 360 - (winningIndex * sliceDeg) - (sliceDeg / 2) - 90; // Adjust for top pointer
+            const fullSpins = 360 * 5; // 5 full rotations
+            const finalRotation = fullSpins + targetDeg;
+
+            canvas.style.transition = "transform 4.5s cubic-bezier(0.15, 0.9, 0.25, 1)";
+            canvas.style.transform = `rotate(${finalRotation}deg)`;
+
+            setTimeout(async () => {
+                await handlePrizeOutcome(chosenPrize);
+                canvas.style.transition = "none";
+                canvas.style.transform = `rotate(${targetDeg % 360}deg)`;
+                isSpinning = false;
+                document.getElementById("spinBtn").disabled = false;
+            }, 4600);
+        }
+
+        async function handlePrizeOutcome(prize) {
+            // Deduct prize value from pool if high value
+            if (prize.value > 0 && prize.type === "item") {
+                db.collection("settings").doc("gameConfig").update({
+                    globalPool: firebase.firestore.FieldValue.increment(-prize.value)
+                });
+            }
+
+            if (prize.type === "star") {
+                // Add stars directly
+                await db.collection("users").doc(currentUser.uid).update({
+                    stars: firebase.firestore.FieldValue.increment(prize.value)
+                });
+                alert(`வாழ்த்துகள்! ${prize.name} உங்கள் ஸ்டார் வாலட்டில் சேர்ந்தது!`);
+            } else if (prize.type === "item") {
+                // Generate Unique Winning Code & Save to DB
+                confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+                const redeemKey = `GX-WIN-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+                await db.collection("winnings").add({
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    prizeName: prize.name,
+                    redeemKey: redeemKey,
+                    status: "unclaimed",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Show Winner Modal
+                document.getElementById("winModalPrizeTitle").innerText = prize.name;
+                document.getElementById("winModalRedeemCode").innerText = redeemKey;
+                document.getElementById("winModalImg").src = prize.imgUrl;
+                document.getElementById("winnerModal").classList.remove("hidden");
+
+                document.getElementById("claimNowBtn").onclick = () => {
+                    const msg = encodeURIComponent(`வணக்கம் GX STORE, நான் ஸ்பின்னில் வெற்றி பெற்றுள்ளேன்!\nபரிசு: ${prize.name}\nரீடீம் கோடு: ${redeemKey}\nEmail: ${currentUser.email}\nஎன் Free Fire UID: `);
+                    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+                };
+            } else {
+                alert("Better Luck Next Time! மீண்டும் முயற்சி செய்யுங்கள்.");
+            }
+        }
+
+        /**
+         * 7. STAR POINTS EXCHANGE & REFERRAL REWARD ENGINE
+         */
+        async function exchangeStarsToCash() {
+            if (userData.stars < 100) {
+                alert("எக்ஸ்சேஞ்ச் செய்ய குறைந்தபட்சம் 100 Stars தேவை!");
+                return;
+            }
+            const exchangeBatches = Math.floor(userData.stars / 100);
+            const starsToDeduct = exchangeBatches * 100;
+            const cashToAdd = exchangeBatches * 10;
+
+            const userRef = db.collection("users").doc(currentUser.uid);
+            await userRef.update({
+                stars: firebase.firestore.FieldValue.increment(-starsToDeduct),
+                balance: firebase.firestore.FieldValue.increment(cashToAdd)
+            });
+
+            alert(`வெற்றி! ${starsToDeduct} ஸ்டார்கள் LKR ${cashToAdd} ரொக்கமாக உங்கள் வாலட்டில் சேர்க்கப்பட்டது!`);
+        }
+
+        // Referral Trigger (Triggered when user reaches LKR 500 total deposit)
+        async function checkAndCreditReferralCommission(depositAmount) {
+            const userRef = db.collection("users").doc(currentUser.uid);
+            const newTotal = (userData.totalDeposited || 0) + depositAmount;
+
+            await userRef.update({ totalDeposited: newTotal });
+
+            if (userData.referredBy && (userData.totalDeposited < 500) && newTotal >= 500) {
+                const referrerRef = db.collection("users").doc(userData.referredBy);
+                await referrerRef.update({
+                    balance: firebase.firestore.FieldValue.increment(50),
+                    referralEarnings: firebase.firestore.FieldValue.increment(50)
+                });
+            }
+        }
+
+        /**
+         * 8. REDEEM WALLET VOUCHERS
+         */
+        async function applyWalletVoucher() {
+            const code = document.getElementById("inputVoucherCode").value.trim().toUpperCase();
+            if (!code) return alert("ரீடீம் குறியீட்டை உள்ளிடவும்!");
+
+            const voucherRef = db.collection("vouchers").doc(code);
+            const doc = await voucherRef.get();
+
+            if (!doc.exists || doc.data().status !== "active") {
+                alert("தவறான அல்லது ஏற்கனவே பயன்படுத்தப்பட்ட குறியீடு!");
+                return;
+            }
+
+            const amount = doc.data().amount;
+            await db.runTransaction(async (t) => {
+                t.update(voucherRef, { status: "used", usedBy: currentUser.uid, usedAt: firebase.firestore.FieldValue.serverTimestamp() });
+                t.update(db.collection("users").doc(currentUser.uid), { balance: firebase.firestore.FieldValue.increment(amount) });
+            });
+
+            await checkAndCreditReferralCommission(amount);
+            alert(`LKR ${amount} வெற்றிகரமாக உங்கள் வாலட்டில் வரவு வைக்கப்பட்டது!`);
+            document.getElementById("redeemModal").classList.add("hidden");
+            document.getElementById("inputVoucherCode").value = "";
+        }
+
+        /**
+         * 9. WINNINGS HISTORY VAULT
+         */
+        function listenToUserWinnings(uid) {
+            db.collection("winnings").where("userId", "==", uid).orderBy("createdAt", "desc").onSnapshot(snapshot => {
+                const list = document.getElementById("winningsList");
+                if (snapshot.empty) {
+                    list.innerHTML = `<p class="text-xs text-center text-gray-500 py-6">பரிசுகள் ஏதுமில்லை.</p>`;
+                    return;
+                }
+                list.innerHTML = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return `
+                        <div class="bg-gray-800 p-2.5 rounded-xl border border-gray-700 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white block">${data.prizeName}</span>
+                                <span class="font-mono text-[10px] text-emerald-400 select-all">${data.redeemKey}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="navigator.clipboard.writeText('${data.redeemKey}'); alert('Key Copied!')" class="p-1.5 bg-gray-700 rounded-lg text-yellow-400">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                                <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Claim Key: ' + data.redeemKey)}" target="_blank" class="px-2 py-1 bg-emerald-600 rounded-lg text-[10px] text-white font-bold">
+                                    Claim
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            });
+        }
+
+        /**
+         * 10. ADMIN DASHBOARD ACTIONS
+         */
+        async function createVoucherAsAdmin() {
+            const amount = parseInt(document.getElementById("adminVoucherAmount").value);
+            if (!amount || amount <= 0) return alert("சரியான தொகையை உள்ளிடவும்");
+
+            const key = `GX-${amount}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+            await db.collection("vouchers").doc(key).set({
+                amount: amount,
+                status: "active",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            document.getElementById("adminGeneratedKeyText").innerText = key;
+            document.getElementById("adminGeneratedKeyBox").classList.remove("hidden");
+        }
+
+        /**
+         * 11. EVENT LISTENERS
+         */
+        function setupEventListeners() {
+            // Tier Selector
+            document.querySelectorAll(".tier-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".tier-btn").forEach(b => b.classList.remove("active-tier", "border-2", "border-yellow-400", "bg-amber-500/20", "text-yellow-300"));
+                    btn.classList.add("active-tier", "border-2", "border-yellow-400", "bg-amber-500/20", "text-yellow-300");
+                    currentTier = parseInt(btn.dataset.tier);
+                    betCost = parseInt(btn.dataset.cost);
+                });
+            });
+
+            // Action Buttons
+            document.getElementById("spinBtn").onclick = executeSpinLogic;
+            document.getElementById("redeemWalletBtn").onclick = () => document.getElementById("redeemModal").classList.remove("hidden");
+            document.getElementById("applyVoucherBtn").onclick = applyWalletVoucher;
+            document.getElementById("exchangeStarsBtn").onclick = exchangeStarsToCash;
+
+            // Nav Tabs
+            document.getElementById("openProfileBtn").onclick = () => {
+                document.getElementById("profileUserName").innerText = currentUser.displayName;
+                document.getElementById("profileUserEmail").innerText = currentUser.email;
+                document.getElementById("profileUserImg").src = currentUser.photoURL;
+                document.getElementById("profileModal").classList.remove("hidden");
+            };
+            document.getElementById("tabReferralBtn").onclick = () => document.getElementById("referralModal").classList.remove("hidden");
+            document.getElementById("tabWinningsBtn").onclick = () => document.getElementById("winningsModal").classList.remove("hidden");
+            document.getElementById("adminPortalBtn").onclick = () => document.getElementById("adminModal").classList.remove("hidden");
+
+            // Modal Closes
+            document.querySelectorAll(".close-modal").forEach(b => {
+                b.onclick = () => b.closest(".fixed").classList.add("hidden");
+            });
+
+            // Copy Buttons
+            document.getElementById("copyRefBtn").onclick = () => {
+                navigator.clipboard.writeText(document.getElementById("refLinkInput").value);
+                alert("ரெஃபரல் லிங்க் காப்பி செய்யப்பட்டது!");
+            };
+            document.getElementById("copyWinCodeBtn").onclick = () => {
+                navigator.clipboard.writeText(document.getElementById("winModalRedeemCode").innerText);
+                alert("வின்னிங் கோடு காப்பி செய்யப்பட்டது!");
+            };
+            document.getElementById("copyGeneratedKeyBtn").onclick = () => {
+                navigator.clipboard.writeText(document.getElementById("adminGeneratedKeyText").innerText);
+                alert("வவுச்சர் கீ காப்பி செய்யப்பட்டது!");
+            };
+
+            // Admin Actions
+            document.getElementById("adminGenVoucherBtn").onclick = createVoucherAsAdmin;
+            document.getElementById("adminAddPoolBtn").onclick = () => {
+                const addVal = parseInt(document.getElementById("adminPoolAddInput").value);
+                if (addVal) {
+                    db.collection("settings").doc("gameConfig").update({ globalPool: firebase.firestore.FieldValue.increment(addVal) });
+                    document.getElementById("adminPoolAddInput").value = "";
+                }
+            };
+            document.getElementById("logoutBtn").onclick = () => auth.signOut().then(() => location.reload());
+        }
+    </script>
 </body>
 </html>
