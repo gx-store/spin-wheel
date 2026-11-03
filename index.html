@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GX STORE | ULTRA PRO CYBER WHEEL</title>
+    <title>GX STORE | PRO CYBER WHEEL & REWARDS</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Pro Icons -->
@@ -41,7 +41,6 @@
 
         .font-gaming { font-family: 'Orbitron', sans-serif; }
 
-        /* iOS 26 Cyber Glass Card */
         .cyber-glass {
             background: rgba(14, 19, 36, 0.72);
             backdrop-filter: blur(28px) saturate(200%);
@@ -52,7 +51,6 @@
                 inset 0 1px 1px rgba(255, 255, 255, 0.25);
         }
 
-        /* Tactile Glowing Touch Feedback */
         .touch-action {
             position: relative;
             transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -73,7 +71,6 @@
             box-shadow: 0 0 35px rgba(245, 158, 11, 0.4), inset 0 0 20px rgba(245, 158, 11, 0.2);
         }
 
-        /* Wheel Outer Ring & LED Dots */
         .wheel-wrapper {
             position: relative;
             width: 330px;
@@ -99,7 +96,6 @@
             filter: drop-shadow(0 0 12px #f59e0b);
         }
 
-        /* Realtime Infinite Marquee */
         .marquee-container {
             display: flex;
             overflow: hidden;
@@ -139,7 +135,7 @@
         </div>
     </div>
 
-    <!-- Liquid Top Header -->
+    <!-- Top Header -->
     <header class="cyber-glass sticky top-0 z-40 px-4 py-3 flex justify-between items-center rounded-b-3xl border-b border-white/10">
         <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-500 via-yellow-300 to-amber-600 shadow-xl flex items-center justify-center overflow-hidden border border-white/30">
@@ -221,13 +217,13 @@
 
                 <canvas id="wheelCanvas" width="380" height="380" class="w-full h-full rounded-full transition-transform duration-100"></canvas>
 
-                <!-- Center Center Core -->
+                <!-- Center Core -->
                 <div class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-600 shadow-2xl flex items-center justify-center border-4 border-gray-950 pointer-events-none">
                     <i class="fa-solid fa-bolt text-gray-950 text-xl animate-pulse"></i>
                 </div>
             </div>
 
-            <!-- Tier Selector (High Tactile Buttons) -->
+            <!-- Tier Selector -->
             <div class="mt-5 grid grid-cols-4 gap-2">
                 <button class="tier-btn touch-action py-2.5 px-1 rounded-2xl border border-purple-500/30 bg-purple-950/30 text-purple-300 flex flex-col items-center" data-tier="0" data-cost="0">
                     <span class="text-purple-400 text-[8px] uppercase tracking-wider font-bold">FREE TICKET</span>
@@ -257,7 +253,7 @@
 
     </main>
 
-    <!-- Liquid Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar -->
     <nav class="cyber-glass sticky bottom-0 z-40 px-6 py-3 flex justify-around items-center rounded-t-3xl border-t border-white/10">
         <button id="navSpinTab" class="touch-action flex flex-col items-center gap-1 text-amber-400">
             <i class="fa-solid fa-circle-dot text-lg"></i>
@@ -276,6 +272,155 @@
             <span class="text-[10px] font-gaming font-bold uppercase tracking-wider">ADMIN</span>
         </button>
     </nav>
+
+    <!-- FULLSCREEN MODAL: USER DASHBOARD WITH INTEGRATED REFERRAL PROGRAM -->
+    <div id="profileModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex flex-col justify-between p-4 max-w-md mx-auto overflow-y-auto">
+        <div class="space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-astronaut text-amber-400 text-lg"></i>
+                    <h2 class="font-gaming font-bold text-sm tracking-wider uppercase text-white">PLAYER DASHBOARD</h2>
+                </div>
+                <button class="close-profile-btn w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Profile Info Banner -->
+            <div class="cyber-glass rounded-3xl p-4 flex items-center gap-4">
+                <img id="dashAvatar" src="" class="w-14 h-14 rounded-2xl border-2 border-amber-400 object-cover shadow-lg">
+                <div class="overflow-hidden">
+                    <h3 id="dashName" class="font-bold text-sm text-white truncate">Player</h3>
+                    <p id="dashEmail" class="text-xs text-gray-400 truncate font-mono">user@gmail.com</p>
+                    <span class="inline-block mt-1 px-2 py-0.5 rounded-lg bg-amber-400/10 border border-amber-400/30 text-[9px] font-bold text-amber-400 uppercase tracking-widest">VERIFIED PLAYER</span>
+                </div>
+            </div>
+
+            <!-- Balances Detail Grid -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="cyber-glass rounded-3xl p-4 text-center">
+                    <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">WALLET CASH</span>
+                    <span class="text-lg font-gaming font-black text-cyan-300 block mt-0.5">LKR <span id="dashWalletVal">0</span></span>
+                    <div class="flex gap-1.5 mt-3">
+                        <button id="dashTopupBtn" class="touch-action flex-1 py-2 bg-cyan-600/20 rounded-xl text-[9px] font-bold text-cyan-300 border border-cyan-500/30">
+                            + TOP-UP
+                        </button>
+                        <button id="dashWithdrawBtn" class="touch-action flex-1 py-2 bg-emerald-600/20 rounded-xl text-[9px] font-bold text-emerald-400 border border-emerald-500/30">
+                            WITHDRAW
+                        </button>
+                    </div>
+                </div>
+                <div class="cyber-glass rounded-3xl p-4 text-center">
+                    <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">STAR POINTS</span>
+                    <span class="text-lg font-gaming font-black text-amber-400 block mt-0.5" id="dashStarsVal">0</span>
+                    <button id="dashConvertStarsBtn" class="touch-action mt-3 w-full py-2 bg-amber-500 text-black rounded-xl text-[9px] font-black uppercase">
+                        EXCHANGE (100:10)
+                    </button>
+                </div>
+            </div>
+
+            <!-- REFER & EARN PROGRAM -->
+            <div class="cyber-glass rounded-3xl p-4 space-y-3 border border-purple-500/30">
+                <div class="flex justify-between items-center">
+                    <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
+                        <i class="fa-solid fa-users text-purple-400"></i> REFER & EARN
+                    </span>
+                    <span class="text-[10px] font-bold text-cyan-400">LKR 50 / FRIEND</span>
+                </div>
+
+                <div class="bg-black/60 border border-white/5 rounded-2xl p-2.5 text-center">
+                    <p class="text-[11px] text-gray-300 font-sans leading-relaxed">
+                        💡 உங்கள் பிரத்யேக லிங்க் மூலம் இணையும் நண்பர் மொத்தம் <b class="text-white">LKR 500</b> டெபாசிட் செய்து விளையாடும் போது உங்களுக்கு <b class="text-cyan-400">LKR 50</b> ரொக்கம் வாலட்டில் சேரும்.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-2 bg-black/50 p-2 rounded-2xl border border-white/10">
+                    <input id="dashRefUrl" readonly type="text" class="bg-transparent text-xs text-gray-300 font-mono flex-1 outline-none px-2 allow-select">
+                    <button id="dashCopyRefBtn" class="touch-action bg-amber-400 hover:bg-amber-300 text-black px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-copy"></i> COPY
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-center pt-1">
+                    <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+                        <span class="text-[9px] text-gray-400 uppercase block font-bold">TOTAL REFERRED</span>
+                        <span id="dashRefTotalCount" class="font-gaming font-bold text-sm text-yellow-400">0</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+                        <span class="text-[9px] text-gray-400 uppercase block font-bold">EARNED REWARD</span>
+                        <span id="dashRefEarnedVal" class="font-gaming font-bold text-sm text-cyan-300">LKR 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prize Winnings Vault -->
+            <div class="cyber-glass rounded-3xl p-4 space-y-3">
+                <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy"></i> REWARD VAULT
+                </span>
+                <div id="dashWinningsContainer" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+            </div>
+
+            <button id="dashLogoutBtn" class="touch-action w-full py-3.5 bg-red-600/10 text-red-400 border border-red-500/20 rounded-2xl text-xs font-bold uppercase flex items-center justify-center gap-2">
+                <i class="fa-solid fa-right-from-bracket"></i> LOGOUT ACCOUNT
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: DETAILED BANK WITHDRAWAL REQUEST (MINIMUM 5000 LKR) -->
+    <div id="withdrawModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-3">
+        <div class="cyber-glass w-full max-w-sm rounded-[32px] p-5 space-y-3.5 border border-emerald-500/40 max-h-[92vh] overflow-y-auto">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <h3 class="text-xs font-gaming font-bold text-emerald-400 uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns"></i> BANK WITHDRAWAL
+                </h3>
+                <button class="close-withdraw-btn text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-2xl p-2.5 text-center">
+                <p class="text-[11px] text-emerald-300 font-sans">
+                    💡 <span class="font-bold">விதிமுறை:</span> குறைந்தபட்ச வித்ராவல் தொகை <b class="text-white">LKR 5,000</b>. பணம் அனுப்பப்பட்டதும் ரசீது வாட்ஸ்அப்பில் வழங்கப்படும்.
+                </p>
+            </div>
+
+            <div class="space-y-2">
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">வித்ராவல் தொகை (MIN LKR 5000)</label>
+                    <input id="withdrawAmountInput" type="number" min="5000" placeholder="5000" class="w-full bg-black/50 border border-emerald-500/40 rounded-xl px-3 py-2 text-sm text-emerald-400 font-mono outline-none tracking-wider focus:border-emerald-400 allow-select">
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">கணக்கு வைத்திருப்பவர் பெயர் (Acc Holder Name)</label>
+                    <input id="withdrawHolderName" type="text" placeholder="Mohamed Feros" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-400 allow-select">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">வங்கிப் பெயர் (Bank Name)</label>
+                        <input id="withdrawBankName" type="text" placeholder="Commercial Bank / BOC" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-400 allow-select">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">கிளை (Branch)</label>
+                        <input id="withdrawBranch" type="text" placeholder="Nintavur / Colombo" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-400 allow-select">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">வங்கி கணக்கு எண் (Account Number)</label>
+                    <input id="withdrawAccNum" type="number" placeholder="8001234567" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono outline-none focus:border-emerald-400 allow-select">
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">eZ Cash எண் அல்லது Free Fire UID (விருப்பப்பட்டால்)</label>
+                    <input id="withdrawAltDetails" type="text" placeholder="07XXXXXXXX / 123456789" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-gray-300 outline-none focus:border-emerald-400 allow-select">
+                </div>
+            </div>
+
+            <button id="submitWithdrawBtn" class="touch-action w-full py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
+                CONFIRM & SEND DETAILS TO WHATSAPP
+            </button>
+        </div>
+    </div>
 
     <!-- MODAL: FREE FIRE UID FOR LIKES -->
     <div id="uidInputModal" class="fixed inset-0 bg-black/85 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4">
@@ -297,7 +442,7 @@
         </div>
     </div>
 
-    <!-- MODAL: WINNER POP-UP FOR ITEMS -->
+    <!-- MODAL: WINNER CELEBRATION -->
     <div id="winModal" class="fixed inset-0 bg-black/85 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4">
         <div class="cyber-glass w-full max-w-sm rounded-[36px] p-6 text-center space-y-4 relative border border-amber-500/40">
             <div class="w-20 h-20 mx-auto rounded-3xl bg-amber-400/10 border border-amber-400/40 flex items-center justify-center p-2">
@@ -345,66 +490,9 @@
         </div>
     </div>
 
-    <!-- MODAL: PLAYER PROFILE -->
-    <div id="profileModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex flex-col justify-between p-4 max-w-md mx-auto overflow-y-auto">
-        <div class="space-y-4">
-            <div class="flex justify-between items-center pb-2 border-b border-white/10">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-user-astronaut text-amber-400 text-lg"></i>
-                    <h2 class="font-gaming font-bold text-sm tracking-wider uppercase text-white">DASHBOARD</h2>
-                </div>
-                <button class="close-profile-btn w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="cyber-glass rounded-3xl p-4 flex items-center gap-4">
-                <img id="dashAvatar" src="" class="w-14 h-14 rounded-2xl border-2 border-amber-400 object-cover shadow-lg">
-                <div class="overflow-hidden">
-                    <h3 id="dashName" class="font-bold text-sm text-white truncate">Player</h3>
-                    <p id="dashEmail" class="text-xs text-gray-400 truncate font-mono">user@gmail.com</p>
-                    <span class="inline-block mt-1 px-2 py-0.5 rounded-lg bg-amber-400/10 border border-amber-400/30 text-[9px] font-bold text-amber-400 uppercase tracking-widest">VERIFIED PLAYER</span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div class="cyber-glass rounded-3xl p-4 text-center">
-                    <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">WALLET CASH</span>
-                    <span class="text-lg font-gaming font-black text-cyan-300 block mt-0.5">LKR <span id="dashWalletVal">0</span></span>
-                    <div class="flex gap-1.5 mt-3">
-                        <button id="dashTopupBtn" class="touch-action flex-1 py-2 bg-cyan-600/20 rounded-xl text-[9px] font-bold text-cyan-300 border border-cyan-500/30">
-                            + TOP-UP
-                        </button>
-                        <button id="dashWithdrawBtn" class="touch-action flex-1 py-2 bg-emerald-600/20 rounded-xl text-[9px] font-bold text-emerald-400 border border-emerald-500/30">
-                            WITHDRAW
-                        </button>
-                    </div>
-                </div>
-                <div class="cyber-glass rounded-3xl p-4 text-center">
-                    <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">STAR POINTS</span>
-                    <span class="text-lg font-gaming font-black text-amber-400 block mt-0.5" id="dashStarsVal">0</span>
-                    <button id="dashConvertStarsBtn" class="touch-action mt-3 w-full py-2 bg-amber-500 text-black rounded-xl text-[9px] font-black uppercase">
-                        EXCHANGE (100:10)
-                    </button>
-                </div>
-            </div>
-
-            <div class="cyber-glass rounded-3xl p-4 space-y-3">
-                <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
-                    <i class="fa-solid fa-trophy"></i> REWARD VAULT
-                </span>
-                <div id="dashWinningsContainer" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
-            </div>
-
-            <button id="dashLogoutBtn" class="touch-action w-full py-3.5 bg-red-600/10 text-red-400 border border-red-500/20 rounded-2xl text-xs font-bold uppercase flex items-center justify-center gap-2">
-                <i class="fa-solid fa-right-from-bracket"></i> LOGOUT ACCOUNT
-            </button>
-        </div>
-    </div>
-
-    <!-- MODAL: MASTER ADMIN PANEL WITH FULL REALTIME CONTROLS -->
+    <!-- MODAL: MASTER ADMIN PANEL WITH STAR CREDITOR & EDITING -->
     <div id="adminModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-3">
-        <div class="cyber-glass border border-red-500/40 w-full max-w-md rounded-[36px] p-5 space-y-3 max-h-[95vh] flex flex-col">
+        <div class="cyber-glass border border-red-500/40 w-full max-w-md rounded-[36px] p-5 space-y-3.5 max-h-[95vh] flex flex-col">
             <div class="flex justify-between items-center pb-2 border-b border-white/10">
                 <h3 class="text-xs font-gaming font-bold text-red-400 uppercase flex items-center gap-2">
                     <i class="fa-solid fa-shield-halved"></i> MASTER ADMIN PANEL
@@ -425,6 +513,18 @@
                 </div>
             </div>
 
+            <!-- ADMIN TOOL: DIRECT STAR POINTS CREDITOR -->
+            <div class="bg-black/40 p-3 rounded-2xl border border-purple-500/40 space-y-2">
+                <span class="text-[11px] font-gaming font-bold text-purple-300 uppercase block">⭐ DIRECT STAR POINTS CREDITOR</span>
+                <div class="flex gap-2">
+                    <input id="adminStarTargetUser" type="text" placeholder="User Email / UID" class="w-2/3 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl text-xs text-white font-mono allow-select">
+                    <input id="adminStarAmount" type="number" placeholder="Stars" class="w-1/3 bg-white/5 border border-white/10 px-2 py-1.5 rounded-xl text-xs text-amber-400 font-mono allow-select">
+                </div>
+                <button id="adminCreditStarsBtn" class="touch-action w-full py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-gaming font-bold rounded-xl text-xs uppercase shadow">
+                    CREDIT STARS TO PLAYER
+                </button>
+            </div>
+
             <!-- Add / Edit Prize Form -->
             <div class="bg-black/40 p-3 rounded-2xl border border-amber-500/30 space-y-2">
                 <div class="flex justify-between items-center">
@@ -438,6 +538,7 @@
                         <option value="GRAND">🔥 GRAND</option>
                         <option value="MEDIUM">⚡ MEDIUM</option>
                         <option value="COMMON">🎁 COMMON</option>
+                        <option value="STAR">⭐ STAR POINTS</option>
                         <option value="LIKES">👍 LIKES</option>
                         <option value="CASH">💵 DIRECT CASH</option>
                     </select>
@@ -494,25 +595,6 @@
         </div>
     </div>
 
-    <!-- MODAL: WITHDRAW -->
-    <div id="withdrawModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4">
-        <div class="cyber-glass w-full max-w-sm rounded-[32px] p-6 space-y-4">
-            <div class="flex justify-between items-center pb-2 border-b border-white/10">
-                <h3 class="text-xs font-gaming font-bold text-emerald-400 uppercase flex items-center gap-2">
-                    <i class="fa-solid fa-money-bill-wave"></i> WITHDRAW CASH
-                </h3>
-                <button class="close-withdraw-btn text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="space-y-2">
-                <input id="withdrawAmountInput" type="number" placeholder="தொகை (LKR)" class="w-full bg-black/50 border border-white/20 rounded-2xl px-4 py-3 text-sm text-emerald-400 font-mono outline-none focus:border-emerald-400 allow-select">
-                <input id="withdrawAccountInput" type="text" placeholder="Bank / eZ Cash / Free Fire UID" class="w-full bg-black/50 border border-white/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-400 allow-select">
-            </div>
-            <button id="submitWithdrawBtn" class="touch-action w-full py-3.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
-                SUBMIT WITHDRAWAL
-            </button>
-        </div>
-    </div>
-
     <!-- NOTIFICATION MODAL -->
     <div id="customAlertModal" class="fixed inset-0 bg-black/85 backdrop-blur-xl z-[60] hidden flex items-center justify-center p-4">
         <div class="cyber-glass w-full max-w-xs rounded-[32px] p-5 text-center space-y-3">
@@ -533,9 +615,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
     <script>
-        /**
-         * 1. APP NOTIFICATION & SYNTHESIZED SOUNDS
-         */
         function showCustomAlert(msg, title = "NOTIFICATION") {
             playSound('click');
             document.getElementById("customAlertTitle").innerText = title;
@@ -593,9 +672,6 @@
             } catch(e) {}
         }
 
-        /**
-         * 2. FIREBASE CONFIGURATION
-         */
         const firebaseConfig = {
             apiKey: "AIzaSyBp2p-bNEx8ZLHxxIx35euzloGjsNYOR20",
             authDomain: "spin-free-9d0e3.firebaseapp.com",
@@ -613,9 +689,6 @@
         const ADMIN_EMAILS = ["panelbuy24@gmail.com", "gxstore@gmail.com"];
         const WHATSAPP_NUMBER = "94742870409";
 
-        /**
-         * 3. 15-DAYS REWARD SCHEDULE DEFINITION
-         */
         const DAILY_15_DAYS = [
             { day: 1, label: "50 Stars", type: "star", value: 50, icon: "fa-star text-amber-400" },
             { day: 2, label: "LKR 5 Cash", type: "cash", value: 5, icon: "fa-money-bill text-emerald-400" },
@@ -635,7 +708,7 @@
         ];
 
         let currentUser = null;
-        let userData = { balance: 0, stars: 0, freeTickets: 1, dailyDay: 0, lastClaimDate: null };
+        let userData = { balance: 0, stars: 0, freeTickets: 1, dailyDay: 0, lastClaimDate: null, totalDeposited: 0, referredBy: null, referralsCount: 0, referralEarnings: 0 };
         let currentTier = 3;
         let betCost = 500;
         let globalPool = 0;
@@ -644,9 +717,6 @@
         let editingSliceIndex = null;
         let tempGalleryImageBase64 = null;
 
-        /**
-         * 4. HIGH-END CYBER NEON WHEEL RENDERING ENGINE
-         */
         const canvas = document.getElementById("wheelCanvas");
         const ctx = canvas.getContext("2d");
         let loadedSliceImages = {};
@@ -666,15 +736,14 @@
             drawWheel();
         }
 
-        // Color palettes for neon slices
         const NEON_PALETTES = [
-            ["#1e1b4b", "#312e81"], // Deep Indigo
-            ["#064e3b", "#047857"], // Emerald Cyber
-            ["#701a75", "#86198f"], // Magenta Neon
-            ["#0f172a", "#1e293b"], // Slate Dark
-            ["#831843", "#9d174d"], // Ruby Cyber
-            ["#134e4a", "#0f766e"], // Teal Matrix
-            ["#3b0764", "#581c87"]  // Royal Violet
+            ["#1e1b4b", "#312e81"],
+            ["#064e3b", "#047857"],
+            ["#701a75", "#86198f"],
+            ["#0f172a", "#1e293b"],
+            ["#831843", "#9d174d"],
+            ["#134e4a", "#0f766e"],
+            ["#3b0764", "#581c87"]
         ];
 
         function drawWheel() {
@@ -689,7 +758,6 @@
                 const angle = i * sliceAngle;
                 const palette = NEON_PALETTES[i % NEON_PALETTES.length];
 
-                // Slice Gradient
                 const grad = ctx.createRadialGradient(radius, radius, 20, radius, radius, radius - 8);
                 grad.addColorStop(0, palette[0]);
                 grad.addColorStop(1, palette[1]);
@@ -701,12 +769,10 @@
                 ctx.fillStyle = grad;
                 ctx.fill();
 
-                // Cyber Neon Border Line
                 ctx.strokeStyle = "rgba(245, 158, 11, 0.45)";
                 ctx.lineWidth = 2.5;
                 ctx.stroke();
 
-                // Label and Icon Rendering
                 ctx.save();
                 ctx.translate(radius, radius);
                 ctx.rotate(angle + sliceAngle / 2);
@@ -725,7 +791,6 @@
                 ctx.restore();
             });
 
-            // Outer Neon Golden Ring
             ctx.beginPath();
             ctx.arc(radius, radius, radius - 6, 0, 2 * Math.PI);
             ctx.strokeStyle = "#f59e0b";
@@ -733,9 +798,6 @@
             ctx.stroke();
         }
 
-        /**
-         * 5. REALTIME INITIALIZATION & HYBRID LIVE TICKER
-         */
         window.addEventListener("DOMContentLoaded", () => {
             initApplication();
             attachListeners();
@@ -743,7 +805,10 @@
         });
 
         async function initApplication() {
-            // Realtime listener for gameConfig: Instant UI update without refresh
+            const params = new URLSearchParams(window.location.search);
+            const refCode = params.get("ref");
+            if (refCode) sessionStorage.setItem("gx_ref_code", refCode);
+
             db.collection("settings").doc("gameConfig").onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
@@ -766,7 +831,6 @@
         }
 
         function setupRealtimeMarquee() {
-            // Realtime listener for genuine winners in winnings collection
             db.collection("winnings").orderBy("createdAt", "desc").limit(6).onSnapshot(snap => {
                 let realWinners = [];
                 snap.forEach(doc => {
@@ -775,7 +839,6 @@
                     realWinners.push({ name: maskedEmail, prize: d.prizeName });
                 });
 
-                // Blend with realistic simulated gamers
                 const simGamers = [
                     { name: "FF_Killer_07", prize: "100 Likes" },
                     { name: "Ɗϻ|ㅤBʀᴏᴋᴇɴ", prize: "Weekly Pass" },
@@ -834,17 +897,27 @@
                 if (doc.exists) {
                     userData = doc.data();
                 } else {
+                    const ref = sessionStorage.getItem("gx_ref_code") || null;
                     userData = {
                         balance: 0,
                         stars: 0,
                         freeTickets: 1,
                         dailyDay: 0,
                         lastClaimDate: null,
+                        totalDeposited: 0,
+                        referredBy: ref,
+                        referralsCount: 0,
+                        referralEarnings: 0,
                         email: currentUser.email,
                         name: currentUser.displayName,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     };
                     await db.collection("users").doc(uid).set(userData);
+                    if (ref) {
+                        db.collection("users").doc(ref).update({
+                            referralsCount: firebase.firestore.FieldValue.increment(1)
+                        });
+                    }
                 }
                 document.getElementById("topWalletBalance").innerText = userData.balance || 0;
                 document.getElementById("topStarsBalance").innerText = userData.stars || 0;
@@ -852,13 +925,13 @@
 
                 document.getElementById("dashWalletVal").innerText = userData.balance || 0;
                 document.getElementById("dashStarsVal").innerText = userData.stars || 0;
+                document.getElementById("dashRefTotalCount").innerText = userData.referralsCount || 0;
+                document.getElementById("dashRefEarnedVal").innerText = `LKR ${userData.referralEarnings || 0}`;
+                document.getElementById("dashRefUrl").value = `${window.location.origin}${window.location.pathname}?ref=${uid}`;
                 renderDailyRewardsCalendar();
             });
         }
 
-        /**
-         * 6. DAILY LOGIN REWARDS
-         */
         function renderDailyRewardsCalendar() {
             const container = document.getElementById("dailyRewardsGrid");
             if (!container) return;
@@ -924,15 +997,11 @@
             document.getElementById("dailyCalendarModal").classList.add("hidden");
         }
 
-        /**
-         * 7. ULTRA-ACCURATE ZERO-LOSS SPIN ENGINE
-         */
         async function executeSpinLogic() {
             playSound('click');
             if (!currentUser) return showCustomAlert("Please SIGN IN with Google first!", "ACCESS DENIED");
             if (isSpinning) return;
 
-            // Tier 0: Free Spin Ticket
             if (currentTier === 0) {
                 if ((userData.freeTickets || 0) <= 0) {
                     return showCustomAlert("உங்களிடம் Free Spin Card இல்லை! Daily Login மூலம் இலவசமாகப் பெறுங்கள்.", "NO FREE TICKET");
@@ -944,7 +1013,6 @@
                     freeTickets: firebase.firestore.FieldValue.increment(-1)
                 });
             } else {
-                // Paid Tiers
                 if (userData.balance < betCost) {
                     showCustomAlert(`Insufficient Balance! LKR ${betCost} required for this tier.`, "LOW BALANCE");
                     document.getElementById("voucherModal").classList.remove("hidden");
@@ -959,10 +1027,8 @@
                 });
             }
 
-            // Filter Eligible Slices for Active Tier & Global Pool
             let validSlices = slices.map(s => {
                 let chance = s.prob;
-
                 const allowedTiers = s.allowedTiers || [1, 2, 3];
                 if (!allowedTiers.includes(currentTier)) chance = 0;
                 if (s.threshold > 0 && globalPool < s.threshold) chance = 0;
@@ -987,7 +1053,6 @@
             const numSlices = slices.length;
             const sliceDeg = 360 / numSlices;
             
-            // Pointer is at Top (270 degrees in standard Canvas coords)
             const targetAngle = 360 - (outcomeIndex * sliceDeg) - (sliceDeg / 2) - 90;
             const fullRotation = (360 * 6) + targetAngle;
 
@@ -1007,14 +1072,12 @@
         }
 
         async function completePrizeCycle(prize) {
-            // Deduct Pool value for Physical / Costly Items
             if (prize.value > 0 && (prize.type === "item" || prize.type === "like" || prize.badge === "CASH")) {
                 db.collection("settings").doc("gameConfig").update({
                     globalPool: firebase.firestore.FieldValue.increment(-prize.value)
                 });
             }
 
-            // 1. Direct Cash Award
             if (prize.badge === "CASH" || prize.type === "cash") {
                 playSound('win');
                 await db.collection("users").doc(currentUser.uid).update({
@@ -1022,15 +1085,13 @@
                 });
                 showCustomAlert(`வாழ்த்துக்கள்! LKR ${prize.value} நேரடியாக உங்கள் வாலட்டில் வரவு வைக்கப்பட்டது!`, "CASH WON");
             } 
-            // 2. Direct Stars Award
-            else if (prize.type === "star" || prize.name.toLowerCase().includes("star")) {
+            else if (prize.type === "star" || prize.badge === "STAR" || prize.name.toLowerCase().includes("star")) {
                 playSound('win');
                 await db.collection("users").doc(currentUser.uid).update({
                     stars: firebase.firestore.FieldValue.increment(prize.value)
                 });
                 showCustomAlert(`+${prize.value} Stars உங்கள் கணக்கில் சேர்க்கப்பட்டது!`, "STAR BONUS");
             } 
-            // 3. Free Fire Likes (Direct UID Prompt)
             else if (prize.type === "like" || prize.badge === "LIKES") {
                 playSound('win');
                 confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 } });
@@ -1060,7 +1121,6 @@
                     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
                 };
             } 
-            // 4. Physical Game Items (Weekly, Monthly, Diamonds)
             else if (prize.type === "item") {
                 playSound('win');
                 confetti({ particleCount: 160, spread: 80, origin: { y: 0.6 } });
@@ -1089,9 +1149,42 @@
             }
         }
 
-        /**
-         * 8. ADMIN DASHBOARD: REALTIME PRIZE MANAGEMENT
-         */
+        // Direct Star Points Creditor by Admin
+        document.getElementById("adminCreditStarsBtn").onclick = async () => {
+            playSound('click');
+            const target = document.getElementById("adminStarTargetUser").value.trim();
+            const stars = parseInt(document.getElementById("adminStarAmount").value);
+
+            if (!target || isNaN(stars) || stars <= 0) {
+                return showCustomAlert("User Email/UID மற்றும் சரியான Stars எண்ணிக்கையை உள்ளிடவும்!", "ADMIN ERROR");
+            }
+
+            let userQuery = await db.collection("users").where("email", "==", target).get();
+            if (userQuery.empty) {
+                const docCheck = await db.collection("users").doc(target).get();
+                if (docCheck.exists) {
+                    await db.collection("users").doc(target).update({
+                        stars: firebase.firestore.FieldValue.increment(stars)
+                    });
+                    showCustomAlert(`${stars} Stars வெற்றிகரமாக [UID: ${target}] பயனர் கணக்கில் சேர்க்கப்பட்டது!`, "STARS CREDITED");
+                    document.getElementById("adminStarTargetUser").value = "";
+                    document.getElementById("adminStarAmount").value = "";
+                    return;
+                }
+                return showCustomAlert("பயனர் கணக்கு காணப்படவில்லை!", "USER NOT FOUND");
+            }
+
+            userQuery.forEach(async doc => {
+                await db.collection("users").doc(doc.id).update({
+                    stars: firebase.firestore.FieldValue.increment(stars)
+                });
+            });
+
+            showCustomAlert(`${stars} Stars வெற்றிகரமாக [${target}] கணக்கில் சேர்க்கப்பட்டது!`, "STARS CREDITED");
+            document.getElementById("adminStarTargetUser").value = "";
+            document.getElementById("adminStarAmount").value = "";
+        };
+
         document.getElementById("formPrizeImgFile").addEventListener("change", function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -1123,7 +1216,7 @@
             let prizeType = "item";
             if (badge === "LIKES") prizeType = "like";
             if (badge === "CASH") prizeType = "cash";
-            if (name.toLowerCase().includes("star")) prizeType = "star";
+            if (badge === "STAR" || name.toLowerCase().includes("star")) prizeType = "star";
             if (name.toLowerCase().includes("better") || name.toLowerCase().includes("luck")) prizeType = "none";
 
             const prizePayload = {
@@ -1147,7 +1240,6 @@
                 slices.push(prizePayload);
             }
 
-            // Realtime Sync directly to Firebase Firestore
             await db.collection("settings").doc("gameConfig").update({ slices: slices });
 
             showCustomAlert("ப்ராடக்ட் வெற்றிகரமாக சேமிக்கப்பட்டது!", "SAVED");
@@ -1241,9 +1333,6 @@
             }
         };
 
-        /**
-         * 9. WINNINGS VAULT REALTIME LISTENER
-         */
         function listenToUserWinnings(uid) {
             db.collection("winnings").where("userId", "==", uid).orderBy("createdAt", "desc").onSnapshot(snap => {
                 const list = document.getElementById("dashWinningsContainer");
@@ -1273,9 +1362,6 @@
             });
         }
 
-        /**
-         * 10. EXCHANGE STARS & REDEEM VOUCHER
-         */
         async function convertStars() {
             playSound('click');
             if (userData.stars < 100) return showCustomAlert("குறைந்தபட்சம் 100 Stars தேவை!", "LOW STARS");
@@ -1311,15 +1397,22 @@
                 t.update(db.collection("users").doc(currentUser.uid), { balance: firebase.firestore.FieldValue.increment(amt) });
             });
 
+            const newTotalDep = (userData.totalDeposited || 0) + amt;
+            await db.collection("users").doc(currentUser.uid).update({ totalDeposited: newTotalDep });
+
+            if (userData.referredBy && (userData.totalDeposited < 500) && newTotalDep >= 500) {
+                await db.collection("users").doc(userData.referredBy).update({
+                    balance: firebase.firestore.FieldValue.increment(50),
+                    referralEarnings: firebase.firestore.FieldValue.increment(50)
+                });
+            }
+
             playSound('win');
             showCustomAlert(`LKR ${amt} உங்கள் வாலட்டில் வரவு வைக்கப்பட்டது!`, "TOP-UP SUCCESS");
             document.getElementById("voucherModal").classList.add("hidden");
             document.getElementById("voucherKeyInput").value = "";
         }
 
-        /**
-         * 11. GENERAL UI NAVIGATION & BUTTON LISTENERS
-         */
         function openProfileModal() {
             if (!currentUser) return showCustomAlert("Please SIGN IN first!", "ACCESS RESTRICTED");
             document.getElementById("dashName").innerText = currentUser.displayName;
@@ -1329,7 +1422,6 @@
         }
 
         function attachListeners() {
-            // High-Contrast Tactile Tier Selector
             document.querySelectorAll(".tier-btn").forEach(btn => {
                 btn.addEventListener("click", () => {
                     playSound('click');
@@ -1346,31 +1438,99 @@
             document.getElementById("submitVoucherBtn").onclick = redeemVoucher;
             document.getElementById("dashConvertStarsBtn").onclick = convertStars;
 
-            // Daily Calendar Modal
+            // Copy referral link
+            document.getElementById("dashCopyRefBtn").onclick = () => {
+                playSound('click');
+                navigator.clipboard.writeText(document.getElementById("dashRefUrl").value);
+                showCustomAlert("Referral link copied!", "COPIED");
+            };
+
             document.getElementById("navDailyTab").onclick = () => { playSound('click'); document.getElementById("dailyCalendarModal").classList.remove("hidden"); };
             document.querySelector(".close-daily-btn").onclick = () => { playSound('click'); document.getElementById("dailyCalendarModal").classList.add("hidden"); };
 
-            // Withdraw Cash
+            // Structured Bank Withdrawal with Minimum LKR 5000 check
             document.getElementById("dashWithdrawBtn").onclick = () => { playSound('click'); document.getElementById("withdrawModal").classList.remove("hidden"); };
+            
             document.getElementById("submitWithdrawBtn").onclick = async () => {
                 const amt = parseInt(document.getElementById("withdrawAmountInput").value);
-                const acc = document.getElementById("withdrawAccountInput").value.trim();
-                if (!amt || amt <= 0 || amt > (userData.balance || 0) || !acc) {
-                    return showCustomAlert("சரியான விபரங்களை உள்ளிடவும்!", "ERROR");
+                const holder = document.getElementById("withdrawHolderName").value.trim();
+                const bank = document.getElementById("withdrawBankName").value.trim();
+                const branch = document.getElementById("withdrawBranch").value.trim();
+                const accNum = document.getElementById("withdrawAccNum").value.trim();
+                const altDetails = document.getElementById("withdrawAltDetails").value.trim();
+
+                if (!amt || isNaN(amt)) return showCustomAlert("வித்ராவல் தொகையை உள்ளிடவும்!", "INVALID AMOUNT");
+                
+                // MINIMUM 5000 LKR RESTRICTION
+                if (amt < 5000) {
+                    return showCustomAlert("குறைந்தபட்ச வித்ராவல் தொகை LKR 5,000 ஆகும்!", "MINIMUM LKR 5000 REQUIRED");
                 }
-                await db.collection("users").doc(currentUser.uid).update({ balance: firebase.firestore.FieldValue.increment(-amt) });
-                const withdrawKey = `GX-CASH-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+                
+                if (amt > (userData.balance || 0)) {
+                    return showCustomAlert("உங்கள் வாலட்டில் போதுமான பேலன்ஸ் இல்லை!", "INSUFFICIENT BALANCE");
+                }
+
+                if (!holder || !bank || !branch || !accNum) {
+                    return showCustomAlert("அனைத்து வங்கி விபரங்களையும் (Name, Bank, Branch, Acc No) பூர்த்தி செய்யவும்!", "DETAILS MISSING");
+                }
+
+                // Deduct from wallet
+                await db.collection("users").doc(currentUser.uid).update({
+                    balance: firebase.firestore.FieldValue.increment(-amt)
+                });
+
+                const withdrawKey = `GX-BANK-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+                await db.collection("withdrawals").add({
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    amount: amt,
+                    accountHolder: holder,
+                    bankName: bank,
+                    branch: branch,
+                    accountNumber: accNum,
+                    alternativeInfo: altDetails || "None",
+                    withdrawKey: withdrawKey,
+                    status: "pending",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
                 document.getElementById("withdrawModal").classList.add("hidden");
-                const msg = encodeURIComponent(`GX STORE BALANCE WITHDRAWAL\nAmount: LKR ${amt}\nRef Key: ${withdrawKey}\nEmail: ${currentUser.email}\nDetails: ${acc}`);
-                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+                
+                // Clear fields
+                document.getElementById("withdrawAmountInput").value = "";
+                document.getElementById("withdrawHolderName").value = "";
+                document.getElementById("withdrawBankName").value = "";
+                document.getElementById("withdrawBranch").value = "";
+                document.getElementById("withdrawAccNum").value = "";
+                document.getElementById("withdrawAltDetails").value = "";
+
+                showCustomAlert(`வெற்றி! LKR ${amt} பணத்திற்கான ரெக்வஸ்ட் பதிவு செய்யப்பட்டுவிட்டது. WhatsApp-ல் வங்கி விபரங்கள் பகிரப்படுகிறது.`, "WITHDRAWAL REGISTERED");
+
+                // Generate Clean Pre-formatted WhatsApp Message for instant receipt return
+                const whatsappMsg = encodeURIComponent(
+                    `*GX STORE - BANK WITHDRAWAL REQUEST*\n` +
+                    `--------------------------------------\n` +
+                    `💰 *Amount:* LKR ${amt}\n` +
+                    `🔑 *Ref Key:* ${withdrawKey}\n` +
+                    `📧 *Email:* ${currentUser.email}\n\n` +
+                    `🏦 *BANK DETAILS:*\n` +
+                    `• *Acc Holder:* ${holder}\n` +
+                    `• *Bank:* ${bank}\n` +
+                    `• *Branch:* ${branch}\n` +
+                    `• *Acc Number:* ${accNum}\n` +
+                    `• *eZ Cash / UID:* ${altDetails || "N/A"}\n` +
+                    `--------------------------------------\n` +
+                    `_Please transfer the amount and send the payment receipt screenshot here._`
+                );
+
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`, "_blank");
             };
 
-            // Navigation
             document.getElementById("navSpinTab").onclick = () => { playSound('click'); document.getElementById("profileModal").classList.add("hidden"); };
             document.getElementById("navProfileTab").onclick = () => { playSound('click'); openProfileModal(); };
             document.getElementById("navAdminTab").onclick = () => { playSound('click'); document.getElementById("adminModal").classList.remove("hidden"); };
 
-            // Modal Closes
             document.querySelectorAll(".close-profile-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("profileModal").classList.add("hidden"); });
             document.querySelectorAll(".close-voucher-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.add("hidden"); });
             document.querySelectorAll(".close-withdraw-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("withdrawModal").classList.add("hidden"); });
