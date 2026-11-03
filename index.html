@@ -19,6 +19,7 @@
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-user-select: none;
+            box-sizing: border-box;
         }
 
         .allow-select {
@@ -28,46 +29,46 @@
 
         body {
             font-family: 'Rajdhani', sans-serif;
-            background: #090a16;
+            background: #080913;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.22) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.20) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.12) 0%, transparent 50%);
+                radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.16) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.10) 0%, transparent 50%);
             color: #f8fafc;
             touch-action: manipulation;
         }
 
         .font-gaming { font-family: 'Orbitron', sans-serif; }
 
-        .glass-panel {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+        .cyber-card {
+            background: rgba(13, 17, 30, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(245, 158, 11, 0.28);
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75);
         }
 
-        .gold-neon-box {
-            box-shadow: 0 0 25px rgba(245, 158, 11, 0.35), inset 0 0 15px rgba(245, 158, 11, 0.15);
-            border: 1px solid rgba(245, 158, 11, 0.4);
+        .gold-glow {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
         }
 
         .wheel-wrapper {
             position: relative;
-            width: 330px;
-            height: 330px;
+            width: 320px;
+            height: 320px;
             margin: auto;
         }
         @media(min-width: 640px) {
-            .wheel-wrapper { width: 380px; height: 380px; }
+            .wheel-wrapper { width: 370px; height: 370px; }
         }
 
         .wheel-pin {
             position: absolute;
-            top: -14px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            width: 36px;
-            height: 48px;
+            width: 34px;
+            height: 46px;
             z-index: 30;
             filter: drop-shadow(0 0 12px #f59e0b);
         }
@@ -75,31 +76,30 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
-    <!-- Top App Navigation -->
-    <header class="glass-panel sticky top-0 z-40 px-4 py-2.5 flex justify-between items-center border-b border-amber-500/20 shadow-2xl">
+    <!-- Top Navigation Bar -->
+    <header class="cyber-card sticky top-0 z-40 px-4 py-2.5 flex justify-between items-center border-b border-amber-500/25">
         <div class="flex items-center gap-2.5">
-            <!-- Custom Logo with Relative Path fallback -->
-            <div class="w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-500 via-purple-500 to-cyan-400 shadow-lg flex items-center justify-center overflow-hidden">
+            <div class="w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-500 via-yellow-300 to-amber-600 shadow-lg flex items-center justify-center overflow-hidden border border-yellow-200/40">
                 <img id="appStoreLogo" src="./logo.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/808/808665.png';" alt="GX" class="w-full h-full object-cover rounded-[14px]">
             </div>
             <div>
                 <h1 class="text-lg font-gaming font-black tracking-wider uppercase leading-none bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 bg-clip-text text-transparent">GX STORE</h1>
-                <span class="text-[9px] text-cyan-400 font-bold tracking-widest uppercase block mt-0.5">GAMING REWARDS SYSTEM</span>
+                <span class="text-[9px] text-cyan-400 font-bold tracking-widest uppercase block mt-0.5">ELITE REWARDS SYSTEM</span>
             </div>
         </div>
 
         <div id="authHeader" class="flex items-center gap-2">
-            <button id="googleSignInBtn" class="bg-gradient-to-r from-white to-gray-200 text-gray-900 text-xs px-3.5 py-1.5 rounded-xl font-bold flex items-center gap-2 shadow-lg active:scale-95 transition">
-                <i class="fa-brands fa-google text-red-500 text-sm"></i> SIGN IN
+            <button id="googleSignInBtn" class="bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-xs px-3.5 py-1.5 rounded-xl font-gaming font-black uppercase flex items-center gap-1.5 shadow-lg active:scale-95 transition">
+                <i class="fa-brands fa-google text-black text-xs"></i> SIGN IN
             </button>
         </div>
     </header>
 
-    <!-- Main Game Arena -->
+    <!-- Main Game Section -->
     <main class="max-w-md w-full mx-auto px-4 py-3 space-y-4">
 
-        <!-- Realtime Wallet & Stars Bar -->
-        <div id="liveBalanceContainer" class="glass-panel rounded-2xl p-3 flex justify-between items-center px-4 border border-cyan-500/30 shadow-lg">
+        <!-- Live Balances Bar -->
+        <div id="liveBalanceContainer" class="cyber-card rounded-2xl p-3 flex justify-between items-center px-4 border border-cyan-500/30">
             <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
                     <i class="fa-solid fa-wallet text-sm"></i>
@@ -122,40 +122,40 @@
                 </div>
             </div>
 
-            <button id="quickTopupBtn" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-gray-950 font-bold text-xs flex items-center gap-1 active:scale-95 transition shadow">
+            <button id="quickTopupBtn" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-gaming font-black text-xs flex items-center gap-1 active:scale-95 transition shadow">
                 <i class="fa-solid fa-plus-circle"></i> TOP-UP
             </button>
         </div>
 
         <!-- Wheel Arena -->
-        <div class="glass-panel rounded-3xl p-5 text-center gold-neon-box relative overflow-hidden">
+        <div class="cyber-card rounded-3xl p-5 text-center gold-glow relative overflow-hidden border border-amber-500/40">
             
             <div class="wheel-wrapper">
-                <!-- Golden Pointer -->
-                <svg class="wheel-pin" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 48L0 16C0 7.16344 8.05887 0 18 0C27.9411 0 36 7.16344 36 16L18 48Z" fill="#F59E0B"/>
-                    <circle cx="18" cy="16" r="6" fill="#090a16"/>
+                <!-- Pointer -->
+                <svg class="wheel-pin" viewBox="0 0 34 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 46L0 15C0 6.71573 7.61116 0 17 0C26.3888 0 34 6.71573 34 15L17 46Z" fill="#F59E0B"/>
+                    <circle cx="17" cy="15" r="5.5" fill="#080912"/>
                 </svg>
 
                 <canvas id="wheelCanvas" width="380" height="380" class="w-full h-full rounded-full transition-transform duration-100"></canvas>
 
                 <!-- Center Center Shield -->
-                <div class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-300 to-amber-600 shadow-2xl flex items-center justify-center border-4 border-gray-950 pointer-events-none">
-                    <i class="fa-solid fa-bolt text-gray-950 text-xl animate-pulse"></i>
+                <div class="absolute inset-0 m-auto w-14 h-14 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-600 shadow-2xl flex items-center justify-center border-4 border-gray-950 pointer-events-none">
+                    <i class="fa-solid fa-bolt text-gray-950 text-lg animate-pulse"></i>
                 </div>
             </div>
 
             <!-- Tier Selector (Betting Options) -->
             <div class="mt-6 grid grid-cols-3 gap-2">
-                <button class="tier-btn py-2 px-1 rounded-2xl text-xs font-bold border border-gray-800 bg-gray-900/80 transition flex flex-col items-center" data-tier="1" data-cost="50">
+                <button class="tier-btn py-2.5 px-1 rounded-2xl text-xs font-bold border border-gray-800 bg-gray-900/90 transition flex flex-col items-center" data-tier="1" data-cost="50">
                     <span class="text-gray-400 text-[9px] uppercase tracking-wider">TIER 1</span>
                     <span class="text-white font-gaming text-xs">LKR 50</span>
                 </button>
-                <button class="tier-btn py-2 px-1 rounded-2xl text-xs font-bold border border-cyan-500/40 bg-gray-900/80 transition flex flex-col items-center" data-tier="2" data-cost="200">
+                <button class="tier-btn py-2.5 px-1 rounded-2xl text-xs font-bold border border-cyan-500/40 bg-gray-900/90 transition flex flex-col items-center" data-tier="2" data-cost="200">
                     <span class="text-cyan-400 text-[9px] uppercase tracking-wider">TIER 2 (BOOST)</span>
                     <span class="text-white font-gaming text-xs">LKR 200</span>
                 </button>
-                <button class="tier-btn active-tier py-2 px-1 rounded-2xl text-xs font-bold border-2 border-amber-400 bg-amber-500/20 text-yellow-300 shadow-lg transition flex flex-col items-center" data-tier="3" data-cost="500">
+                <button class="tier-btn active-tier py-2.5 px-1 rounded-2xl text-xs font-bold border-2 border-amber-400 bg-amber-500/20 text-yellow-300 shadow-lg transition flex flex-col items-center" data-tier="3" data-cost="500">
                     <span class="text-amber-300 text-[9px] uppercase tracking-wider">TIER 3 (GRAND)</span>
                     <span class="text-white font-gaming text-xs">LKR 500</span>
                 </button>
@@ -168,8 +168,8 @@
                 </button>
             </div>
 
-            <!-- Tamil Notice Note -->
-            <div class="mt-3.5 bg-black/60 border border-gray-800 rounded-2xl p-3 text-center">
+            <!-- Notice Box -->
+            <div class="mt-3.5 bg-black/70 border border-gray-800/80 rounded-2xl p-3 text-center">
                 <p class="text-[11px] text-gray-300 leading-relaxed font-sans">
                     💡 <span class="text-amber-400 font-bold">முக்கிய குறிப்பு:</span> தொடர்ச்சியாக அதிகமுறை ஸ்பின் விளையாடும் போது மற்றும் Tier 3 (LKR 500) ஸ்பின் செய்யும் போது மட்டுமே Monthly Pass, Weekly Pass விழும் வாய்ப்புகள் பெருமளவு அதிகரிக்கும்.
                 </p>
@@ -179,7 +179,7 @@
     </main>
 
     <!-- Bottom Navigation Bar -->
-    <nav class="glass-panel sticky bottom-0 z-40 px-6 py-2.5 flex justify-around items-center border-t border-amber-500/20 shadow-2xl">
+    <nav class="cyber-card sticky bottom-0 z-40 px-6 py-2.5 flex justify-around items-center border-t border-amber-500/25">
         <button id="navSpinTab" class="flex flex-col items-center gap-1 text-amber-400">
             <i class="fa-solid fa-circle-dot text-lg"></i>
             <span class="text-[10px] font-gaming font-bold uppercase tracking-wider">SPIN</span>
@@ -194,7 +194,7 @@
         </button>
     </nav>
 
-    <!-- DEDICATED PROFILE DASHBOARD -->
+    <!-- FULLSCREEN MODAL: USER PROFILE & DASHBOARD -->
     <div id="profileModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden flex flex-col justify-between p-4 max-w-md mx-auto overflow-y-auto">
         <div class="space-y-4">
             <div class="flex justify-between items-center pb-3 border-b border-gray-800">
@@ -207,7 +207,8 @@
                 </button>
             </div>
 
-            <div class="glass-panel rounded-2xl p-4 flex items-center gap-4 border border-cyan-500/30">
+            <!-- Profile Info Banner -->
+            <div class="cyber-card rounded-2xl p-4 flex items-center gap-4 border border-cyan-500/30">
                 <img id="dashAvatar" src="" class="w-14 h-14 rounded-2xl border-2 border-amber-400 object-cover shadow-lg">
                 <div class="overflow-hidden">
                     <h3 id="dashName" class="font-bold text-sm text-white truncate">Player</h3>
@@ -216,15 +217,21 @@
                 </div>
             </div>
 
+            <!-- Balances Detail Grid with WITHDRAW BUTTON -->
             <div class="grid grid-cols-2 gap-3">
-                <div class="glass-panel rounded-2xl p-3 text-center border border-cyan-500/20">
+                <div class="cyber-card rounded-2xl p-3 text-center border border-cyan-500/20">
                     <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">CASH BALANCE</span>
                     <span class="text-lg font-gaming font-black text-cyan-300 block mt-0.5">LKR <span id="dashWalletVal">0</span></span>
-                    <button id="dashTopupBtn" class="mt-2 w-full py-1.5 bg-cyan-600/20 hover:bg-cyan-600/30 rounded-xl text-[10px] font-bold text-cyan-300 border border-cyan-500/30 transition">
-                        + TOP-UP
-                    </button>
+                    <div class="flex gap-1 mt-2">
+                        <button id="dashTopupBtn" class="flex-1 py-1.5 bg-cyan-600/20 hover:bg-cyan-600/30 rounded-xl text-[9px] font-bold text-cyan-300 border border-cyan-500/30 transition">
+                            + TOP-UP
+                        </button>
+                        <button id="dashWithdrawBtn" class="flex-1 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 rounded-xl text-[9px] font-bold text-emerald-400 border border-emerald-500/30 transition">
+                            WITHDRAW
+                        </button>
+                    </div>
                 </div>
-                <div class="glass-panel rounded-2xl p-3 text-center border border-amber-500/20">
+                <div class="cyber-card rounded-2xl p-3 text-center border border-amber-500/20">
                     <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">STAR POINTS</span>
                     <span class="text-lg font-gaming font-black text-amber-400 block mt-0.5" id="dashStarsVal">0</span>
                     <button id="dashConvertStarsBtn" class="mt-2 w-full py-1.5 bg-amber-500 hover:bg-amber-400 text-black rounded-xl text-[10px] font-black uppercase transition">
@@ -233,8 +240,8 @@
                 </div>
             </div>
 
-            <!-- Referral Card -->
-            <div class="glass-panel rounded-2xl p-4 space-y-3 border border-purple-500/30">
+            <!-- Referral Program Card -->
+            <div class="cyber-card rounded-2xl p-4 space-y-3 border border-purple-500/30">
                 <div class="flex justify-between items-center">
                     <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
                         <i class="fa-solid fa-users"></i> REFER & EARN
@@ -242,7 +249,7 @@
                     <span class="text-[10px] font-bold text-cyan-400">LKR 50 / FRIEND</span>
                 </div>
 
-                <div class="bg-black/50 border border-gray-800 rounded-xl p-2.5 text-center">
+                <div class="bg-black/60 border border-gray-800 rounded-xl p-2.5 text-center">
                     <p class="text-[11px] text-gray-300 font-sans leading-relaxed">
                         💡 <span class="text-amber-400 font-bold">விதிமுறை:</span> உங்கள் லிங்க் மூலம் இணையும் நண்பர் மொத்தம் <b class="text-white">LKR 500</b> டெபாசிட் செய்து விளையாடும் போது உங்களுக்கு <b class="text-cyan-400">LKR 50</b> ரொக்கம் வாலட்டில் வரவாகும்.
                     </p>
@@ -268,7 +275,7 @@
             </div>
 
             <!-- Prize Winnings Vault -->
-            <div class="glass-panel rounded-2xl p-4 space-y-3 border border-yellow-500/20">
+            <div class="cyber-card rounded-2xl p-4 space-y-3 border border-yellow-500/20">
                 <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
                     <i class="fa-solid fa-trophy"></i> WINNINGS & REWARD VAULT
                 </span>
@@ -284,8 +291,8 @@
     </div>
 
     <!-- MODAL: REDEEM TOP-UP VOUCHER -->
-    <div id="voucherModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel bg-gray-950 w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl border border-amber-500/30">
+    <div id="voucherModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="cyber-card bg-gray-950 w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl border border-amber-500/40">
             <div class="flex justify-between items-center pb-2 border-b border-gray-800">
                 <h3 class="text-xs font-gaming font-bold text-amber-400 uppercase flex items-center gap-2">
                     <i class="fa-solid fa-ticket"></i> REDEEM VOUCHER
@@ -293,7 +300,7 @@
                 <button class="close-voucher-btn text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
-            <div class="bg-black/50 border border-gray-800 rounded-xl p-2.5 text-center">
+            <div class="bg-black/60 border border-gray-800 rounded-xl p-2.5 text-center">
                 <p class="text-[11px] text-gray-300 font-sans">
                     💡 WhatsApp மூலம் நீங்கள் வாங்கிய ரீடீம் குறியீட்டை கீழே உள்ளிடவும்.
                 </p>
@@ -307,9 +314,36 @@
         </div>
     </div>
 
+    <!-- MODAL: CASH WITHDRAWAL REQUEST -->
+    <div id="withdrawModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="cyber-card bg-gray-950 w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl border border-emerald-500/40">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-800">
+                <h3 class="text-xs font-gaming font-bold text-emerald-400 uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-money-bill-wave"></i> WITHDRAW BALANCE
+                </h3>
+                <button class="close-withdraw-btn text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="bg-black/60 border border-gray-800 rounded-xl p-2.5 text-center">
+                <p class="text-[11px] text-gray-300 font-sans">
+                    💡 வாலட்டில் நீங்கள் வென்ற தொகையை நேரடியாக பணமாக அல்லது டாப்-அப் ஆக ரீடீம் செய்யலாம்.
+                </p>
+            </div>
+
+            <div class="space-y-2">
+                <input id="withdrawAmountInput" type="number" placeholder="தொகை (LKR)" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-emerald-400 font-mono outline-none tracking-widest focus:border-emerald-400 transition allow-select">
+                <input id="withdrawAccountInput" type="text" placeholder="Bank Acc / eZ Cash / Free Fire UID" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-emerald-400 transition allow-select">
+            </div>
+
+            <button id="submitWithdrawBtn" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-gaming font-bold text-xs uppercase rounded-xl shadow-lg active:scale-95 transition">
+                CONFIRM & CLAIM ON WHATSAPP
+            </button>
+        </div>
+    </div>
+
     <!-- MODAL: WINNER CELEBRATION POP-UP -->
     <div id="winModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel bg-gray-950 border-2 border-amber-400 w-full max-w-sm rounded-3xl p-6 text-center space-y-4 shadow-2xl relative gold-neon-box">
+        <div class="cyber-card bg-gray-950 border-2 border-amber-400 w-full max-w-sm rounded-3xl p-6 text-center space-y-4 shadow-2xl relative gold-glow">
             <div class="w-20 h-20 mx-auto rounded-full bg-amber-400/10 border-2 border-amber-400 flex items-center justify-center">
                 <img id="winPrizeIcon" src="" class="w-12 h-12 object-contain">
             </div>
@@ -338,9 +372,23 @@
         </div>
     </div>
 
+    <!-- CUSTOM NEON APP-STYLE ALERT MODAL (Replaces Default White Browser Alert) -->
+    <div id="customAlertModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[60] hidden flex items-center justify-center p-4">
+        <div class="cyber-card bg-gray-950 border border-amber-500/50 w-full max-w-xs rounded-3xl p-5 text-center space-y-3 shadow-2xl">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400 text-xl">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <h4 id="customAlertTitle" class="font-gaming font-bold text-xs tracking-wider uppercase text-amber-400">NOTIFICATION</h4>
+            <p id="customAlertMsg" class="text-xs text-gray-300 font-sans leading-relaxed"></p>
+            <button id="customAlertOkBtn" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-gaming font-bold text-xs uppercase rounded-xl shadow-lg active:scale-95 transition">
+                OK
+            </button>
+        </div>
+    </div>
+
     <!-- MODAL: MASTER ADMIN CONTROL PANEL -->
     <div id="adminModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden flex items-center justify-center p-3">
-        <div class="glass-panel bg-gray-950 border border-red-500/40 w-full max-w-md rounded-3xl p-5 space-y-4 max-h-[92vh] flex flex-col">
+        <div class="cyber-card bg-gray-950 border border-red-500/40 w-full max-w-md rounded-3xl p-5 space-y-4 max-h-[92vh] flex flex-col">
             <div class="flex justify-between items-center pb-2 border-b border-gray-800">
                 <h3 class="text-xs font-gaming font-bold text-red-400 uppercase flex items-center gap-2">
                     <i class="fa-solid fa-shield-halved"></i> MASTER ADMIN PANEL
@@ -373,7 +421,7 @@
                 </div>
             </div>
 
-            <!-- Live Prize Config List -->
+            <!-- Prize Management & Image Upload -->
             <div class="flex-1 overflow-y-auto space-y-3 pr-1">
                 <span class="text-xs font-gaming font-bold text-gray-300 block">LIVE PRIZES MANAGEMENT</span>
                 <div id="adminPrizesList" class="space-y-2"></div>
@@ -388,7 +436,22 @@
 
     <script>
         /**
-         * 1. SYNTHESIZED WEB AUDIO ENGINE
+         * 1. APP-STYLE NEON POPUP SYSTEM (No Browser White Popups)
+         */
+        function showCustomAlert(msg, title = "NOTIFICATION") {
+            playSound('click');
+            document.getElementById("customAlertTitle").innerText = title;
+            document.getElementById("customAlertMsg").innerText = msg;
+            document.getElementById("customAlertModal").classList.remove("hidden");
+        }
+
+        document.getElementById("customAlertOkBtn").onclick = () => {
+            playSound('click');
+            document.getElementById("customAlertModal").classList.add("hidden");
+        };
+
+        /**
+         * 2. SYNTHESIZED WEB AUDIO FX
          */
         let audioCtx;
         function getAudioContext() {
@@ -436,10 +499,10 @@
         }
 
         /**
-         * 2. FIREBASE AUTH & FIRESTORE CONFIG
+         * 3. FIREBASE CONFIGURATION
          */
         const firebaseConfig = {
-            apiKey: "AIzaSyBw-YOUR_API_KEY", // Replace with your exact Web API Key from Firebase Project Settings
+            apiKey: "AIzaSyBw-YOUR_API_KEY", // Replace with your exact Web API Key
             authDomain: "spin-free-9d0e3.firebaseapp.com",
             projectId: "spin-free-9d0e3",
             storageBucket: "spin-free-9d0e3.firebasestorage.app",
@@ -455,7 +518,7 @@
         const WHATSAPP_NUMBER = "94742870409";
 
         /**
-         * 3. GAME STATE
+         * 4. STATE & WHEEL SLICES
          */
         let currentUser = null;
         let userData = { balance: 0, stars: 0, totalDeposited: 0, referredBy: null, referralsCount: 0, referralEarnings: 0 };
@@ -477,7 +540,7 @@
         ];
 
         /**
-         * 4. CANVAS WHEEL ENGINE & REALTIME RENDERING
+         * 5. WHEEL ENGINE
          */
         const canvas = document.getElementById("wheelCanvas");
         const ctx = canvas.getContext("2d");
@@ -537,7 +600,7 @@
         }
 
         /**
-         * 5. APPLICATION INITIALIZATION & REALTIME LISTENERS
+         * 6. INITIALIZATION & OBSERVERS
          */
         window.addEventListener("DOMContentLoaded", () => {
             initApplication();
@@ -549,7 +612,6 @@
             const refCode = params.get("ref");
             if (refCode) sessionStorage.setItem("gx_ref_code", refCode);
 
-            // REALTIME SYNC WITHOUT REFRESH
             db.collection("settings").doc("gameConfig").onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
@@ -565,7 +627,6 @@
                 preloadSliceImages();
             });
 
-            // AUTH OBSERVER
             auth.onAuthStateChanged(user => {
                 currentUser = user;
                 renderAuthSection();
@@ -590,8 +651,8 @@
                 if (ADMIN_EMAILS.includes(currentUser.email)) adminNav.classList.remove("hidden");
             } else {
                 authSec.innerHTML = `
-                    <button id="googleSignInBtn" class="bg-gradient-to-r from-white to-gray-200 text-gray-900 text-xs px-3.5 py-1.5 rounded-xl font-bold flex items-center gap-2 shadow-lg active:scale-95 transition">
-                        <i class="fa-brands fa-google text-red-500"></i> SIGN IN
+                    <button id="googleSignInBtn" class="bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-xs px-3.5 py-1.5 rounded-xl font-gaming font-black uppercase flex items-center gap-1.5 shadow-lg active:scale-95 transition">
+                        <i class="fa-brands fa-google text-black text-xs"></i> SIGN IN
                     </button>
                 `;
                 document.getElementById("googleSignInBtn").onclick = () => { playSound('click'); loginWithGoogle(); };
@@ -608,7 +669,7 @@
                 if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request') {
                     await auth.signInWithRedirect(provider);
                 } else {
-                    alert("Google Sign-In Error: " + err.message);
+                    showCustomAlert("Google Sign-In Error: " + err.message, "AUTH ERROR");
                 }
             }
         }
@@ -638,11 +699,9 @@
                         });
                     }
                 }
-                // Live Screen Updates
                 document.getElementById("topWalletBalance").innerText = userData.balance;
                 document.getElementById("topStarsBalance").innerText = userData.stars;
 
-                // Dashboard Updates
                 document.getElementById("dashWalletVal").innerText = userData.balance;
                 document.getElementById("dashStarsVal").innerText = userData.stars;
                 document.getElementById("dashRefTotalCount").innerText = userData.referralsCount || 0;
@@ -652,14 +711,14 @@
         }
 
         /**
-         * 6. STRICT ZERO-LOSS SPIN LOGIC
+         * 7. STRICT ZERO-LOSS MATHEMATICAL SPIN ENGINE
          */
         async function executeSpinLogic() {
             playSound('click');
-            if (!currentUser) return alert("Please SIGN IN with Google first!");
+            if (!currentUser) return showCustomAlert("Please SIGN IN with Google first!", "ACCESS DENIED");
             if (isSpinning) return;
             if (userData.balance < betCost) {
-                alert(`Insufficient Balance! LKR ${betCost} required for this tier.`);
+                showCustomAlert(`Insufficient Balance! LKR ${betCost} required for this tier.`, "LOW BALANCE");
                 document.getElementById("voucherModal").classList.remove("hidden");
                 return;
             }
@@ -667,20 +726,14 @@
             isSpinning = true;
             document.getElementById("spinBtn").disabled = true;
 
-            // Atomic Balance Deduct & Global Pool Add
             await db.runTransaction(async (t) => {
                 t.update(db.collection("users").doc(currentUser.uid), { balance: firebase.firestore.FieldValue.increment(-betCost) });
                 t.update(db.collection("settings").doc("gameConfig"), { globalPool: firebase.firestore.FieldValue.increment(betCost) });
             });
 
-            // Mathematical Filter
             let validSlices = slices.map(s => {
                 let chance = s.prob;
-
-                // Tier-Lock
                 if (currentTier < s.minTier) chance = 0;
-
-                // Dual-Lock: High-end threshold check
                 if (s.threshold > 0 && globalPool < s.threshold) chance = 0;
 
                 if (currentTier === 2 && s.minTier <= 2 && s.type !== "none") chance *= 1.5;
@@ -703,7 +756,6 @@
 
             const winningPrize = slices[outcomeIndex];
 
-            // Wheel Spin Animation
             const numSlices = slices.length;
             const sliceDeg = 360 / numSlices;
             const targetAngle = 360 - (outcomeIndex * sliceDeg) - (sliceDeg / 2) - 90;
@@ -725,7 +777,6 @@
         }
 
         async function completePrizeCycle(prize) {
-            // Auto deduct prize value from global pool
             if (prize.value > 0 && prize.type === "item") {
                 db.collection("settings").doc("gameConfig").update({
                     globalPool: firebase.firestore.FieldValue.increment(-prize.value)
@@ -737,7 +788,7 @@
                 await db.collection("users").doc(currentUser.uid).update({
                     stars: firebase.firestore.FieldValue.increment(prize.value)
                 });
-                alert(`STAR REWARD! +${prize.value} Stars added to your account!`);
+                showCustomAlert(`STAR REWARD! +${prize.value} Stars added to your account!`, "STAR BONUS");
             } else if (prize.type === "item") {
                 playSound('win');
                 confetti({ particleCount: 160, spread: 80, origin: { y: 0.6 } });
@@ -762,16 +813,55 @@
                     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
                 };
             } else {
-                alert("Better luck next time!");
+                showCustomAlert("Better luck next time! தொடர்ந்து ஸ்பின் செய்யுங்கள்.", "TRY AGAIN");
             }
         }
 
         /**
-         * 7. STAR POINTS EXCHANGE (100 Stars = LKR 10)
+         * 8. CASH WITHDRAWAL / BALANCE REDEEM (FOR 5000+ LKR OR ANY WINNINGS)
+         */
+        async function processBalanceWithdrawal() {
+            playSound('click');
+            const amt = parseInt(document.getElementById("withdrawAmountInput").value);
+            const acc = document.getElementById("withdrawAccountInput").value.trim();
+
+            if (!amt || amt <= 0) return showCustomAlert("சரியான தொகையை உள்ளிடவும்!", "INVALID AMOUNT");
+            if (amt > userData.balance) return showCustomAlert("உங்கள் வாலட்டில் போதுமான தொகை இல்லை!", "INSUFFICIENT BALANCE");
+            if (!acc) return showCustomAlert("Bank Account / eZ Cash அல்லது Free Fire UID உள்ளிடவும்!", "DETAILS REQUIRED");
+
+            // Deduct balance from user wallet
+            await db.collection("users").doc(currentUser.uid).update({
+                balance: firebase.firestore.FieldValue.increment(-amt)
+            });
+
+            const withdrawKey = `GX-CASH-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+            await db.collection("withdrawals").add({
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                amount: amt,
+                accountDetails: acc,
+                withdrawKey: withdrawKey,
+                status: "pending",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            document.getElementById("withdrawModal").classList.add("hidden");
+            document.getElementById("withdrawAmountInput").value = "";
+            document.getElementById("withdrawAccountInput").value = "";
+
+            showCustomAlert(`வெற்றி! LKR ${amt} பணத்திற்கான ரெக்வஸ்ட் பதிவு செய்யப்பட்டுவிட்டது. WhatsApp-ல் தகவல் அனுப்பப்படுகிறது.`, "WITHDRAWAL PENDING");
+
+            const msg = encodeURIComponent(`GX STORE BALANCE WITHDRAWAL\nAmount: LKR ${amt}\nRef Key: ${withdrawKey}\nEmail: ${currentUser.email}\nAccount / UID: ${acc}`);
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+        }
+
+        /**
+         * 9. STAR POINTS EXCHANGE (100 Stars = LKR 10)
          */
         async function convertStars() {
             playSound('click');
-            if (userData.stars < 100) return alert("Minimum 100 Stars required to exchange!");
+            if (userData.stars < 100) return showCustomAlert("எக்ஸ்சேஞ்ச் செய்ய குறைந்தபட்சம் 100 Stars தேவை!", "LOW STARS");
 
             const exchangeUnits = Math.floor(userData.stars / 100);
             const starsDeducted = exchangeUnits * 100;
@@ -783,22 +873,22 @@
             });
 
             playSound('win');
-            alert(`SUCCESS! ${starsDeducted} Stars converted to LKR ${cashAdded} Cash!`);
+            showCustomAlert(`${starsDeducted} Stars வெற்றிகரமாக LKR ${cashAdded} ரொக்கமாக வாலட்டில் சேர்க்கப்பட்டது!`, "EXCHANGE SUCCESS");
         }
 
         /**
-         * 8. REDEEM TOP-UP VOUCHER & 500 LKR REFERRAL TRIGGER
+         * 10. REDEEM TOP-UP VOUCHER & 500 LKR REFERRAL TRIGGER
          */
         async function redeemVoucher() {
             playSound('click');
             const code = document.getElementById("voucherKeyInput").value.trim().toUpperCase();
-            if (!code) return alert("Please enter voucher code");
+            if (!code) return showCustomAlert("ரீடீம் குறியீட்டை உள்ளிடவும்", "INPUT REQUIRED");
 
             const vRef = db.collection("vouchers").doc(code);
             const doc = await vRef.get();
 
             if (!doc.exists || doc.data().status !== "active") {
-                return alert("Invalid or already redeemed voucher!");
+                return showCustomAlert("தவறான அல்லது ஏற்கனவே பயன்படுத்தப்பட்ட குறியீடு!", "INVALID KEY");
             }
 
             const amt = doc.data().amount;
@@ -819,13 +909,13 @@
             }
 
             playSound('win');
-            alert(`LKR ${amt} credited to your wallet!`);
+            showCustomAlert(`LKR ${amt} வெற்றிகரமாக உங்கள் வாலட்டில் வரவு வைக்கப்பட்டது!`, "TOP-UP SUCCESS");
             document.getElementById("voucherModal").classList.add("hidden");
             document.getElementById("voucherKeyInput").value = "";
         }
 
         /**
-         * 9. WINNINGS VAULT REALTIME LISTENER
+         * 11. WINNINGS VAULT REALTIME LISTENER
          */
         function listenToUserWinnings(uid) {
             db.collection("winnings").where("userId", "==", uid).orderBy("createdAt", "desc").onSnapshot(snap => {
@@ -837,13 +927,13 @@
                 list.innerHTML = snap.docs.map(doc => {
                     const d = doc.data();
                     return `
-                        <div class="bg-black/60 p-2.5 rounded-xl border border-gray-800 flex justify-between items-center text-xs">
+                        <div class="bg-black/70 p-2.5 rounded-xl border border-gray-800 flex justify-between items-center text-xs">
                             <div>
                                 <span class="font-bold text-white block">${d.prizeName}</span>
                                 <span class="font-mono text-[10px] text-cyan-300 allow-select">${d.redeemKey}</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <button onclick="navigator.clipboard.writeText('${d.redeemKey}'); playSound('click'); alert('Key Copied!');" class="p-1.5 bg-gray-800 rounded-lg text-amber-400 hover:text-white">
+                                <button onclick="navigator.clipboard.writeText('${d.redeemKey}'); playSound('click'); showCustomAlert('Redeem Key Copied!', 'COPIED');" class="p-1.5 bg-gray-800 rounded-lg text-amber-400 hover:text-white">
                                     <i class="fa-solid fa-copy"></i>
                                 </button>
                                 <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Claim Key: ' + d.redeemKey)}" target="_blank" class="px-2.5 py-1 bg-emerald-600 rounded-lg text-[10px] text-white font-bold font-gaming">
@@ -857,17 +947,17 @@
         }
 
         /**
-         * 10. REALTIME ADMIN PRIZE MANAGER
+         * 12. ADMIN PRIZE MANAGER
          */
         function renderAdminPrizesList() {
             const container = document.getElementById("adminPrizesList");
             if (!container) return;
             container.innerHTML = slices.map((s, idx) => `
-                <div class="bg-gray-900/80 p-2.5 rounded-xl border border-gray-800 flex items-center justify-between gap-2 text-xs">
+                <div class="bg-gray-900/90 p-2.5 rounded-xl border border-gray-800 flex items-center justify-between gap-2 text-xs">
                     <img src="${s.imgUrl}" class="w-7 h-7 object-contain">
                     <div class="flex-1 truncate">
                         <span class="font-bold text-white block truncate">${s.name}</span>
-                        <span class="text-[10px] text-gray-400 block">Prob: ${s.prob}% | Tier: ${s.minTier} | Pool Lock: LKR ${s.threshold}</span>
+                        <span class="text-[10px] text-gray-400 block">Prob: ${s.prob}% | Tier: ${s.minTier} | Pool: LKR ${s.threshold}</span>
                     </div>
                     <button onclick="editSlicePrompt(${idx})" class="px-2 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg font-gaming text-[10px]">EDIT</button>
                 </div>
@@ -888,16 +978,15 @@
             slices[idx].threshold = isNaN(newThreshold) ? target.threshold : newThreshold;
             slices[idx].imgUrl = newImg || target.imgUrl;
 
-            // Live update to Firestore (syncs instantly for all active players)
             await db.collection("settings").doc("gameConfig").update({ slices: slices });
-            alert("Prize updated and synced to all live users!");
+            showCustomAlert("Prize updated and synced to all live users!", "ADMIN SYNC");
         }
 
         /**
-         * 11. MODAL TOGGLES & EVENT LISTENERS
+         * 13. MODAL TOGGLES & LISTENERS
          */
         function openProfileModal() {
-            if (!currentUser) return alert("Please SIGN IN first!");
+            if (!currentUser) return showCustomAlert("Please SIGN IN first!", "ACCESS RESTRICTED");
             document.getElementById("dashName").innerText = currentUser.displayName;
             document.getElementById("dashEmail").innerText = currentUser.email;
             document.getElementById("dashAvatar").src = currentUser.photoURL || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
@@ -921,30 +1010,39 @@
             document.getElementById("submitVoucherBtn").onclick = redeemVoucher;
             document.getElementById("dashConvertStarsBtn").onclick = convertStars;
 
+            // Withdraw triggers
+            document.getElementById("dashWithdrawBtn").onclick = () => { playSound('click'); document.getElementById("withdrawModal").classList.remove("hidden"); };
+            document.getElementById("submitWithdrawBtn").onclick = processBalanceWithdrawal;
+
+            // Navigation
             document.getElementById("navSpinTab").onclick = () => { playSound('click'); document.getElementById("profileModal").classList.add("hidden"); };
             document.getElementById("navProfileTab").onclick = () => { playSound('click'); openProfileModal(); };
             document.getElementById("navAdminTab").onclick = () => { playSound('click'); document.getElementById("adminModal").classList.remove("hidden"); };
 
+            // Modal Closes
             document.querySelectorAll(".close-profile-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("profileModal").classList.add("hidden"); });
             document.querySelectorAll(".close-voucher-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.add("hidden"); });
+            document.querySelectorAll(".close-withdraw-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("withdrawModal").classList.add("hidden"); });
             document.querySelectorAll(".close-win-modal").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("winModal").classList.add("hidden"); });
             document.querySelectorAll(".close-admin-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("adminModal").classList.add("hidden"); });
 
+            // Copy actions
             document.getElementById("dashCopyRefBtn").onclick = () => {
                 playSound('click');
                 navigator.clipboard.writeText(document.getElementById("dashRefUrl").value);
-                alert("Referral link copied!");
+                showCustomAlert("Referral link copied!", "COPIED");
             };
             document.getElementById("copyWinKeyBtn").onclick = () => {
                 playSound('click');
                 navigator.clipboard.writeText(document.getElementById("winPrizeKeyText").innerText);
-                alert("Winning key copied!");
+                showCustomAlert("Winning key copied!", "COPIED");
             };
 
+            // Admin Actions
             document.getElementById("adminGenVoucherBtn").onclick = async () => {
                 playSound('click');
                 const amt = parseInt(document.getElementById("adminVoucherAmt").value);
-                if (!amt || amt <= 0) return alert("Enter valid LKR amount");
+                if (!amt || amt <= 0) return showCustomAlert("Enter valid LKR amount", "ADMIN ERROR");
 
                 const key = `GX-${amt}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
                 await db.collection("vouchers").doc(key).set({
@@ -960,7 +1058,7 @@
             document.getElementById("adminCopyKeyBtn").onclick = () => {
                 playSound('click');
                 navigator.clipboard.writeText(document.getElementById("adminKeyText").innerText);
-                alert("Top-up Key Copied!");
+                showCustomAlert("Top-up Key Copied!", "COPIED");
             };
 
             document.getElementById("adminAddPoolBtn").onclick = () => {
