@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GX STORE | PRO CYBER WHEEL & REWARDS</title>
+    <!-- Preconnect for Maximum Speed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap">
+    
+    <!-- Core Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Pro Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti FX -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* Fail-safe Critical CSS - CDN லோட் ஆகாவிட்டாலும் தளம் ஒருபோதும் உடையாது */
+        .hidden { display: none !important; }
+        .flex { display: flex !important; }
+        .grid { display: grid !important; }
+        .block { display: block !important; }
+        .fixed { position: fixed !important; }
+        .relative { position: relative !important; }
+        .absolute { position: absolute !important; }
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .z-50 { z-index: 50 !important; }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            box-sizing: border-box;
+        }
+
+        .allow-select {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Rajdhani', sans-serif;
+            background: #04050a;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 20%, rgba(139, 92, 246, 0.20) 0%, transparent 45%),
+                radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.14) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #f8fafc;
+            touch-action: manipulation;
+            min-height: 100vh;
+        }
+
+        .font-gaming { font-family: 'Orbitron', sans-serif; }
+
+        .cyber-glass {
+            background: rgba(14, 19, 36, 0.72);
+            backdrop-filter: blur(28px) saturate(200%);
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.8),
+                inset 0 1px 1px rgba(255, 255, 255, 0.25);
+        }
+
+        .touch-action {
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            outline: none;
+        }
+        .touch-action:active {
+            transform: scale(0.95);
+            filter: brightness(1.25);
+        }
+        .touch-action.selected {
+            border: 2px solid #f59e0b !important;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.6), inset 0 0 12px rgba(245, 158, 11, 0.3) !important;
+            background: rgba(245, 158, 11, 0.18) !important;
+            transform: translateY(-2px);
+        }
+
+        .gold-neon-glow {
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.4), inset 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            width: 330px;
+            height: 330px;
+            margin: auto;
+            border-radius: 50%;
+            padding: 8px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, rgba(15, 23, 42, 0.9) 70%);
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.35), inset 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+        @media(min-width: 640px) {
+            .wheel-wrapper { width: 375px; height: 375px; }
+        }
+
+        .wheel-pin {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 36px;
+            height: 48px;
+            z-index: 30;
+            filter: drop-shadow(0 0 12px #f59e0b);
+        }
+
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            gap: 2rem;
+            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+        .marquee-content {
+            display: flex;
+            flex-shrink: 0;
+            gap: 2.5rem;
+            animation: scrollMarquee 26s linear infinite;
+        }
+        @keyframes scrollMarquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(-100% - 2.5rem)); }
+        }
+    
+        @keyframes cyberSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .inline-loader {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0,0,0,0.3);
+            border-top: 2px solid #000;
+            border-radius: 50%;
+            animation: cyberSpin 0.6s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+
+    <!-- Realtime Smart Live Winners Bar -->
+    <div class="bg-black/60 backdrop-blur-xl border-b border-white/10 py-2 text-xs">
+        <div class="marquee-container">
+            <div id="marqueeTrack1" class="marquee-content font-mono text-[11px] text-gray-300">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-yellow-400"></i> <b class="text-white">Player_48**</b> won <span class="text-cyan-400">100 Likes</span></span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-trophy text-amber-400"></i> <b class="text-white">Ɗϻ|ㅤBʀᴏᴋᴇɴ</b> won <span class="text-amber-400">Weekly Pass</span></span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-emerald-400"></i> <b class="text-white">Kamal_LK</b> won <span class="text-emerald-400">LKR 50 Cash</span></span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-star text-purple-400"></i> <b class="text-white">Feros_**</b> converted <span class="text-purple-300">200 Stars</span></span>
+            </div>
+            <div id="marqueeTrack2" class="marquee-content font-mono text-[11px] text-gray-300" aria-hidden="true">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-yellow-400"></i> <b class="text-white">Player_48**</b> won <span class="text-cyan-400">100 Likes</span></span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-trophy text-amber-400"></i> <b class="text-white">Ɗϻ|ㅤBʀᴏᴋᴇɴ</b> won <span class="text-amber-400">Weekly Pass</span></span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-emerald-400"></i> <b class="text-white">Kamal_LK</b> won <span class="text-emerald-400">LKR 50 Cash</span></span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-star text-purple-400"></i> <b class="text-white">Feros_**</b> converted <span class="text-purple-300">200 Stars</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Header -->
+    <header class="cyber-glass sticky top-0 z-40 px-4 py-3 flex justify-between items-center rounded-b-3xl border-b border-white/10">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-500 via-yellow-300 to-amber-600 shadow-xl flex items-center justify-center overflow-hidden border border-white/30">
+                <img id="appStoreLogo" src="./logo.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/808/808665.png';" alt="GX" class="w-full h-full object-cover rounded-[14px]">
+            </div>
+            <div>
+                <h1 class="text-lg font-gaming font-black tracking-wider uppercase leading-none bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 bg-clip-text text-transparent">GX STORE</h1>
+                <span class="text-[9px] text-cyan-400 font-bold tracking-widest uppercase block mt-0.5">CYBER ELITE REWARDS</span>
+            </div>
+        </div>
+
+        <div id="authHeader" class="flex items-center gap-2">
+            <button id="googleSignInBtn" class="touch-action bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-xs px-4 py-2 rounded-2xl font-gaming font-black uppercase flex items-center gap-1.5 shadow-lg">
+                <i class="fa-brands fa-google text-black text-xs"></i> SIGN IN
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game Section -->
+    <main class="max-w-md w-full mx-auto px-4 py-3.5 space-y-3.5">
+
+        <!-- Live Balances Bar -->
+        <div id="liveBalanceContainer" class="cyber-glass rounded-3xl p-3.5 flex justify-between items-center px-4">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-inner">
+                    <i class="fa-solid fa-wallet text-sm"></i>
+                </div>
+                <div>
+                    <span class="text-[8px] text-gray-400 uppercase font-bold tracking-wider block">WALLET</span>
+                    <span class="text-sm font-gaming font-bold text-cyan-300">LKR <span id="topWalletBalance">0</span></span>
+                </div>
+            </div>
+
+            <div class="h-7 w-[1px] bg-white/10"></div>
+
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-inner">
+                    <i class="fa-solid fa-star text-sm"></i>
+                </div>
+                <div>
+                    <span class="text-[8px] text-gray-400 uppercase font-bold tracking-wider block">STARS</span>
+                    <span class="text-sm font-gaming font-bold text-amber-400" id="topStarsBalance">0</span>
+                </div>
+            </div>
+
+            <div class="h-7 w-[1px] bg-white/10"></div>
+
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 shadow-inner">
+                    <i class="fa-solid fa-ticket text-sm"></i>
+                </div>
+                <div>
+                    <span class="text-[8px] text-gray-400 uppercase font-bold tracking-wider block">FREE</span>
+                    <span class="text-sm font-gaming font-bold text-purple-400" id="topFreeTicketsBalance">0</span>
+                </div>
+            </div>
+
+            <button id="quickTopupBtn" class="touch-action px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-gaming font-black text-[10px] flex items-center gap-1 shadow-lg">
+                <i class="fa-solid fa-plus-circle"></i> TOP-UP
+            </button>
+        </div>
+
+        <!-- Wheel Arena -->
+        <div class="cyber-glass rounded-[36px] p-5 text-center gold-neon-glow relative overflow-hidden">
+            
+            <div class="wheel-wrapper">
+                <!-- Golden Pointer -->
+                <svg class="wheel-pin" viewBox="0 0 34 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 46L0 15C0 6.71573 7.61116 0 17 0C26.3888 0 34 6.71573 34 15L17 46Z" fill="url(#pinGlow)"/>
+                    <circle cx="17" cy="15" r="5.5" fill="#04050a"/>
+                    <defs>
+                        <linearGradient id="pinGlow" x1="0" y1="0" x2="34" y2="46" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#FDE047"/>
+                            <stop offset="0.5" stop-color="#F59E0B"/>
+                            <stop offset="1" stop-color="#D97706"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <canvas id="wheelCanvas" width="380" height="380" class="w-full h-full rounded-full transition-transform duration-100"></canvas>
+
+                <!-- Center Core -->
+                <div class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-600 shadow-2xl flex items-center justify-center border-4 border-gray-950 pointer-events-none">
+                    <i class="fa-solid fa-bolt text-gray-950 text-xl animate-pulse"></i>
+                </div>
+            </div>
+
+            <!-- Tier Selector -->
+            <div class="mt-5 grid grid-cols-4 gap-2">
+                <button class="tier-btn touch-action py-2.5 px-1 rounded-2xl border border-purple-500/30 bg-purple-950/30 text-purple-300 flex flex-col items-center" data-tier="0" data-cost="0">
+                    <span class="text-purple-400 text-[8px] uppercase tracking-wider font-bold">FREE TICKET</span>
+                    <span class="text-white font-gaming text-[11px] font-bold">1 CARD</span>
+                </button>
+                <button class="tier-btn touch-action py-2.5 px-1 rounded-2xl border border-white/10 bg-white/5 text-gray-300 flex flex-col items-center" data-tier="1" data-cost="50">
+                    <span class="text-gray-400 text-[8px] uppercase tracking-wider font-bold">TIER 1</span>
+                    <span class="text-white font-gaming text-[11px] font-bold">LKR 50</span>
+                </button>
+                <button class="tier-btn touch-action py-2.5 px-1 rounded-2xl border border-cyan-500/30 bg-cyan-950/20 text-cyan-300 flex flex-col items-center" data-tier="2" data-cost="200">
+                    <span class="text-cyan-400 text-[8px] uppercase tracking-wider font-bold">TIER 2</span>
+                    <span class="text-white font-gaming text-[11px] font-bold">LKR 200</span>
+                </button>
+                <button class="tier-btn active-tier selected touch-action py-2.5 px-1 rounded-2xl border border-amber-400 bg-amber-500/20 text-yellow-300 flex flex-col items-center" data-tier="3" data-cost="500">
+                    <span class="text-amber-300 text-[8px] uppercase tracking-wider font-bold">TIER 3</span>
+                    <span class="text-white font-gaming text-[11px] font-bold">LKR 500</span>
+                </button>
+            </div>
+
+            <!-- Spin Trigger Action -->
+            <div class="mt-4">
+                <button id="spinBtn" class="touch-action w-full py-4 rounded-3xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-gray-950 font-gaming font-black text-base tracking-widest uppercase shadow-2xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i> SPIN WHEEL
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="cyber-glass sticky bottom-0 z-40 px-6 py-3 flex justify-around items-center rounded-t-3xl border-t border-white/10">
+        <button id="navSpinTab" class="touch-action flex flex-col items-center gap-1 text-amber-400">
+            <i class="fa-solid fa-circle-dot text-lg"></i>
+            <span class="text-[10px] font-gaming font-bold uppercase tracking-wider">SPIN</span>
+        </button>
+        <button id="navDailyTab" class="touch-action flex flex-col items-center gap-1 text-purple-400 hover:text-purple-300 transition">
+            <i class="fa-solid fa-gift text-lg"></i>
+            <span class="text-[10px] font-gaming font-bold uppercase tracking-wider">DAILY</span>
+        </button>
+        <button id="navProfileTab" class="touch-action flex flex-col items-center gap-1 text-gray-400 hover:text-amber-400 transition">
+            <i class="fa-solid fa-user-astronaut text-lg"></i>
+            <span class="text-[10px] font-gaming font-bold uppercase tracking-wider">PROFILE</span>
+        </button>
+        <button id="navAdminTab" class="hidden touch-action flex flex-col items-center gap-1 text-red-400 hover:text-red-300 transition">
+            <i class="fa-solid fa-shield-halved text-lg"></i>
+            <span class="text-[10px] font-gaming font-bold uppercase tracking-wider">ADMIN</span>
+        </button>
+    </nav>
+
+    <!-- FULLSCREEN MODAL: USER DASHBOARD WITH INTEGRATED REFERRAL PROGRAM -->
+    <div id="profileModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex flex-col justify-between p-4 max-w-md mx-auto overflow-y-auto">
+        <div class="space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-astronaut text-amber-400 text-lg"></i>
+                    <h2 class="font-gaming font-bold text-sm tracking-wider uppercase text-white">PLAYER DASHBOARD</h2>
+                </div>
+                <button class="close-profile-btn w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Profile Info Banner -->
+            <div class="cyber-glass rounded-3xl p-4 flex items-center gap-4">
+                <img id="dashAvatar" src="" class="w-14 h-14 rounded-2xl border-2 border-amber-400 object-cover shadow-lg">
+                <div class="overflow-hidden flex-1">
+                    <h3 id="dashName" class="font-bold text-sm text-white truncate">Player</h3>
+                    <p id="dashEmail" class="text-xs text-gray-400 truncate font-mono">user@gmail.com</p>
+                    <div class="flex items-center gap-1.5 mt-1 bg-black/40 px-2 py-1 rounded-lg border border-white/10 w-fit">
+                        <span class="text-[9px] text-gray-400 font-mono">ID:</span>
+                        <span id="dashUserUidText" class="text-[9px] text-cyan-300 font-mono font-bold truncate allow-select">GX-PLAYER</span>
+                        <button id="dashCopyUidBtn" class="touch-action text-[10px] text-amber-400 hover:text-white p-0.5 ml-1"><i class="fa-solid fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Balances Detail Grid -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="cyber-glass rounded-3xl p-4 text-center">
+                    <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">WALLET CASH</span>
+                    <span class="text-lg font-gaming font-black text-cyan-300 block mt-0.5">LKR <span id="dashWalletVal">0</span></span>
+                    <div class="flex gap-1.5 mt-3">
+                        <button id="dashTopupBtn" class="touch-action flex-1 py-2 bg-cyan-600/20 rounded-xl text-[9px] font-bold text-cyan-300 border border-cyan-500/30">
+                            + TOP-UP
+                        </button>
+                        <button id="dashWithdrawBtn" class="touch-action flex-1 py-2 bg-emerald-600/20 rounded-xl text-[9px] font-bold text-emerald-400 border border-emerald-500/30">
+                            WITHDRAW
+                        </button>
+                    </div>
+                </div>
+                <div class="cyber-glass rounded-3xl p-4 text-center">
+                    <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider block">STAR POINTS</span>
+                    <span class="text-lg font-gaming font-black text-amber-400 block mt-0.5" id="dashStarsVal">0</span>
+                    <button id="dashConvertStarsBtn" class="touch-action mt-3 w-full py-2 bg-amber-500 text-black rounded-xl text-[9px] font-black uppercase">
+                        EXCHANGE (100:10)
+                    </button>
+                </div>
+            </div>
+
+            <!-- REFER & EARN PROGRAM -->
+            <div class="cyber-glass rounded-3xl p-4 space-y-3 border border-purple-500/30">
+                <div class="flex justify-between items-center">
+                    <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
+                        <i class="fa-solid fa-users text-purple-400"></i> REFER & EARN
+                    </span>
+                    <span class="text-[10px] font-bold text-cyan-400">LKR 50 / FRIEND</span>
+                </div>
+
+                <div class="bg-black/60 border border-white/5 rounded-2xl p-2.5 text-center">
+                    <p class="text-[11px] text-gray-300 font-sans leading-relaxed">
+                        💡 உங்கள் பிரத்யேக லிங்க் மூலம் இணையும் நண்பர் மொத்தம் <b class="text-white">LKR 500</b> டெபாசிட் செய்து விளையாடும் போது உங்களுக்கு <b class="text-cyan-400">LKR 50</b> ரொக்கம் வாலட்டில் சேரும்.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-2 bg-black/50 p-2 rounded-2xl border border-white/10">
+                    <input id="dashRefUrl" readonly type="text" class="bg-transparent text-xs text-gray-300 font-mono flex-1 outline-none px-2 allow-select">
+                    <button id="dashCopyRefBtn" class="touch-action bg-amber-400 hover:bg-amber-300 text-black px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-copy"></i> COPY
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-center pt-1">
+                    <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+                        <span class="text-[9px] text-gray-400 uppercase block font-bold">TOTAL REFERRED</span>
+                        <span id="dashRefTotalCount" class="font-gaming font-bold text-sm text-yellow-400">0</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+                        <span class="text-[9px] text-gray-400 uppercase block font-bold">EARNED REWARD</span>
+                        <span id="dashRefEarnedVal" class="font-gaming font-bold text-sm text-cyan-300">LKR 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prize Winnings Vault -->
+            <div class="cyber-glass rounded-3xl p-4 space-y-3">
+                <span class="font-gaming text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy"></i> REWARD VAULT
+                </span>
+                <div id="dashWinningsContainer" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+            </div>
+
+            <button id="dashLogoutBtn" class="touch-action w-full py-3.5 bg-red-600/10 text-red-400 border border-red-500/20 rounded-2xl text-xs font-bold uppercase flex items-center justify-center gap-2">
+                <i class="fa-solid fa-right-from-bracket"></i> LOGOUT ACCOUNT
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: DETAILED BANK WITHDRAWAL REQUEST (MINIMUM 5000 LKR) -->
+    <div id="withdrawModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-3">
+        <div class="cyber-glass w-full max-w-sm rounded-[32px] p-5 space-y-3.5 border border-emerald-500/40 max-h-[92vh] overflow-y-auto">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <h3 class="text-xs font-gaming font-bold text-emerald-400 uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns"></i> BANK WITHDRAWAL
+                </h3>
+                <button class="close-withdraw-btn text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-2xl p-2.5 text-center">
+                <p class="text-[11px] text-emerald-300 font-sans">
+                    💡 <span class="font-bold">விதிமுறை:</span> குறைந்தபட்ச வித்ராவல் தொகை <b class="text-white">LKR 5,000</b>. பணம் அனுப்பப்பட்டதும் ரசீது வாட்ஸ்அப்பில் வழங்கப்படும்.
+                </p>
+            </div>
+
+            <div class="space-y-2">
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">வித்ராவல் தொகை (MIN LKR 5000)</label>
+                    <input id="withdrawAmountInput" type="number" min="5000" placeholder="5000" class="w-full bg-black/50 border border-emerald-500/40 rounded-xl px-3 py-2 text-sm text-emerald-400 font-mono outline-none tracking-wider focus:border-emerald-400 allow-select">
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">கணக்கு வைத்திருப்பவர் பெயர் (Acc Holder Name)</label>
+                    <input id="withdrawHolderName" type="text" placeholder="Mohamed Feros" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-400 allow-select">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">வங்கிப் பெயர் (Bank Name)</label>
+                        <input id="withdrawBankName" type="text" placeholder="Commercial Bank / BOC" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-400 allow-select">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">கிளை (Branch)</label>
+                        <input id="withdrawBranch" type="text" placeholder="Nintavur / Colombo" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-400 allow-select">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">வங்கி கணக்கு எண் (Account Number)</label>
+                    <input id="withdrawAccNum" type="number" placeholder="8001234567" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono outline-none focus:border-emerald-400 allow-select">
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">eZ Cash எண் அல்லது Free Fire UID (விருப்பப்பட்டால்)</label>
+                    <input id="withdrawAltDetails" type="text" placeholder="07XXXXXXXX / 123456789" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-gray-300 outline-none focus:border-emerald-400 allow-select">
+                </div>
+            </div>
+
+            <button id="submitWithdrawBtn" class="touch-action w-full py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
+                CONFIRM & SEND DETAILS TO WHATSAPP
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: FREE FIRE UID FOR LIKES -->
+    <div id="uidInputModal" class="fixed inset-0 bg-black/85 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4">
+        <div class="cyber-glass w-full max-w-sm rounded-[32px] p-6 space-y-4 text-center">
+            <div class="w-16 h-16 mx-auto rounded-3xl bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center text-cyan-300 text-2xl">
+                <i class="fa-solid fa-thumbs-up"></i>
+            </div>
+            <div>
+                <span class="text-xs font-gaming font-bold text-cyan-400 tracking-widest uppercase block">CONGRATULATIONS!</span>
+                <h3 id="uidPrizeTitle" class="text-xl font-gaming font-black text-white mt-1">100 FREE FIRE LIKES</h3>
+                <p class="text-xs text-gray-400 mt-1">லைக்குகளைப் பெற உங்கள் Free Fire Player UID-ஐ உள்ளிடவும்</p>
+            </div>
+
+            <input id="playerUidInput" type="number" placeholder="Free Fire UID (e.g. 192837465)" class="w-full bg-black/50 border border-cyan-500/40 rounded-2xl px-4 py-3 text-sm text-cyan-300 font-mono text-center outline-none focus:border-cyan-400 transition allow-select">
+
+            <button id="submitUidBtn" class="touch-action w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-black font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
+                CONFIRM & CLAIM ON WHATSAPP
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: WINNER CELEBRATION -->
+    <div id="winModal" class="fixed inset-0 bg-black/85 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4">
+        <div class="cyber-glass w-full max-w-sm rounded-[36px] p-6 text-center space-y-4 relative border border-amber-500/40">
+            <div class="w-20 h-20 mx-auto rounded-3xl bg-amber-400/10 border border-amber-400/40 flex items-center justify-center p-2">
+                <img id="winPrizeIcon" src="" class="w-full h-full object-contain">
+            </div>
+
+            <div>
+                <span class="text-xs font-gaming font-bold text-amber-400 tracking-widest uppercase block">CONGRATULATIONS!</span>
+                <h2 id="winPrizeTitle" class="text-xl font-gaming font-black text-white mt-1">PRIZE NAME</h2>
+            </div>
+
+            <div class="bg-black/60 p-3.5 rounded-2xl border border-white/10">
+                <span class="text-[9px] text-gray-400 font-mono uppercase block mb-1">REDEEM SECRET KEY</span>
+                <div class="flex items-center justify-center gap-2">
+                    <span id="winPrizeKeyText" class="font-mono text-xs font-bold text-cyan-300 allow-select tracking-wider">GX-WIN-XXXX</span>
+                    <button id="copyWinKeyBtn" class="text-xs text-amber-400 hover:text-white p-1"><i class="fa-solid fa-copy"></i></button>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button id="winWhatsAppClaimBtn" class="touch-action flex-1 py-3.5 bg-emerald-600 text-white font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
+                    CLAIM ON WHATSAPP
+                </button>
+                <button class="close-win-modal touch-action px-5 py-3.5 bg-white/10 text-gray-300 font-bold text-xs uppercase rounded-2xl">
+                    CLOSE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: 15-DAYS REWARD CALENDAR -->
+    <div id="dailyCalendarModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex flex-col justify-between p-4 max-w-md mx-auto overflow-y-auto">
+        <div class="space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-days text-purple-400 text-lg"></i>
+                    <h2 class="font-gaming font-bold text-sm tracking-wider uppercase text-white">15-DAYS REWARDS</h2>
+                </div>
+                <button class="close-daily-btn w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="dailyRewardsGrid" class="grid grid-cols-3 gap-2.5 max-h-[70vh] overflow-y-auto pr-1"></div>
+        </div>
+    </div>
+
+            <!-- MODAL: MASTER ADMIN PANEL WITH PRO TABBED UI -->
+    <div id="adminModal" class="fixed inset-0 bg-black/95 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-3">
+        <div class="cyber-glass border border-red-500/40 w-full max-w-md rounded-[32px] p-4 flex flex-col shadow-2xl h-[88vh]">
+            
+            <!-- 1. Header (Fixed Inside Box) -->
+            <div class="flex justify-between items-center pb-2.5 border-b border-white/10 flex-shrink-0">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
+                        <i class="fa-solid fa-shield-halved text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-gaming font-black text-red-400 uppercase tracking-wider">MASTER CONTROL PANEL</h3>
+                        <span class="text-[9px] text-gray-400 font-mono">GX STORE SYSTEM ENGINE</span>
+                    </div>
+                </div>
+                <button class="close-admin-btn w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- 2. Global Pool Banner (Fixed Inside Box) -->
+            <div class="bg-black/60 p-2.5 my-2.5 rounded-2xl border border-white/10 flex justify-between items-center px-4 flex-shrink-0">
+                <div>
+                    <span class="text-[8px] text-gray-400 uppercase font-bold tracking-wider block">GLOBAL POOL</span>
+                    <span class="text-base font-gaming font-bold text-amber-400 font-mono">LKR <span id="adminPoolVal">0</span></span>
+                </div>
+                <div class="flex gap-1.5 items-center">
+                    <button id="adminResetPoolBtn" class="touch-action bg-red-600/20 text-red-400 px-2.5 py-1.5 rounded-xl text-[10px] font-bold border border-red-500/30">RESET</button>
+                    <input id="adminPoolAddInput" type="number" placeholder="LKR" class="w-16 bg-white/5 border border-white/10 px-2 py-1 rounded-xl text-xs text-white allow-select font-mono">
+                    <button id="adminAddPoolBtn" class="touch-action bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl text-xs font-bold font-gaming">+ ADD</button>
+                </div>
+            </div>
+
+            <!-- 3. Navigation Tabs (Fixed Inside Box) -->
+            <div class="grid grid-cols-3 gap-1.5 p-1 bg-black/60 rounded-2xl border border-white/5 mb-3 flex-shrink-0">
+                <button id="admTabVouchersBtn" class="touch-action py-2 rounded-xl text-xs font-gaming font-bold bg-amber-500 text-black shadow">🎟️ KEYS</button>
+                <button id="admTabPlayersBtn" class="touch-action py-2 rounded-xl text-xs font-gaming font-bold text-gray-400 hover:text-white">⭐ USERS</button>
+                <button id="admTabPrizesBtn" class="touch-action py-2 rounded-xl text-xs font-gaming font-bold text-gray-400 hover:text-white">🎡 PRIZES</button>
+            </div>
+
+            <!-- 4. Scrollable Content Area (Inside Box Only) -->
+            <div class="overflow-y-auto flex-1 pr-1 space-y-3">
+                
+                <!-- TAB 1: KEYS & PROMO -->
+                <div id="admSectionVouchers" class="space-y-3">
+                    <!-- Single Voucher -->
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-amber-500/30 space-y-2.5">
+                        <span class="text-[10px] font-gaming font-bold text-amber-400 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-key"></i> 1-USER TOP-UP VOUCHER
+                        </span>
+                        <div class="flex gap-2">
+                            <input id="adminVoucherAmt" type="number" placeholder="Amount (LKR)" class="w-1/2 bg-white/5 border border-white/10 px-3 py-2.5 rounded-xl text-xs text-white font-mono allow-select outline-none focus:border-amber-400">
+                            <button id="adminGenVoucherBtn" class="touch-action flex-1 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-gaming font-black rounded-xl text-xs uppercase flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-bolt"></i> GENERATE
+                            </button>
+                        </div>
+                        <div id="adminKeyBox" class="hidden flex items-center justify-between bg-amber-950/20 p-2.5 rounded-xl border border-amber-400/40">
+                            <span id="adminKeyText" class="font-mono text-cyan-300 font-bold text-xs allow-select">KEY</span>
+                            <button id="adminCopyKeyBtn" class="touch-action px-3 py-1 bg-amber-400 text-black rounded-lg text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-copy"></i> COPY</button>
+                        </div>
+                    </div>
+
+                    <!-- Multi-User Promo -->
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-cyan-500/30 space-y-2.5">
+                        <span class="text-[10px] font-gaming font-bold text-cyan-400 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-gift"></i> AUTO MULTI-USER PROMO CAMPAIGN
+                        </span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="adminPromoRewardType" class="bg-gray-900 border border-white/10 px-2 py-2 rounded-xl text-xs text-cyan-300 font-bold">
+                                <option value="cash">💵 LKR CASH</option>
+                                <option value="star">⭐ STAR POINTS</option>
+                            </select>
+                            <input id="adminPromoAmt" type="number" placeholder="Value per user" class="bg-white/5 border border-white/10 px-3 py-2 rounded-xl text-xs text-white font-mono allow-select outline-none">
+                        </div>
+                        <div class="flex gap-2">
+                            <input id="adminPromoLimit" type="number" placeholder="Max Users (e.g. 50)" class="w-1/2 bg-white/5 border border-white/10 px-3 py-2 rounded-xl text-xs text-white font-mono allow-select outline-none">
+                            <button id="adminGenPromoBtn" class="touch-action flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-gaming font-black rounded-xl text-xs uppercase flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> AUTO CREATE
+                            </button>
+                        </div>
+                        <div id="adminPromoResultBox" class="hidden flex items-center justify-between bg-cyan-950/20 p-2.5 rounded-xl border border-cyan-400/40">
+                            <span id="adminPromoResultKey" class="font-mono text-amber-300 font-bold text-xs allow-select">PROMO</span>
+                            <button id="adminCopyPromoBtn" class="touch-action px-3 py-1 bg-cyan-400 text-black rounded-lg text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-copy"></i> COPY</button>
+                        </div>
+                    </div>
+
+                    <!-- Promo Tracker -->
+                    <div class="pt-2 border-t border-white/10 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[9px] font-gaming font-bold text-gray-400 uppercase tracking-wider">ACTIVE PROMO CAMPAIGNS</span>
+                            <button id="refreshPromosBtn" onclick="renderAdminPromoList()" class="touch-action text-[10px] text-cyan-400 font-bold hover:underline"><i class="fa-solid fa-arrows-rotate"></i> REFRESH</button>
+                        </div>
+                        <div id="adminPromoCampaignsList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                            <p class="text-[10px] text-gray-500 text-center py-2">Loading campaigns...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: USERS & DIRECT CREDITOR -->
+                <div id="admSectionPlayers" class="hidden space-y-3">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-black/60 p-3 rounded-2xl border border-cyan-500/30 text-center">
+                            <span class="text-[9px] text-gray-400 font-bold uppercase block tracking-wider">TOTAL PLAYERS</span>
+                            <span id="admTotalUsersCount" class="font-gaming font-black text-base text-cyan-300 font-mono">0</span>
+                        </div>
+                        <div class="bg-black/60 p-3 rounded-2xl border border-emerald-500/30 text-center">
+                            <span class="text-[9px] text-gray-400 font-bold uppercase block tracking-wider">TOTAL DEPOSITED</span>
+                            <span id="admTotalDepositsVal" class="font-gaming font-black text-base text-emerald-400 font-mono">LKR 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Direct Cash Creditor -->
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-emerald-500/40 space-y-2.5">
+                        <span class="text-[10px] font-gaming font-bold text-emerald-400 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-money-bill-wave"></i> DIRECT WALLET CASH CREDITOR (LKR)
+                        </span>
+                        <input id="adminCashTargetUser" type="text" placeholder="User Email or Player UID" class="w-full bg-white/5 border border-white/10 px-3 py-2 rounded-xl text-xs text-white font-mono allow-select outline-none focus:border-emerald-400">
+                        <input id="adminCashAmount" type="number" placeholder="Cash Amount (LKR)" class="w-full bg-white/5 border border-white/10 px-3 py-2 rounded-xl text-xs text-emerald-400 font-mono allow-select outline-none focus:border-emerald-400">
+                        <button id="adminCreditCashBtn" class="touch-action w-full py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 text-black font-gaming font-bold rounded-xl text-xs uppercase shadow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-wallet"></i> CREDIT CASH TO WALLET
+                        </button>
+                    </div>
+
+                    <!-- Direct Star Creditor -->
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-purple-500/30 space-y-2.5">
+                        <span class="text-[10px] font-gaming font-bold text-purple-300 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-star"></i> DIRECT STAR POINTS CREDITOR
+                        </span>
+                        <input id="adminStarTargetUser" type="text" placeholder="User Email or Player UID" class="w-full bg-white/5 border border-white/10 px-3 py-2 rounded-xl text-xs text-white font-mono allow-select outline-none focus:border-purple-400">
+                        <input id="adminStarAmount" type="number" placeholder="Star Points Amount" class="w-full bg-white/5 border border-white/10 px-3 py-2 rounded-xl text-xs text-amber-400 font-mono allow-select outline-none focus:border-purple-400">
+                        <button id="adminCreditStarsBtn" class="touch-action w-full py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-gaming font-bold rounded-xl text-xs uppercase shadow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus-circle"></i> CREDIT STARS TO PLAYER
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PRIZES -->
+                <div id="admSectionPrizes" class="hidden space-y-3">
+                    <div class="bg-black/50 p-3 rounded-2xl border border-white/10 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span id="prizeFormTitle" class="text-[10px] font-gaming font-bold text-amber-400 uppercase">+ ADD / EDIT PRO PRIZE</span>
+                            <button id="cancelEditBtn" class="hidden text-[9px] text-gray-400 hover:text-white underline">CANCEL</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <input id="formPrizeName" type="text" placeholder="Prize Name" class="bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-white allow-select">
+                            <select id="formPrizeBadge" class="bg-gray-900 border border-white/10 px-2 py-1.5 rounded-xl text-xs text-amber-400">
+                                <option value="GRAND">🔥 GRAND</option>
+                                <option value="MEDIUM">⚡ MEDIUM</option>
+                                <option value="COMMON">🎁 COMMON</option>
+                                <option value="STAR">⭐ STAR POINTS</option>
+                                <option value="LIKES">👍 LIKES</option>
+                                <option value="CASH">💵 DIRECT CASH</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between bg-black/60 px-2 py-1.5 rounded-xl border border-white/5 text-[9px]">
+                            <span class="text-gray-400 uppercase font-bold">TIERS:</span>
+                            <label class="flex items-center gap-1 text-purple-300"><input type="checkbox" id="tierCheck0"> Free</label>
+                            <label class="flex items-center gap-1 text-gray-300"><input type="checkbox" id="tierCheck1" checked> T1</label>
+                            <label class="flex items-center gap-1 text-cyan-300"><input type="checkbox" id="tierCheck2" checked> T2</label>
+                            <label class="flex items-center gap-1 text-amber-300"><input type="checkbox" id="tierCheck3" checked> T3</label>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <input id="formPrizeProb" type="number" step="0.1" placeholder="Prob %" class="bg-white/5 border border-white/10 px-2 py-1.5 rounded-xl text-xs text-white allow-select font-mono">
+                            <input id="formPrizeVal" type="number" placeholder="Val LKR" class="bg-white/5 border border-white/10 px-2 py-1.5 rounded-xl text-xs text-white allow-select font-mono">
+                            <input id="formPrizeThreshold" type="number" placeholder="Lock LKR" class="bg-white/5 border border-white/10 px-2 py-1.5 rounded-xl text-xs text-white allow-select font-mono">
+                        </div>
+                        <div class="flex items-center gap-2 pt-1">
+                            <label class="flex-1 py-1.5 bg-white/5 border border-dashed border-white/20 rounded-xl text-center text-[10px] text-gray-300 cursor-pointer">
+                                <i class="fa-solid fa-image text-amber-400"></i> <span id="galleryUploadLabel">PNG IMAGE</span>
+                                <input id="formPrizeImgFile" type="file" accept="image/png" class="hidden">
+                            </label>
+                            <button id="formSavePrizeBtn" class="touch-action py-1.5 px-3 bg-amber-400 text-black font-gaming font-bold text-xs rounded-xl uppercase">SAVE</button>
+                        </div>
+                    </div>
+                    <div id="adminPrizesList" class="space-y-1.5"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: TOP-UP VOUCHER -->
+        <!-- MODAL: TOP-UP WALLET / BUY VOUCHER VIA WHATSAPP -->
+    <div id="voucherModal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4">
+        <div class="cyber-glass w-full max-w-sm rounded-[32px] p-6 space-y-4 border border-amber-500/40">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <h3 class="text-xs font-gaming font-bold text-amber-400 uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-wallet"></i> TOP-UP WALLET
+                </h3>
+                <button class="close-voucher-btn text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- BUY VOUCHER / WHATSAPP ORDER SECTION -->
+            <div class="bg-black/40 p-3 rounded-2xl border border-amber-400/30 space-y-2 text-center">
+                <span class="text-[10px] font-gaming font-bold text-amber-400 uppercase block">1. BUY TOP-UP VIA WHATSAPP</span>
+                <p class="text-[11px] text-gray-300">டாப்-அப் செய்ய வேண்டிய தொகையை (LKR) உள்ளிட்டு வாட்ஸ்அப்பில் ஆர்டர் செய்யவும்.</p>
+                <input id="buyTopupAmountInput" type="number" placeholder="தொகை (எ.கா: 500)" class="w-full bg-black/50 border border-white/20 rounded-xl px-3 py-2.5 text-sm text-amber-400 font-mono text-center outline-none focus:border-amber-400 allow-select">
+                <button id="sendTopupOrderBtn" class="touch-action w-full py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-gaming font-bold text-xs uppercase rounded-xl shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> ORDER ON WHATSAPP
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2 text-gray-500 text-[10px] justify-center">
+                <div class="h-[1px] bg-white/10 flex-1"></div>
+                <span>அல்லது (குறியீடு இருந்தால்)</span>
+                <div class="h-[1px] bg-white/10 flex-1"></div>
+            </div>
+
+            <!-- REDEEM VOUCHER SECTION -->
+            <div class="space-y-2">
+                <span class="text-[10px] font-gaming font-bold text-gray-400 uppercase block text-center">2. REDEEM PURCHASED KEY</span>
+                <input id="voucherKeyInput" type="text" placeholder="GX-TOPUP-XXXX" class="w-full bg-black/50 border border-white/20 rounded-2xl px-4 py-2.5 text-sm uppercase text-cyan-300 font-mono text-center tracking-widest outline-none focus:border-cyan-400 allow-select">
+                <button id="submitVoucherBtn" class="touch-action w-full py-2.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
+                    CONFIRM REDEEM
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION MODAL -->
+    <div id="customAlertModal" class="fixed inset-0 bg-black/85 backdrop-blur-xl z-[60] hidden flex items-center justify-center p-4">
+        <div class="cyber-glass w-full max-w-xs rounded-[32px] p-5 text-center space-y-3">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400 text-xl">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <h4 id="customAlertTitle" class="font-gaming font-bold text-xs tracking-wider uppercase text-amber-400">NOTIFICATION</h4>
+            <p id="customAlertMsg" class="text-xs text-gray-300 font-sans leading-relaxed"></p>
+            <button id="customAlertOkBtn" class="touch-action w-full py-2.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-gaming font-bold text-xs uppercase rounded-2xl shadow-lg">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        function showCustomAlert(msg, title = "NOTIFICATION") {
+            playSound('click');
+            document.getElementById("customAlertTitle").innerText = title;
+            document.getElementById("customAlertMsg").innerText = msg;
+            document.getElementById("customAlertModal").classList.remove("hidden");
+        }
+
+        document.getElementById("customAlertOkBtn").onclick = () => {
+            playSound('click');
+            document.getElementById("customAlertModal").classList.add("hidden");
+        };
+
+                        let audioCtx;
+        function getAudioContext() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        function playSound(type) {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    // UI Tap
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1200, now);
+                    osc.frequency.exponentialRampToValueAtTime(500, now + 0.04);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.04);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                }
+                else if (type === 'spin_start') {
+                    // Hyper Charge Up
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(140, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.4);
+                    gain.gain.setValueAtTime(0.02, now);
+                    gain.gain.linearRampToValueAtTime(0.2, now + 0.2);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                }
+                else if (type === 'tick') {
+                    // Crisp Wheel Ratchet Click
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(900, now);
+                    osc.frequency.exponentialRampToValueAtTime(150, now + 0.02);
+                    gain.gain.setValueAtTime(0.22, now);
+                    gain.gain.linearRampToValueAtTime(0.001, now + 0.02);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.02);
+                }
+                else if (type === 'no_balance' || type === 'error') {
+                    // Heavy Low Buzzer for Insufficient Wallet
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(130, now);
+                    osc.frequency.setValueAtTime(95, now + 0.12);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                }
+                else if (type === 'better_luck') {
+                    // Disappointment / Defeat Descending Jingle
+                    const notes = [450, 380, 300, 220];
+                    notes.forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        const t = now + (idx * 0.12);
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(freq, t);
+                        gain.gain.setValueAtTime(0.18, t);
+                        gain.gain.linearRampToValueAtTime(0.01, t + 0.14);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(t);
+                        osc.stop(t + 0.14);
+                    });
+                }
+                else if (type === 'win_cash') {
+                    // Coin Collect Ping
+                    [1046.50, 1318.51, 1567.98].forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        const t = now + (idx * 0.08);
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, t);
+                        gain.gain.setValueAtTime(0.25, t);
+                        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(t);
+                        osc.stop(t + 0.22);
+                    });
+                }
+                else if (type === 'win_stars') {
+                    // Celestial Sparkle
+                    [587.33, 739.99, 880, 1174.66].forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        const t = now + (idx * 0.07);
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, t);
+                        gain.gain.setValueAtTime(0.2, t);
+                        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(t);
+                        osc.stop(t + 0.28);
+                    });
+                }
+                else if (type === 'win_grand' || type === 'win') {
+                    // Grand Victory Horns
+                    [440, 554.37, 659.25, 880, 1108.73].forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        const t = now + (idx * 0.09);
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(freq, t);
+                        gain.gain.setValueAtTime(0.22, t);
+                        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(t);
+                        osc.stop(t + 0.4);
+                    });
+                }
+                else if (type === 'copy') {
+                    // Subtle Pop
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(650, now);
+                    osc.frequency.exponentialRampToValueAtTime(1300, now + 0.06);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.06);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                }
+            } catch(e) {}
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBp2p-bNEx8ZLHxxIx35euzloGjsNYOR20",
+            authDomain: "spin-free-9d0e3.firebaseapp.com",
+            projectId: "spin-free-9d0e3",
+            storageBucket: "spin-free-9d0e3.firebasestorage.app",
+            messagingSenderId: "597774236062",
+            appId: "1:597774236062:web:4ed18c42f1ac7a3385be8f",
+            measurementId: "G-TX33DKSLLG"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const ADMIN_EMAILS = ["panelbuy24@gmail.com", "gxstore@gmail.com"];
+        const WHATSAPP_NUMBER = "94742870409";
+
+        const DAILY_15_DAYS = [
+            { day: 1, label: "50 Stars", type: "star", value: 50, icon: "fa-star text-amber-400" },
+            { day: 2, label: "LKR 5 Cash", type: "cash", value: 5, icon: "fa-money-bill text-emerald-400" },
+            { day: 3, label: "Free Ticket", type: "ticket", value: 1, icon: "fa-ticket text-purple-400" },
+            { day: 4, label: "100 Stars", type: "star", value: 100, icon: "fa-star text-amber-400" },
+            { day: 5, label: "LKR 10 Cash", type: "cash", value: 10, icon: "fa-money-bill text-emerald-400" },
+            { day: 6, label: "50 Likes", type: "likes", value: 50, icon: "fa-thumbs-up text-cyan-400" },
+            { day: 7, label: "Free Ticket", type: "ticket", value: 1, icon: "fa-ticket text-purple-400" },
+            { day: 8, label: "LKR 15 Cash", type: "cash", value: 15, icon: "fa-money-bill text-emerald-400" },
+            { day: 9, label: "100 Stars", type: "star", value: 100, icon: "fa-star text-amber-400" },
+            { day: 10, label: "LKR 20 Cash", type: "cash", value: 20, icon: "fa-money-bill text-emerald-400" },
+            { day: 11, label: "Free Ticket", type: "ticket", value: 1, icon: "fa-ticket text-purple-400" },
+            { day: 12, label: "100 Likes", type: "likes", value: 100, icon: "fa-thumbs-up text-cyan-400" },
+            { day: 13, label: "LKR 30 Cash", type: "cash", value: 30, icon: "fa-money-bill text-emerald-400" },
+            { day: 14, label: "2x Tickets", type: "ticket", value: 2, icon: "fa-ticket text-purple-400" },
+            { day: 15, label: "LKR 50 Cash", type: "cash", value: 50, icon: "fa-trophy text-yellow-400" }
+        ];
+
+                // Fetch Realtime Platform Player Analytics
+        function loadAdminUserStats() {
+            db.collection("users").onSnapshot(snap => {
+                const totalUsers = snap.size;
+                let totalDeposits = 0;
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    totalDeposits += (d.totalDeposited || 0);
+                });
+                const userCountEl = document.getElementById("admTotalUsersCount");
+                const depValEl = document.getElementById("admTotalDepositsVal");
+                if (userCountEl) userCountEl.innerText = totalUsers;
+                if (depValEl) depValEl.innerText = "LKR " + totalDeposits;
+            });
+        }
+
+        // Direct Cash Creditor Action
+        function setupDirectCashAction() {
+            const btn = document.getElementById("adminCreditCashBtn");
+            if (!btn) return;
+            btn.onclick = async () => {
+                playSound('click');
+                const target = document.getElementById("adminCashTargetUser").value.trim();
+                const amt = parseInt(document.getElementById("adminCashAmount").value);
+
+                if (!target || isNaN(amt) || amt <= 0) {
+                    return showCustomAlert("User Email/UID மற்றும் சரியான LKR தொகையை உள்ளிடவும்!", "ADMIN ERROR");
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = `<span class="inline-loader"></span> SENDING...`;
+
+                try {
+                    let userQuery = await db.collection("users").where("email", "==", target).get();
+                    if (userQuery.empty) {
+                        userQuery = await db.collection("users").where("playerUID", "==", target).get();
+                    }
+                    if (userQuery.empty) {
+                        const docCheck = await db.collection("users").doc(target).get();
+                        if (docCheck.exists) {
+                            await db.collection("users").doc(target).update({
+                                balance: firebase.firestore.FieldValue.increment(amt),
+                                totalDeposited: firebase.firestore.FieldValue.increment(amt)
+                            });
+                            playSound('win_cash');
+                            showCustomAlert(`LKR ${amt} ரொக்கம் வெற்றிகரமாக [UID: ${target}] பயனர் வாலட்டில் வரவு வைக்கப்பட்டது!`, "CASH CREDITED");
+                            document.getElementById("adminCashTargetUser").value = "";
+                            document.getElementById("adminCashAmount").value = "";
+                            return;
+                        }
+                        return showCustomAlert("பயனர் கணக்கு காணப்படவில்லை!", "USER NOT FOUND");
+                    }
+
+                    userQuery.forEach(async doc => {
+                        await db.collection("users").doc(doc.id).update({
+                            balance: firebase.firestore.FieldValue.increment(amt),
+                            totalDeposited: firebase.firestore.FieldValue.increment(amt)
+                        });
+                    });
+
+                    playSound('win_cash');
+                    showCustomAlert(`LKR ${amt} ரொக்கம் வெற்றிகரமாக [${target}] வாலட்டில் வரவு வைக்கப்பட்டது!`, "CASH CREDITED");
+                    document.getElementById("adminCashTargetUser").value = "";
+                    document.getElementById("adminCashAmount").value = "";
+                } catch(e) {
+                    showCustomAlert("பிழை: " + e.message, "ERROR");
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-wallet"></i> CREDIT CASH TO WALLET`;
+                }
+            };
+        }
+
+                // Fetch and Render Active Promo Codes with Usage Tracking
+        function renderAdminPromoList() {
+            const container = document.getElementById("adminPromoCampaignsList");
+            if (!container) return;
+
+            db.collection("promo_codes").orderBy("createdAt", "desc").limit(10).onSnapshot(snap => {
+                if (snap.empty) {
+                    container.innerHTML = `<p class="text-[10px] text-gray-500 text-center py-2">No active promo campaigns.</p>`;
+                    return;
+                }
+
+                container.innerHTML = snap.docs.map(doc => {
+                    const p = doc.data();
+                    const isLimitReached = (p.usedCount || 0) >= p.maxUsers;
+                    const statusColor = (p.status === "active" && !isLimitReached) ? "text-emerald-400 border-emerald-500/30" : "text-red-400 border-red-500/30";
+                    const statusText = isLimitReached ? "EXPIRED (FULL)" : (p.status === "active" ? "ACTIVE" : "CLOSED");
+
+                    return `
+                        <div class="bg-black/70 p-2 rounded-xl border border-white/10 flex items-center justify-between text-xs font-mono">
+                            <div>
+                                <span class="font-bold text-cyan-300 block text-[11px]">${p.code}</span>
+                                <span class="text-[9px] text-gray-400 font-sans block">
+                                    Reward: <b class="text-white">${p.rewardValue} ${p.rewardType.toUpperCase()}</b> | 
+                                    Used: <b class="text-amber-400">${p.usedCount || 0} / ${p.maxUsers}</b>
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[8px] font-bold px-2 py-0.5 rounded-lg border ${statusColor}">${statusText}</span>
+                                <button onclick="deletePromoCampaign('${doc.id}')" class="touch-action p-1 text-red-400 hover:text-white rounded bg-red-600/10">
+                                    <i class="fa-solid fa-trash text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            });
+        }
+
+        async function deletePromoCampaign(codeId) {
+            playSound('click');
+            if (confirm("இந்த ஆஃபர் குறியீட்டை (" + codeId + ") ரத்து செய்ய விரும்புகிறீர்களா?")) {
+                await db.collection("promo_codes").doc(codeId).delete();
+                showCustomAlert("ப்ரோமோ குறியீடு நீக்கப்பட்டது!", "PROMO REMOVED");
+            }
+        }
+
+        let currentUser = null;
+        let userData = { balance: 0, stars: 0, freeTickets: 1, dailyDay: 0, lastClaimDate: null, totalDeposited: 0, referredBy: null, referralsCount: 0, referralEarnings: 0 };
+        let currentTier = 3;
+        let betCost = 500;
+        let globalPool = 0;
+        let isSpinning = false;
+        let slices = [];
+        let editingSliceIndex = null;
+        let tempGalleryImageBase64 = null;
+
+        const canvas = document.getElementById("wheelCanvas");
+        const ctx = canvas.getContext("2d");
+        let loadedSliceImages = {};
+
+        function preloadSliceImages() {
+            slices.forEach(slice => {
+                if (!loadedSliceImages[slice.id]) {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.src = slice.imgUrl;
+                    img.onload = () => {
+                        loadedSliceImages[slice.id] = img;
+                        drawWheel();
+                    };
+                }
+            });
+            drawWheel();
+        }
+
+        const NEON_PALETTES = [
+            ["#1e1b4b", "#312e81"],
+            ["#064e3b", "#047857"],
+            ["#701a75", "#86198f"],
+            ["#0f172a", "#1e293b"],
+            ["#831843", "#9d174d"],
+            ["#134e4a", "#0f766e"],
+            ["#3b0764", "#581c87"]
+        ];
+
+        function drawWheel() {
+            const numSlices = slices.length;
+            if (numSlices === 0) return;
+            const sliceAngle = (2 * Math.PI) / numSlices;
+            const radius = canvas.width / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            slices.forEach((slice, i) => {
+                const angle = i * sliceAngle;
+                const palette = NEON_PALETTES[i % NEON_PALETTES.length];
+
+                const grad = ctx.createRadialGradient(radius, radius, 20, radius, radius, radius - 8);
+                grad.addColorStop(0, palette[0]);
+                grad.addColorStop(1, palette[1]);
+
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 8, angle, angle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                ctx.strokeStyle = "rgba(245, 158, 11, 0.45)";
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + sliceAngle / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.shadowColor = "rgba(0,0,0,0.8)";
+                ctx.shadowBlur = 6;
+                ctx.font = "bold 13px Rajdhani";
+
+                ctx.fillText(slice.name, radius - 44, 5);
+
+                if (loadedSliceImages[slice.id]) {
+                    ctx.drawImage(loadedSliceImages[slice.id], radius - 40, -12, 24, 24);
+                }
+
+                ctx.restore();
+            });
+
+            ctx.beginPath();
+            ctx.arc(radius, radius, radius - 6, 0, 2 * Math.PI);
+            ctx.strokeStyle = "#f59e0b";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            initApplication();
+            loadAdminUserStats();
+            renderAdminPromoList();
+            setupDirectCashAction();
+            attachListeners();
+            setupRealtimeMarquee();
+        });
+
+        async function initApplication() {
+            const params = new URLSearchParams(window.location.search);
+            const refCode = params.get("ref");
+            if (refCode) sessionStorage.setItem("gx_ref_code", refCode);
+
+            db.collection("settings").doc("gameConfig").onSnapshot(doc => {
+                if (doc.exists) {
+                    const d = doc.data();
+                    slices = d.slices || [];
+                    globalPool = d.globalPool || 0;
+                }
+                document.getElementById("adminPoolVal").innerText = globalPool;
+                renderAdminPrizesList();
+                preloadSliceImages();
+            });
+
+            auth.onAuthStateChanged(user => {
+                currentUser = user;
+                renderAuthSection();
+                if (user) {
+                    syncUserData(user.uid);
+                    listenToUserWinnings(user.uid);
+                }
+            });
+        }
+
+        function setupRealtimeMarquee() {
+            db.collection("winnings").orderBy("createdAt", "desc").limit(6).onSnapshot(snap => {
+                let realWinners = [];
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const maskedEmail = d.userEmail ? d.userEmail.split("@")[0].slice(0, 5) + "**" : "Player";
+                    realWinners.push({ name: maskedEmail, prize: d.prizeName });
+                });
+
+                const simGamers = [
+                    { name: "FF_Killer_07", prize: "100 Likes" },
+                    { name: "Ɗϻ|ㅤBʀᴏᴋᴇɴ", prize: "Weekly Pass" },
+                    { name: "Alpha_Gamer", prize: "LKR 50 Cash" },
+                    { name: "Viper_99", prize: "50 Stars" }
+                ];
+
+                const combined = [...realWinners, ...simGamers];
+                const marqueeHTML = combined.map(item => `
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-bolt text-yellow-400"></i> 
+                        <b class="text-white">${item.name}</b> won <span class="text-cyan-400 font-bold">${item.prize}</span>
+                    </span>
+                `).join("");
+
+                document.getElementById("marqueeTrack1").innerHTML = marqueeHTML;
+                document.getElementById("marqueeTrack2").innerHTML = marqueeHTML;
+            });
+        }
+
+        function renderAuthSection() {
+            const authSec = document.getElementById("authHeader");
+            const adminNav = document.getElementById("navAdminTab");
+
+            if (currentUser) {
+                authSec.innerHTML = `
+                    <button id="headerAvatarBtn" class="touch-action flex items-center gap-2 p-1 rounded-2xl border border-amber-400 bg-black/50">
+                        <img src="${currentUser.photoURL || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" class="w-8 h-8 rounded-xl object-cover">
+                    </button>
+                `;
+                document.getElementById("headerAvatarBtn").onclick = () => { playSound('click'); openProfileModal(); };
+                if (ADMIN_EMAILS.includes(currentUser.email)) adminNav.classList.remove("hidden");
+            } else {
+                authSec.innerHTML = `
+                    <button id="googleSignInBtn" class="touch-action bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-xs px-4 py-2 rounded-2xl font-gaming font-black uppercase flex items-center gap-1.5 shadow-lg">
+                        <i class="fa-brands fa-google text-black text-xs"></i> SIGN IN
+                    </button>
+                `;
+                document.getElementById("googleSignInBtn").onclick = () => { playSound('click'); loginWithGoogle(); };
+                adminNav.classList.add("hidden");
+            }
+        }
+
+        async function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (err) {
+                showCustomAlert("Sign-In Error: " + err.message, "AUTH ERROR");
+            }
+        }
+
+        function syncUserData(uid) {
+            db.collection("users").doc(uid).onSnapshot(async doc => {
+                if (doc.exists) {
+                    userData = doc.data();
+                    if (!userData.playerUID && currentUser) {
+                        let cleanName = (currentUser.displayName || currentUser.email.split('@')[0])
+                                        .replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 6) || "PLAYER";
+                        let smartCustomUID = "GX-" + cleanName + "-" + Math.floor(1000 + Math.random() * 9000);
+                        userData.playerUID = smartCustomUID;
+                        db.collection("users").doc(uid).update({ playerUID: smartCustomUID });
+                    }
+                } else {
+                    const ref = sessionStorage.getItem("gx_ref_code") || null;
+                    // ஜிமெயில் பெயரில் இருந்து பிரத்யேக Player UID உருவாக்கும் முறை (எ.கா: GX-FEROS-5921)
+                    let cleanName = (currentUser.displayName || currentUser.email.split('@')[0])
+                                    .replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 6) || "PLAYER";
+                    let smartCustomUID = "GX-" + cleanName + "-" + Math.floor(1000 + Math.random() * 9000);
+
+                    userData = {
+                        balance: 0,
+                        stars: 0,
+                        freeTickets: 1,
+                        dailyDay: 0,
+                        lastClaimDate: null,
+                        totalDeposited: 0,
+                        referredBy: ref,
+                        referralsCount: 0,
+                        referralEarnings: 0,
+                        email: currentUser.email,
+                        name: currentUser.displayName,
+                        playerUID: smartCustomUID,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    await db.collection("users").doc(uid).set(userData);
+                    if (ref) {
+                        db.collection("users").doc(ref).update({
+                            referralsCount: firebase.firestore.FieldValue.increment(1)
+                        });
+                    }
+                }
+                document.getElementById("topWalletBalance").innerText = userData.balance || 0;
+                document.getElementById("topStarsBalance").innerText = userData.stars || 0;
+                document.getElementById("topFreeTicketsBalance").innerText = userData.freeTickets || 0;
+
+                document.getElementById("dashWalletVal").innerText = userData.balance || 0;
+                document.getElementById("dashStarsVal").innerText = userData.stars || 0;
+                document.getElementById("dashRefTotalCount").innerText = userData.referralsCount || 0;
+                document.getElementById("dashRefEarnedVal").innerText = `LKR ${userData.referralEarnings || 0}`;
+                document.getElementById("dashRefUrl").value = `${window.location.origin}${window.location.pathname}?ref=${uid}`;
+                renderDailyRewardsCalendar();
+            });
+        }
+
+        function renderDailyRewardsCalendar() {
+            const container = document.getElementById("dailyRewardsGrid");
+            if (!container) return;
+
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const canClaimToday = (userData.lastClaimDate !== todayStr);
+            const currentActiveDay = (userData.dailyDay || 0) + 1;
+
+            container.innerHTML = DAILY_15_DAYS.map(item => {
+                let statusBadge = "";
+                let isClickable = false;
+
+                if (item.day <= (userData.dailyDay || 0)) {
+                    statusBadge = `<span class="text-[9px] text-emerald-400 font-bold block mt-1"><i class="fa-solid fa-check"></i> CLAIMED</span>`;
+                } else if (item.day === currentActiveDay && canClaimToday) {
+                    statusBadge = `<button onclick="claimDailyReward(${item.day})" class="touch-action w-full mt-1.5 py-1 bg-gradient-to-r from-amber-400 to-yellow-300 text-black font-gaming font-black text-[9px] rounded-lg uppercase">CLAIM</button>`;
+                    isClickable = true;
+                } else {
+                    statusBadge = `<span class="text-[9px] text-gray-500 font-bold block mt-1"><i class="fa-solid fa-lock"></i> LOCKED</span>`;
+                }
+
+                return `
+                    <div class="cyber-glass p-3 rounded-2xl text-center border ${isClickable ? 'border-amber-400 bg-amber-500/10' : 'border-white/5'}">
+                        <span class="text-[9px] font-gaming text-gray-400 uppercase block">DAY ${item.day}</span>
+                        <div class="w-8 h-8 mx-auto my-1 rounded-xl bg-white/5 flex items-center justify-center text-sm">
+                            <i class="fa-solid ${item.icon}"></i>
+                        </div>
+                        <span class="font-bold text-xs text-white block truncate">${item.label}</span>
+                        ${statusBadge}
+                    </div>
+                `;
+            }).join("");
+        }
+
+        async function claimDailyReward(dayNum) {
+            playSound('click');
+            if (!currentUser) return showCustomAlert("Please SIGN IN first!", "LOGIN REQUIRED");
+
+            const todayStr = new Date().toISOString().slice(0, 10);
+            if (userData.lastClaimDate === todayStr) {
+                return showCustomAlert("இன்றைய பரிசை ஏற்கனவே பெற்றுவிட்டீர்கள்!", "ALREADY CLAIMED");
+            }
+
+            const reward = DAILY_15_DAYS[dayNum - 1];
+            let updatePayload = {
+                dailyDay: dayNum >= 15 ? 0 : dayNum,
+                lastClaimDate: todayStr
+            };
+
+            if (reward.type === "cash") {
+                updatePayload.balance = firebase.firestore.FieldValue.increment(reward.value);
+            } else if (reward.type === "star") {
+                updatePayload.stars = firebase.firestore.FieldValue.increment(reward.value);
+            } else if (reward.type === "ticket") {
+                updatePayload.freeTickets = firebase.firestore.FieldValue.increment(reward.value);
+            }
+
+            await db.collection("users").doc(currentUser.uid).update(updatePayload);
+
+            playSound('win');
+            confetti({ particleCount: 110, spread: 60, origin: { y: 0.6 } });
+            showCustomAlert(`Day ${dayNum} பரிசு [ ${reward.label} ] உங்கள் கணக்கில் வரவு வைக்கப்பட்டது!`, "DAILY CLAIM SUCCESS");
+            document.getElementById("dailyCalendarModal").classList.add("hidden");
+        }
+
+        async function executeSpinLogic() {
+            playSound('click');
+            if (!currentUser) return showCustomAlert("Please SIGN IN with Google first!", "ACCESS DENIED");
+            if (isSpinning) return;
+
+            if (currentTier === 0) {
+                if ((userData.freeTickets || 0) <= 0) {
+                    return showCustomAlert("உங்களிடம் Free Spin Card இல்லை! Daily Login மூலம் இலவசமாகப் பெறுங்கள்.", "NO FREE TICKET");
+                }
+                isSpinning = true;
+                document.getElementById("spinBtn").disabled = true;
+
+                await db.collection("users").doc(currentUser.uid).update({
+                    freeTickets: firebase.firestore.FieldValue.increment(-1)
+                });
+            } else {
+                if (userData.balance < betCost) {
+                    showCustomAlert(`Insufficient Balance! LKR ${betCost} required for this tier.`, "LOW BALANCE");
+                    document.getElementById("voucherModal").classList.remove("hidden");
+                    return;
+                }
+                isSpinning = true;
+                document.getElementById("spinBtn").disabled = true;
+
+                await db.runTransaction(async (t) => {
+                    t.update(db.collection("users").doc(currentUser.uid), { balance: firebase.firestore.FieldValue.increment(-betCost) });
+                    t.update(db.collection("settings").doc("gameConfig"), { globalPool: firebase.firestore.FieldValue.increment(betCost) });
+                });
+            }
+
+            let validSlices = slices.map(s => {
+                let chance = s.prob;
+                const allowedTiers = s.allowedTiers || [1, 2, 3];
+                if (!allowedTiers.includes(currentTier)) chance = 0;
+                if (s.threshold > 0 && globalPool < s.threshold) chance = 0;
+                if (currentTier === 0 && (s.badge === "GRAND" || s.value > 100)) chance = 0;
+
+                return { ...s, calculatedChance: chance };
+            });
+
+            const totalSum = validSlices.reduce((acc, s) => acc + s.calculatedChance, 0);
+            let roll = Math.random() * totalSum;
+            let outcomeIndex = 0;
+
+            for (let i = 0; i < validSlices.length; i++) {
+                if (roll <= validSlices[i].calculatedChance) {
+                    outcomeIndex = i;
+                    break;
+                }
+                roll -= validSlices[i].calculatedChance;
+            }
+
+            const winningPrize = slices[outcomeIndex];
+            const numSlices = slices.length;
+            const sliceDeg = 360 / numSlices;
+            
+            const targetAngle = 360 - (outcomeIndex * sliceDeg) - (sliceDeg / 2) - 90;
+            const fullRotation = (360 * 6) + targetAngle;
+
+                        // Dynamic Wheel Spinning Audio Loop
+            playSound('spin_start');
+            let tickDelay = 35;
+            let tickActive = true;
+            function runTickLoop() {
+                if (!tickActive) return;
+                playSound('tick');
+                tickDelay += 8;
+                if (tickDelay < 420) {
+                    setTimeout(runTickLoop, tickDelay);
+                }
+            }
+            runTickLoop();
+            setTimeout(() => { tickActive = false; }, 4200);
+
+            canvas.style.transition = "transform 4.5s cubic-bezier(0.12, 0.95, 0.25, 1)";
+            canvas.style.transform = `rotate(${fullRotation}deg)`;
+
+            setTimeout(async () => {
+                await completePrizeCycle(winningPrize);
+                canvas.style.transition = "none";
+                canvas.style.transform = `rotate(${targetAngle % 360}deg)`;
+                isSpinning = false;
+                document.getElementById("spinBtn").disabled = false;
+            }, 4600);
+        }
+
+        async function completePrizeCycle(prize) {
+            // புதிய பெர்ஃபெக்ட் லாஜிக்: Lock Amount செட் செய்திருந்தால் முழு Lock தொகையும் கழியும், இல்லையென்றால் Value கழியும்!
+            const poolDeductAmount = (prize.threshold && prize.threshold > 0) ? prize.threshold : (prize.value || 0);
+            if (poolDeductAmount > 0 && (prize.type === "item" || prize.type === "like" || prize.badge === "CASH")) {
+                db.collection("settings").doc("gameConfig").update({
+                    globalPool: firebase.firestore.FieldValue.increment(-poolDeductAmount)
+                });
+            }
+
+            // 1. பெயரிலோ அல்லது பேட்ஜிலோ STAR என்று இருந்தால் கண்டிப்பாக ஸ்டார் மட்டுமே கூட வேண்டும்
+            if (prize.type === "star" || prize.badge === "STAR" || prize.name.toLowerCase().includes("star")) {
+                playSound('win_stars');
+                await db.collection("users").doc(currentUser.uid).update({
+                    stars: firebase.firestore.FieldValue.increment(prize.value)
+                });
+                showCustomAlert(`+${prize.value} Stars உங்கள் கணக்கில் சேர்க்கப்பட்டது!`, "STAR BONUS");
+            } 
+            else if (prize.badge === "CASH" || prize.type === "cash") {
+                playSound('win_cash');
+                await db.collection("users").doc(currentUser.uid).update({
+                    balance: firebase.firestore.FieldValue.increment(prize.value)
+                });
+                showCustomAlert(`வாழ்த்துக்கள்! LKR ${prize.value} நேரடியாக உங்கள் வாலட்டில் வரவு வைக்கப்பட்டது!`, "CASH WON");
+            } 
+            else if (prize.type === "like" || prize.badge === "LIKES") {
+                playSound('win');
+                confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 } });
+                
+                document.getElementById("uidPrizeTitle").innerText = prize.name;
+                document.getElementById("uidInputModal").classList.remove("hidden");
+                
+                document.getElementById("submitUidBtn").onclick = async () => {
+                    const uidVal = document.getElementById("playerUidInput").value.trim();
+                    if (!uidVal) return showCustomAlert("தயவுசெய்து Free Fire UID உள்ளிடவும்!", "UID REQUIRED");
+
+                    const redeemKey = `GX-LIKE-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+                    await db.collection("winnings").add({
+                        userId: currentUser.uid,
+                        userEmail: currentUser.email,
+                        prizeName: prize.name,
+                        redeemKey: redeemKey,
+                        playerUID: uidVal,
+                        status: "unclaimed",
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    document.getElementById("uidInputModal").classList.add("hidden");
+                    document.getElementById("playerUidInput").value = "";
+
+                    const msg = encodeURIComponent(`GX STORE REWARD CLAIM\nPrize: ${prize.name}\nPlayer UID: ${uidVal}\nRedeem Key: ${redeemKey}\nEmail: ${currentUser.email}`);
+                    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+                };
+            } 
+            else if (prize.type === "item") {
+                playSound('win');
+                confetti({ particleCount: 160, spread: 80, origin: { y: 0.6 } });
+                const redeemKey = `GX-WIN-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+                await db.collection("winnings").add({
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    prizeName: prize.name,
+                    redeemKey: redeemKey,
+                    status: "unclaimed",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById("winPrizeTitle").innerText = prize.name;
+                document.getElementById("winPrizeKeyText").innerText = redeemKey;
+                document.getElementById("winPrizeIcon").src = prize.imgUrl;
+                document.getElementById("winModal").classList.remove("hidden");
+
+                document.getElementById("winWhatsAppClaimBtn").onclick = () => {
+                    const msg = encodeURIComponent(`GX STORE REWARD CLAIM\nPrize: ${prize.name}\nRedeem Key: ${redeemKey}\nEmail: ${currentUser.email}\nFree Fire UID: `);
+                    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+                };
+            } else {
+                playSound("better_luck"); showCustomAlert("Better luck next time! தொடர்ந்து விளையாடுங்கள்.", "TRY AGAIN");
+            }
+        }
+
+        // Direct Star Points Creditor by Admin
+
+
+document.getElementById("adminCreditStarsBtn").onclick = async () => {
+            playSound('click');
+            const target = document.getElementById("adminStarTargetUser").value.trim();
+            const stars = parseInt(document.getElementById("adminStarAmount").value);
+
+            if (!target || isNaN(stars) || stars <= 0) {
+                return showCustomAlert("User Email/UID மற்றும் சரியான Stars எண்ணிக்கையை உள்ளிடவும்!", "ADMIN ERROR");
+            }
+
+            let userQuery = await db.collection("users").where("email", "==", target).get();
+            if (userQuery.empty) {
+                const docCheck = await db.collection("users").doc(target).get();
+                if (docCheck.exists) {
+                    await db.collection("users").doc(target).update({
+                        stars: firebase.firestore.FieldValue.increment(stars)
+                    });
+                    showCustomAlert(`${stars} Stars வெற்றிகரமாக [UID: ${target}] பயனர் கணக்கில் சேர்க்கப்பட்டது!`, "STARS CREDITED");
+                    document.getElementById("adminStarTargetUser").value = "";
+                    document.getElementById("adminStarAmount").value = "";
+                    return;
+                }
+                return showCustomAlert("பயனர் கணக்கு காணப்படவில்லை!", "USER NOT FOUND");
+            }
+
+            userQuery.forEach(async doc => {
+                await db.collection("users").doc(doc.id).update({
+                    stars: firebase.firestore.FieldValue.increment(stars)
+                });
+            });
+
+            showCustomAlert(`${stars} Stars வெற்றிகரமாக [${target}] கணக்கில் சேர்க்கப்பட்டது!`, "STARS CREDITED");
+            document.getElementById("adminStarTargetUser").value = "";
+            document.getElementById("adminStarAmount").value = "";
+        };
+
+        document.getElementById("formPrizeImgFile").addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    tempGalleryImageBase64 = event.target.result;
+                    document.getElementById("galleryUploadLabel").innerText = "PNG: " + file.name.slice(0, 14) + "..";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("formSavePrizeBtn").onclick = async () => {
+            playSound('click');
+            const name = document.getElementById("formPrizeName").value.trim();
+            const badge = document.getElementById("formPrizeBadge").value;
+            const prob = parseFloat(document.getElementById("formPrizeProb").value);
+            const val = parseInt(document.getElementById("formPrizeVal").value) || 0;
+            const threshold = parseInt(document.getElementById("formPrizeThreshold").value) || 0;
+
+            if (!name || isNaN(prob)) return showCustomAlert("பெயர் மற்றும் சதவீதத்தை உள்ளிடவும்!", "INPUT REQUIRED");
+
+            let allowedTiers = [];
+            if (document.getElementById("tierCheck0").checked) allowedTiers.push(0);
+            if (document.getElementById("tierCheck1").checked) allowedTiers.push(1);
+            if (document.getElementById("tierCheck2").checked) allowedTiers.push(2);
+            if (document.getElementById("tierCheck3").checked) allowedTiers.push(3);
+
+            let prizeType = "item";
+            if (badge === "LIKES") prizeType = "like";
+            if (badge === "CASH") prizeType = "cash";
+            if (badge === "STAR" || name.toLowerCase().includes("star")) prizeType = "star";
+            if (name.toLowerCase().includes("better") || name.toLowerCase().includes("luck")) prizeType = "none";
+
+            const prizePayload = {
+                id: editingSliceIndex !== null ? slices[editingSliceIndex].id : "s_" + Date.now(),
+                name: name,
+                type: prizeType,
+                badge: badge,
+                value: val,
+                allowedTiers: allowedTiers,
+                threshold: threshold,
+                prob: prob,
+                imgUrl: tempGalleryImageBase64 || (editingSliceIndex !== null ? slices[editingSliceIndex].imgUrl : "https://cdn-icons-png.flaticon.com/512/808/808665.png")
+            };
+
+            if (editingSliceIndex !== null) {
+                slices[editingSliceIndex] = prizePayload;
+                editingSliceIndex = null;
+                document.getElementById("cancelEditBtn").classList.add("hidden");
+                document.getElementById("prizeFormTitle").innerText = "+ ADD NEW PRO PRIZE";
+            } else {
+                slices.push(prizePayload);
+            }
+
+            await db.collection("settings").doc("gameConfig").update({ slices: slices });
+
+            showCustomAlert("ப்ராடக்ட் வெற்றிகரமாக சேமிக்கப்பட்டது!", "SAVED");
+            resetPrizeForm();
+        };
+
+        function resetPrizeForm() {
+            tempGalleryImageBase64 = null;
+            document.getElementById("formPrizeName").value = "";
+            document.getElementById("formPrizeProb").value = "";
+            document.getElementById("formPrizeVal").value = "";
+            document.getElementById("formPrizeThreshold").value = "";
+            document.getElementById("galleryUploadLabel").innerText = "PNG FROM GALLERY";
+            document.getElementById("tierCheck0").checked = false;
+            document.getElementById("tierCheck1").checked = true;
+            document.getElementById("tierCheck2").checked = true;
+            document.getElementById("tierCheck3").checked = true;
+        }
+
+        document.getElementById("cancelEditBtn").onclick = () => {
+            editingSliceIndex = null;
+            resetPrizeForm();
+            document.getElementById("cancelEditBtn").classList.add("hidden");
+            document.getElementById("prizeFormTitle").innerText = "+ ADD NEW PRO PRIZE";
+        };
+
+        function renderAdminPrizesList() {
+            const container = document.getElementById("adminPrizesList");
+            if (!container) return;
+            container.innerHTML = slices.map((s, idx) => `
+                <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex items-center justify-between gap-2 text-xs">
+                    <img src="${s.imgUrl}" class="w-7 h-7 object-contain">
+                    <div class="flex-1 truncate">
+                        <span class="font-bold text-white block truncate">[${s.badge || 'ITEM'}] ${s.name}</span>
+                        <span class="text-[9px] text-gray-400 block">${s.prob}% | Tiers: ${s.allowedTiers ? s.allowedTiers.join(",") : 'All'} | Lock: LKR ${s.threshold}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="startEditSlice(${idx})" class="touch-action p-1.5 bg-white/10 hover:bg-amber-400 hover:text-black rounded-lg text-amber-400 transition">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="removeSlice(${idx})" class="touch-action p-1.5 bg-red-600/20 text-red-400 hover:text-red-300 rounded-lg transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function startEditSlice(idx) {
+            playSound('click');
+            const target = slices[idx];
+            editingSliceIndex = idx;
+
+            document.getElementById("formPrizeName").value = target.name;
+            document.getElementById("formPrizeBadge").value = target.badge || "COMMON";
+            document.getElementById("formPrizeProb").value = target.prob;
+            document.getElementById("formPrizeVal").value = target.value;
+            document.getElementById("formPrizeThreshold").value = target.threshold;
+
+            const tiers = target.allowedTiers || [1, 2, 3];
+            document.getElementById("tierCheck0").checked = tiers.includes(0);
+            document.getElementById("tierCheck1").checked = tiers.includes(1);
+            document.getElementById("tierCheck2").checked = tiers.includes(2);
+            document.getElementById("tierCheck3").checked = tiers.includes(3);
+
+            document.getElementById("prizeFormTitle").innerText = "EDITING: " + target.name;
+            document.getElementById("cancelEditBtn").classList.remove("hidden");
+        }
+
+        async function removeSlice(idx) {
+            playSound('click');
+            if (slices.length <= 4) return showCustomAlert("குறைந்தபட்சம் 4 பொருட்கள் வீலில் இருக்க வேண்டும்!", "ERROR");
+            slices.splice(idx, 1);
+            await db.collection("settings").doc("gameConfig").update({ slices: slices });
+        }
+
+        document.getElementById("adminResetPoolBtn").onclick = async () => {
+            playSound('click');
+            if (confirm("குளோபல் பூல் தொகையை 0 என ரீசெட் செய்ய விரும்புகிறீர்களா?")) {
+                await db.collection("settings").doc("gameConfig").update({ globalPool: 0 });
+                showCustomAlert("குளோபல் பூல் LKR 0 என ரீசெட் செய்யப்பட்டது!", "POOL RESET");
+            }
+        };
+
+        document.getElementById("adminAddPoolBtn").onclick = async () => {
+            playSound('click');
+            const val = parseInt(document.getElementById("adminPoolAddInput").value);
+            if (val) {
+                await db.collection("settings").doc("gameConfig").update({ globalPool: firebase.firestore.FieldValue.increment(val) });
+                document.getElementById("adminPoolAddInput").value = "";
+            }
+        };
+
+        function listenToUserWinnings(uid) {
+            db.collection("winnings").where("userId", "==", uid).orderBy("createdAt", "desc").onSnapshot(snap => {
+                const list = document.getElementById("dashWinningsContainer");
+                if (snap.empty) {
+                    list.innerHTML = `<p class="text-xs text-center text-gray-500 py-4">No prize won yet.</p>`;
+                    return;
+                }
+                list.innerHTML = snap.docs.map(doc => {
+                    const d = doc.data();
+                    return `
+                        <div class="bg-black/60 p-2.5 rounded-2xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white block">${d.prizeName}</span>
+                                <span class="font-mono text-[10px] text-cyan-300 allow-select">${d.redeemKey}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="navigator.clipboard.writeText('${d.redeemKey}'); playSound('click'); playSound('copy'); showCustomAlert('Redeem Key Copied!', 'COPIED');" class="touch-action p-1.5 bg-white/10 rounded-xl text-amber-400 hover:text-white">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                                <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Claim Key: ' + d.redeemKey)}" target="_blank" class="touch-action px-2.5 py-1 bg-emerald-600 rounded-xl text-[10px] text-white font-bold font-gaming">
+                                    CLAIM
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            });
+        }
+
+        async function convertStars() {
+            playSound('click');
+            if (userData.stars < 100) return showCustomAlert("குறைந்தபட்சம் 100 Stars தேவை!", "LOW STARS");
+
+            const exchangeUnits = Math.floor(userData.stars / 100);
+            const starsDeducted = exchangeUnits * 100;
+            const cashAdded = exchangeUnits * 10;
+
+            await db.collection("users").doc(currentUser.uid).update({
+                stars: firebase.firestore.FieldValue.increment(-starsDeducted),
+                balance: firebase.firestore.FieldValue.increment(cashAdded)
+            });
+
+            playSound('win');
+            showCustomAlert(`${starsDeducted} Stars வெற்றிகரமாக LKR ${cashAdded} ரொக்கமாக மாற்றப்பட்டது!`, "EXCHANGE SUCCESS");
+        }
+
+                        function redeemVoucher() {
+            playSound('click');
+            const code = document.getElementById("voucherKeyInput").value.trim().toUpperCase();
+            if (!code) return showCustomAlert("ரீடீம் குறியீட்டை உள்ளிடவும்", "INPUT REQUIRED");
+
+            const submitBtn = document.getElementById("submitVoucherBtn");
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.7";
+            submitBtn.innerHTML = `<span class="inline-loader"></span> VERIFYING...`;
+
+            setTimeout(async () => {
+                try {
+                    const promoRef = db.collection("promo_codes").doc(code);
+                    const vRef = db.collection("vouchers").doc(code);
+                    const [promoDoc, vDoc] = await Promise.all([promoRef.get(), vRef.get()]);
+
+                    if (promoDoc.exists) {
+                        const promo = promoDoc.data();
+                        if (promo.status !== "active" || promo.usedCount >= promo.maxUsers) {
+                            submitBtn.disabled = false;
+                            submitBtn.style.opacity = "1";
+                            submitBtn.innerText = originalText;
+                            return showCustomAlert("மன்னிக்கவும்! இந்த ஆஃபர் கூப்பன் முடிந்துவிட்டது.", "OFFER EXPIRED");
+                        }
+                        if (promo.usedUsers && promo.usedUsers.includes(currentUser.uid)) {
+                            submitBtn.disabled = false;
+                            submitBtn.style.opacity = "1";
+                            submitBtn.innerText = originalText;
+                            return showCustomAlert("நீங்கள் ஏற்கனவே இந்த கூப்பனைப் பயன்படுத்திவிட்டீர்கள்!", "ALREADY USED");
+                        }
+
+                        await db.runTransaction(async (t) => {
+                            t.update(promoRef, {
+                                usedCount: firebase.firestore.FieldValue.increment(1),
+                                usedUsers: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
+                            });
+
+                            if (promo.rewardType === "cash") {
+                                t.update(db.collection("users").doc(currentUser.uid), {
+                                    balance: firebase.firestore.FieldValue.increment(promo.rewardValue)
+                                });
+                            } else {
+                                t.update(db.collection("users").doc(currentUser.uid), {
+                                    stars: firebase.firestore.FieldValue.increment(promo.rewardValue)
+                                });
+                            }
+                        });
+
+                        playSound('win');
+                        confetti({ particleCount: 100, spread: 60, origin: { y: 0.6 } });
+                        showCustomAlert("வாழ்த்துக்கள்! ஆஃபர் போனஸ் +" + promo.rewardValue + " (" + promo.rewardType.toUpperCase() + ") வரவு வைக்கப்பட்டது!", "OFFER CLAIMED");
+                        document.getElementById("voucherModal").classList.add("hidden");
+                        document.getElementById("voucherKeyInput").value = "";
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = "1";
+                        submitBtn.innerText = originalText;
+                        return;
+                    }
+
+                    if (vDoc.exists && vDoc.data().status === "active") {
+                        const amt = vDoc.data().amount;
+                        await db.runTransaction(async (t) => {
+                            t.update(vRef, { status: "used", usedBy: currentUser.uid, redeemedAt: firebase.firestore.FieldValue.serverTimestamp() });
+                            t.update(db.collection("users").doc(currentUser.uid), { balance: firebase.firestore.FieldValue.increment(amt) });
+                        });
+
+                        const newTotalDep = (userData.totalDeposited || 0) + amt;
+                        await db.collection("users").doc(currentUser.uid).update({ totalDeposited: newTotalDep });
+
+                        if (userData.referredBy && (userData.totalDeposited < 500) && newTotalDep >= 500) {
+                            await db.collection("users").doc(userData.referredBy).update({
+                                balance: firebase.firestore.FieldValue.increment(50),
+                                referralEarnings: firebase.firestore.FieldValue.increment(50)
+                            });
+                        }
+
+                        playSound('win');
+                        showCustomAlert("LKR " + amt + " உங்கள் வாலட்டில் வரவு வைக்கப்பட்டது!", "TOP-UP SUCCESS");
+                        document.getElementById("voucherModal").classList.add("hidden");
+                        document.getElementById("voucherKeyInput").value = "";
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = "1";
+                        submitBtn.innerText = originalText;
+                        return;
+                    }
+
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = "1";
+                    submitBtn.innerText = originalText;
+                    showCustomAlert("தவறான அல்லது ஏற்கனவே பயன்படுத்தப்பட்ட குறியீடு!", "INVALID KEY");
+
+                } catch (err) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = "1";
+                    submitBtn.innerText = originalText;
+                    showCustomAlert("பிழை ஏற்பட்டது: " + err.message, "ERROR");
+                }
+            }, 30);
+        }
+
+        function openProfileModal() {
+            if (!currentUser) return showCustomAlert("Please SIGN IN first!", "ACCESS RESTRICTED");
+            document.getElementById("dashName").innerText = currentUser.displayName;
+            document.getElementById("dashEmail").innerText = currentUser.email;
+            document.getElementById("dashAvatar").src = currentUser.photoURL || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+            
+            const uidEl = document.getElementById("dashUserUidText");
+            const currentPId = (userData && userData.playerUID) ? userData.playerUID : currentUser.uid;
+            if (uidEl) uidEl.innerText = currentPId;
+            
+            const copyUidBtn = document.getElementById("dashCopyUidBtn");
+            if (copyUidBtn) {
+                copyUidBtn.onclick = () => {
+                    playSound('click');
+                    playSound('copy');
+                    navigator.clipboard.writeText(currentPId);
+                    showCustomAlert("Player ID Copied!\n" + currentPId, "COPIED");
+                };
+            }
+            
+            document.getElementById("profileModal").classList.remove("hidden");
+        }
+
+        function attachListeners() {
+            document.querySelectorAll(".tier-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    playSound('click');
+                    document.querySelectorAll(".tier-btn").forEach(b => b.classList.remove("active-tier", "selected"));
+                    btn.classList.add("active-tier", "selected");
+                    currentTier = parseInt(btn.dataset.tier);
+                    betCost = parseInt(btn.dataset.cost);
+                });
+            });
+
+            document.getElementById("spinBtn").onclick = executeSpinLogic;
+
+                        // Safe Admin Tab Switcher
+            const admTabVouchersBtn = document.getElementById("admTabVouchersBtn");
+            const admTabPlayersBtn = document.getElementById("admTabPlayersBtn");
+            const admTabPrizesBtn = document.getElementById("admTabPrizesBtn");
+            const admSectionVouchers = document.getElementById("admSectionVouchers");
+            const admSectionPlayers = document.getElementById("admSectionPlayers");
+            const admSectionPrizes = document.getElementById("admSectionPrizes");
+
+            if (admTabVouchersBtn && admTabPlayersBtn && admTabPrizesBtn) {
+                function switchAdmTab(activeTab) {
+                    playSound('click');
+                    [admTabVouchersBtn, admTabPlayersBtn, admTabPrizesBtn].forEach(b => {
+                        b.className = "touch-action py-2 rounded-xl text-xs font-gaming font-bold text-gray-400 hover:text-white";
+                    });
+                    if(admSectionVouchers) admSectionVouchers.classList.add("hidden");
+                    if(admSectionPlayers) admSectionPlayers.classList.add("hidden");
+                    if(admSectionPrizes) admSectionPrizes.classList.add("hidden");
+
+                    if (activeTab === 'vouchers' && admSectionVouchers) {
+                        admTabVouchersBtn.className = "touch-action py-2 rounded-xl text-xs font-gaming font-bold bg-amber-500 text-black shadow";
+                        admSectionVouchers.classList.remove("hidden");
+                    } else if (activeTab === 'players' && admSectionPlayers) {
+                        admTabPlayersBtn.className = "touch-action py-2 rounded-xl text-xs font-gaming font-bold bg-purple-500 text-white shadow";
+                        admSectionPlayers.classList.remove("hidden");
+                    } else if (activeTab === 'prizes' && admSectionPrizes) {
+                        admTabPrizesBtn.className = "touch-action py-2 rounded-xl text-xs font-gaming font-bold bg-cyan-500 text-black shadow";
+                        admSectionPrizes.classList.remove("hidden");
+                        renderAdminPrizesList();
+                    }
+                }
+                admTabVouchersBtn.onclick = () => switchAdmTab('vouchers');
+                admTabPlayersBtn.onclick = () => switchAdmTab('players');
+                admTabPrizesBtn.onclick = () => switchAdmTab('prizes');
+            }
+
+                        // Admin Fast Voucher Key Action with Instant Visual Loading
+            document.getElementById("adminGenVoucherBtn").onclick = () => {
+                playSound('click');
+                const amt = parseInt(document.getElementById("adminVoucherAmt").value);
+                if (!amt || amt <= 0) return showCustomAlert("சரியான LKR தொகையை உள்ளிடவும்!", "ADMIN ERROR");
+
+                const btn = document.getElementById("adminGenVoucherBtn");
+                btn.disabled = true;
+                btn.style.opacity = "0.7";
+                btn.innerHTML = `<span class="inline-loader"></span> GENERATING...`;
+
+                setTimeout(async () => {
+                    try {
+                        const randomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
+                        const key = "GX-" + amt + "-" + randomCode;
+
+                        await db.collection("vouchers").doc(key).set({
+                            amount: amt,
+                            status: "active",
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+
+                        document.getElementById("adminKeyText").innerText = key;
+                        document.getElementById("adminKeyBox").classList.remove("hidden");
+                        playSound('win');
+                        navigator.clipboard.writeText(key);
+                        showCustomAlert("Key: " + key + "\n(தானாக Copy செய்யப்பட்டுவிட்டது!)", "KEY READY");
+                    } catch (e) {
+                        showCustomAlert("பிழை: " + e.message, "ERROR");
+                    } finally {
+                        btn.disabled = false;
+                        btn.style.opacity = "1";
+                        btn.innerHTML = `<i class="fa-solid fa-bolt"></i> GENERATE`;
+                    }
+                }, 30);
+            };
+
+            document.getElementById("adminCopyKeyBtn").onclick = () => {
+                playSound('click');
+                navigator.clipboard.writeText(document.getElementById("adminKeyText").innerText);
+                showCustomAlert("Top-Up Key Copied!", "COPIED");
+            };
+
+                        // Admin Auto Multi-User Promo Creator with Instant Visual Loading
+            document.getElementById("adminGenPromoBtn").onclick = () => {
+                playSound('click');
+                const type = document.getElementById("adminPromoRewardType").value;
+                const amt = parseInt(document.getElementById("adminPromoAmt").value);
+                const limit = parseInt(document.getElementById("adminPromoLimit").value);
+
+                if (!amt || amt <= 0 || !limit || limit <= 0) {
+                    return showCustomAlert("தொகை மற்றும் நபர்களின் எண்ணிக்கையை உள்ளிடவும்!", "ADMIN ERROR");
+                }
+
+                const btn = document.getElementById("adminGenPromoBtn");
+                btn.disabled = true;
+                btn.style.opacity = "0.7";
+                btn.innerHTML = `<span class="inline-loader"></span> CREATING...`;
+
+                setTimeout(async () => {
+                    try {
+                        const autoCode = "GX" + (type === 'cash' ? 'CASH' : 'STAR') + Math.random().toString(36).substring(2, 6).toUpperCase();
+
+                        await db.collection("promo_codes").doc(autoCode).set({
+                            code: autoCode,
+                            rewardType: type,
+                            rewardValue: amt,
+                            maxUsers: limit,
+                            usedCount: 0,
+                            usedUsers: [],
+                            status: "active",
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+
+                        document.getElementById("adminPromoResultKey").innerText = autoCode;
+                        document.getElementById("adminPromoResultBox").classList.remove("hidden");
+                        playSound('win');
+                        navigator.clipboard.writeText(autoCode);
+                        showCustomAlert("ஆஃபர் குறியீடு: " + autoCode + "\n(" + limit + " நபர்களுக்கு உருவானது! Copy செய்யப்பட்டது)", "CAMPAIGN LIVE");
+                    } catch (e) {
+                        showCustomAlert("பிழை: " + e.message, "ERROR");
+                    } finally {
+                        btn.disabled = false;
+                        btn.style.opacity = "1";
+                        btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> AUTO CREATE`;
+                    }
+                }, 30);
+            };
+
+            document.getElementById("adminCopyPromoBtn").onclick = () => {
+                playSound('click');
+                navigator.clipboard.writeText(document.getElementById("adminPromoResultKey").innerText);
+                playSound('copy'); showCustomAlert("Promo Code Copied!", "COPIED");
+            };
+            document.getElementById("quickTopupBtn").onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.remove("hidden"); };
+            document.getElementById("dashTopupBtn").onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.remove("hidden"); };
+            document.getElementById("submitVoucherBtn").onclick = redeemVoucher;
+
+
+            document.getElementById("dashConvertStarsBtn").onclick = convertStars;
+                        
+            // WhatsApp Top-Up Direct Order Action
+            document.getElementById("sendTopupOrderBtn").onclick = () => {
+                playSound('click');
+                const amt = parseInt(document.getElementById("buyTopupAmountInput").value);
+                if (!amt || amt <= 0) return showCustomAlert("சரியான தொகையை (LKR) உள்ளிடவும்!", "INVALID AMOUNT");
+
+                const userEmail = currentUser ? currentUser.email : "Guest Player";
+                const playerUID = (userData && userData.playerUID) ? userData.playerUID : (currentUser ? currentUser.uid : "N/A");
+                const playerName = currentUser ? (currentUser.displayName || "Gamer") : "Player";
+
+                const msg = encodeURIComponent(
+                    `*GX STORE - WALLET TOP-UP ORDER*\n` +
+                    `--------------------------------------\n` +
+                    `💰 *Requested Amount:* LKR ${amt}\n` +
+                    `🆔 *Player ID:* ${playerUID}\n` +
+                    `👤 *Name:* ${playerName}\n` +
+                    `📧 *Email:* ${userEmail}\n` +
+                    `--------------------------------------\n` +
+                    `_ஹலோ அட்மின், எனது கணக்கிற்கு LKR ${amt} டாப்-அப் செய்ய விரும்புகிறேன். பேமெண்ட் விபரங்களை அனுப்பவும்._`
+                );
+
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+                document.getElementById("buyTopupAmountInput").value = "";
+                document.getElementById("voucherModal").classList.add("hidden");
+            };
+
+
+            // Copy referral link
+            document.getElementById("dashCopyRefBtn").onclick = () => {
+                playSound('click');
+                navigator.clipboard.writeText(document.getElementById("dashRefUrl").value);
+                playSound('copy'); showCustomAlert("Referral link copied!", "COPIED");
+            };
+
+            document.getElementById("navDailyTab").onclick = () => { playSound('click'); document.getElementById("dailyCalendarModal").classList.remove("hidden"); };
+            document.querySelector(".close-daily-btn").onclick = () => { playSound('click'); document.getElementById("dailyCalendarModal").classList.add("hidden"); };
+
+            // Structured Bank Withdrawal with Minimum LKR 5000 check
+            document.getElementById("dashWithdrawBtn").onclick = () => { playSound('click'); document.getElementById("withdrawModal").classList.remove("hidden"); };
+            
+            document.getElementById("submitWithdrawBtn").onclick = async () => {
+                const amt = parseInt(document.getElementById("withdrawAmountInput").value);
+                const holder = document.getElementById("withdrawHolderName").value.trim();
+                const bank = document.getElementById("withdrawBankName").value.trim();
+                const branch = document.getElementById("withdrawBranch").value.trim();
+                const accNum = document.getElementById("withdrawAccNum").value.trim();
+                const altDetails = document.getElementById("withdrawAltDetails").value.trim();
+
+                if (!amt || isNaN(amt)) return showCustomAlert("வித்ராவல் தொகையை உள்ளிடவும்!", "INVALID AMOUNT");
+                
+                // MINIMUM 5000 LKR RESTRICTION
+                if (amt < 5000) {
+                    return showCustomAlert("குறைந்தபட்ச வித்ராவல் தொகை LKR 5,000 ஆகும்!", "MINIMUM LKR 5000 REQUIRED");
+                }
+                
+                if (amt > (userData.balance || 0)) {
+                    return showCustomAlert("உங்கள் வாலட்டில் போதுமான பேலன்ஸ் இல்லை!", "INSUFFICIENT BALANCE");
+                }
+
+                if (!holder || !bank || !branch || !accNum) {
+                    return showCustomAlert("அனைத்து வங்கி விபரங்களையும் (Name, Bank, Branch, Acc No) பூர்த்தி செய்யவும்!", "DETAILS MISSING");
+                }
+
+                // Deduct from wallet
+                await db.collection("users").doc(currentUser.uid).update({
+                    balance: firebase.firestore.FieldValue.increment(-amt)
+                });
+
+                const withdrawKey = `GX-BANK-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+                await db.collection("withdrawals").add({
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    amount: amt,
+                    accountHolder: holder,
+                    bankName: bank,
+                    branch: branch,
+                    accountNumber: accNum,
+                    alternativeInfo: altDetails || "None",
+                    withdrawKey: withdrawKey,
+                    status: "pending",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById("withdrawModal").classList.add("hidden");
+                
+                // Clear fields
+                document.getElementById("withdrawAmountInput").value = "";
+                document.getElementById("withdrawHolderName").value = "";
+                document.getElementById("withdrawBankName").value = "";
+                document.getElementById("withdrawBranch").value = "";
+                document.getElementById("withdrawAccNum").value = "";
+                document.getElementById("withdrawAltDetails").value = "";
+
+                showCustomAlert(`வெற்றி! LKR ${amt} பணத்திற்கான ரெக்வஸ்ட் பதிவு செய்யப்பட்டுவிட்டது. WhatsApp-ல் வங்கி விபரங்கள் பகிரப்படுகிறது.`, "WITHDRAWAL REGISTERED");
+
+                // Generate Clean Pre-formatted WhatsApp Message for instant receipt return
+                const whatsappMsg = encodeURIComponent(
+                    `*GX STORE - BANK WITHDRAWAL REQUEST*\n` +
+                    `--------------------------------------\n` +
+                    `💰 *Amount:* LKR ${amt}\n` +
+                    `🔑 *Ref Key:* ${withdrawKey}\n` +
+                    `📧 *Email:* ${currentUser.email}\n\n` +
+                    `🏦 *BANK DETAILS:*\n` +
+                    `• *Acc Holder:* ${holder}\n` +
+                    `• *Bank:* ${bank}\n` +
+                    `• *Branch:* ${branch}\n` +
+                    `• *Acc Number:* ${accNum}\n` +
+                    `• *eZ Cash / UID:* ${altDetails || "N/A"}\n` +
+                    `--------------------------------------\n` +
+                    `_Please transfer the amount and send the payment receipt screenshot here._`
+                );
+
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`, "_blank");
+            };
+
+            document.getElementById("navSpinTab").onclick = () => { playSound('click'); document.getElementById("profileModal").classList.add("hidden"); };
+            document.getElementById("navProfileTab").onclick = () => { playSound('click'); openProfileModal(); };
+            document.getElementById("navAdminTab").onclick = () => { playSound('click'); document.getElementById("adminModal").classList.remove("hidden"); };
+
+            document.querySelectorAll(".close-profile-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("profileModal").classList.add("hidden"); });
+            document.querySelectorAll(".close-voucher-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("voucherModal").classList.add("hidden"); });
+            document.querySelectorAll(".close-withdraw-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("withdrawModal").classList.add("hidden"); });
+            document.querySelectorAll(".close-win-modal").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("winModal").classList.add("hidden"); });
+            document.querySelectorAll(".close-admin-btn").forEach(b => b.onclick = () => { playSound('click'); document.getElementById("adminModal").classList.add("hidden"); });
+
+            document.getElementById("dashLogoutBtn").onclick = () => {
+                playSound('click');
+                auth.signOut().then(() => location.reload());
+            };
+        }
+    </script>
+</body>
+</html>
